@@ -1,0 +1,63 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    container_name: postgres_db
+    env_file:
+      - .env
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    ports:
+      - "5432:5432"
+    # networks:
+    #   - sga_network
+
+#   backend:
+#     container_name: backend
+#     build:
+#       context: .
+#       dockerfile: backend.Dockerfile
+#     ports:
+#       - "4000:4000"
+#       - "5555:5555"
+#     environment:
+#       - NODE_ENV=production
+#       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+#       - DATABASE_URL=postgres://postgres:${DATABASE_PASSWORD}@db:5432/sga
+#     volumes:
+#       - ./backend:/app
+#     command: sh -c "chmod +x wait.sh && ./wait.sh && npx prisma migrate dev --name init && npx prisma generate && tail -f /dev/null"
+#     depends_on:
+#       - db
+#     networks:
+#       - sga_network
+
+#   nextjs:
+#     container_name: frontend
+#     build:
+#       context: .
+#       dockerfile: nextjs.Dockerfile
+#     ports:
+#       - "3000:3000"
+#     environment:
+#       - NODE_ENV=development
+#       - ACCESS_TOKEN_KEY="crmvgo.sga.accesstoken"
+#       - REFRESH_TOKEN_KEY="crmvgo.sga.refreshtoken"
+#       - USER_TOKEN_KEY="crmvgo.sga.user"
+#       - ACCESS_TOKEN_EXPIRATION=3600
+#       - REFRESH_TOKEN_EXPIRATION=36000
+#       - API_URL="http://backend:4000/graphql"
+#     volumes:
+#       - ./frontend:/app
+#     command: sh -c "tail -f /dev/null"
+#     depends_on:
+#       - backend
+#     networks:
+#       - sga_network
+
+# networks:
+#   sga_network:
+#     name: sga_network
