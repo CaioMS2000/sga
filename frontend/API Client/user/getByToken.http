@@ -1,0 +1,19 @@
+POST http://localhost:4000/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+# Authorization: Bearer
+
+query GetUserByAccessToken ($token: String!) {
+  getUserByAccessToken(token: $token) {
+    name
+    email
+    password
+    profileImagePath
+    roles
+    id
+  }
+}
+
+{
+  "token": "46c76c6d-3b3a-4c42-b685-ebdf00d11619"
+}

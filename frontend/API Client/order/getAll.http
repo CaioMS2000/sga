@@ -1,0 +1,30 @@
+POST http://localhost:4000/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+# Authorization: Bearer
+
+query GetAllOrders{
+  orders{
+    id
+      code
+      createdAt
+      updatedAt
+      requesterId
+      item {
+        name
+        description
+        value
+        imagePath
+        id
+      }
+      analysis {
+        id
+        updatedAt
+        isApproved
+        analystId
+      }
+  }
+}
+
+{
+}
