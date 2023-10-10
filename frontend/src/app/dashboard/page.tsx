@@ -1,13 +1,17 @@
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren } from "react";
+import { userIsLoggedIn } from "@/utils/indext";
+import { redirect } from "next/navigation";
 
-interface DashboardProps extends PropsWithChildren{
-}
+interface DashboardProps extends PropsWithChildren {}
 
-export default function Dashboard({}:DashboardProps){
+export default async function Dashboard({}: DashboardProps) {
+	const loginFlag = await userIsLoggedIn();
 
-  return(
-      <>
-      <h1>Dashboard Page</h1>
-      </>
-  )
+	if (!loginFlag) redirect('/');
+
+	return (
+		<>
+			<h1>Dashboard Page</h1>
+		</>
+	);
 }
