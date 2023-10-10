@@ -1,6 +1,6 @@
 import { PropsWithChildren } from 'react';
 
-export interface LoginProps extends PropsWithChildren{
+interface LoginProps extends PropsWithChildren{
 }
 
 export default function Login({}:LoginProps){
