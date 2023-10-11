@@ -1,12 +1,10 @@
-import { getCookie } from "@/app/actions";
 import { graphqlClient } from "@/lib/graphql-request/client";
-import { UserCookieKey } from "./constants";
+import { FetchGraphQLResponse, GraphQLRequestOptions, Request, Response } from "./_index";
 
-type GraphQLResponse = { [key: string]: any };
-
-export async function fetchGraphQL(query: string, key?: string): Promise<any> {
+export async function fetchGraphQL(query: string, key?: string, options: GraphQLRequestOptions = {}): Promise<any> {
   try {
-    const response: GraphQLResponse = await graphqlClient.request(query);
+    const { variables, headers } = options;
+    const response: FetchGraphQLResponse = await graphqlClient.request(query, variables, headers);
 
     if (key && response.hasOwnProperty(key)) {
       return response[key];
@@ -39,13 +37,7 @@ export function objectHasUndefinedValue(obj: object) {
 	return flag;
 }
 
-export async function userIsLoggedIn(){
-  const userFromCookies = await getCookie(UserCookieKey)
-  let res = Boolean(userFromCookies)
-
-  if(!res) return false;
-  if(objectHasUndefinedValue(userFromCookies!)) return false;
-  if(objectIsEmpty(userFromCookies!)) return false;
-  
-  return true
+export interface GraphQLResponse {
+  response: Response;
+  request: Request;
 }

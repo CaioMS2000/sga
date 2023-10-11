@@ -8,7 +8,7 @@ import {
 	fetchGraphQL,
 	objectHasUndefinedValue,
 	objectIsEmpty,
-} from "./utils/indext";
+} from "./utils";
 import { RECOVER_USER_FROM_TOKEN } from "./lib/query/user";
 import {
 	AccesstokenKey,

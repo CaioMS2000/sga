@@ -1,6 +1,6 @@
 import { PropsWithChildren } from "react";
-import { userIsLoggedIn } from "@/utils/indext";
 import { redirect } from "next/navigation";
+import { userIsLoggedIn } from "@/utils/server-side-only";
 
 interface DashboardProps extends PropsWithChildren {}
 

@@ -199,13 +199,13 @@ export class UserService {
 		);
 
 		if (!dbUser) {
-			throw new GraphQLError("User not found1");
+			throw new GraphQLError("User not found");
 		}
 
 		const isValid = compareSync(password, dbUser.password);
 
 		if (!isValid) {
-			throw new GraphQLError("User not found2");
+			throw new GraphQLError("Invalid credentials");
 		}
 
 		// const aToken = await this.UserRepository.createAccessToken(dbUser.id, context)
