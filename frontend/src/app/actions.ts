@@ -1,3 +1,6 @@
+"use server";
+import { objectHasUndefinedValue, objectIsEmpty } from "@/utils";
+import { UserCookieKey } from "@/utils/constants";
 import { RequestCookie } from "next/dist/compiled/@edge-runtime/cookies";
 import { cookies } from "next/headers";
 
@@ -19,4 +22,16 @@ export async function deleteCookie(key: string) {
 }
 
 // export type serverSideCookieType = typeof cookies;//{name, value, path}
-export type serverSideCookieType = RequestCookie & {path?:string};
+// export type serverSideCookieType = RequestCookie & {path?:string};
+export type serverSideCookieType = RequestCookie;
+
+export async function userIsLoggedIn(){
+	const userFromCookies = await getCookie(UserCookieKey)
+	let res = Boolean(userFromCookies)
+  
+	if(!res) return false;
+	if(objectHasUndefinedValue(userFromCookies!)) return false;
+	if(objectIsEmpty(userFromCookies!)) return false;
+	
+	return true
+  }

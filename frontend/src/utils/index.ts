@@ -1,19 +1,30 @@
 import { graphqlClient } from "@/lib/graphql-request/client";
-import { FetchGraphQLResponse, GraphQLRequestOptions, Request, Response } from "./_index";
+import {
+	FetchGraphQLResponse,
+	GraphQLRequestOptions,
+	Request,
+	Response,
+} from "./_index";
 
-export async function fetchGraphQL(query: string, key?: string, options: GraphQLRequestOptions = {}): Promise<any> {
-  try {
-    const { variables, headers } = options;
-    const response: FetchGraphQLResponse = await graphqlClient.request(query, variables, headers);
+export type BasicObject<T = any> = Record<string, T>;
 
-    if (key && response.hasOwnProperty(key)) {
-      return response[key];
-    }
+export async function fetchGraphQL(
+	query: string,
+	key?: string,
+	options: GraphQLRequestOptions = {}
+): Promise<any> {
+	const { variables, headers } = options;
+	const response: FetchGraphQLResponse = await graphqlClient.request(
+		query,
+		variables,
+		headers
+	);
 
-    return response;
-  } catch (error) {
-    throw new Error(`Erro na requisição GraphQL: ${error}`);
-  }
+	if (key && response.hasOwnProperty(key)) {
+		return response[key];
+	}
+
+	return response;
 }
 
 export function objectIsEmpty(obj: object) {
@@ -38,6 +49,6 @@ export function objectHasUndefinedValue(obj: object) {
 }
 
 export interface GraphQLResponse {
-  response: Response;
-  request: Request;
+	response: Response;
+	request: Request;
 }

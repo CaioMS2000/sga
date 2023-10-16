@@ -4,7 +4,9 @@ import Image from "next/image";
 import { Input } from "./Input";
 import { graphqlClient } from "@/lib/graphql-request/client";
 import { LOGIN } from "@/lib/mutation/user";
-import { GraphQLResponse, fetchGraphQL } from "@/utils";
+import { BasicObject, GraphQLResponse, fetchGraphQL } from "@/utils";
+import { saveCookie } from "@/app/actions";
+import { AccesstokenExpiration, AccesstokenKey, RefreshtokenExpiration, RefreshtokenKey, UserCookieKey } from "@/utils/constants";
 
 interface LoginProps extends PropsWithChildren {}
 
@@ -15,8 +17,8 @@ export default function Login({}: LoginProps) {
 
 	async function handleSend() {
 		try {
-			console.log(email);
-			console.log(password);
+			// console.log(email);
+			// console.log(password);
 
 			// const res = await graphqlClient.request(LOGIN, {
 			// 	data: {
@@ -25,29 +27,41 @@ export default function Login({}: LoginProps) {
 			// 	},
 			// });
 
-      const res = await fetchGraphQL(LOGIN, 'login', {
-        variables: {
-          data: {
-            email,
-            password,
-          },
-        }
-      })
+			const res: BasicObject<BasicObject> = await fetchGraphQL(LOGIN, "login", {
+				variables: {
+					data: {
+						email,
+						password,
+					},
+				},
+			});
 
-      console.log(res)
+			// console.log(res);
+			const accessToken = res.accessToken;
+			const refreshToken = res.refreshToken;
+			const user = res.user;
+			console.log(accessToken)
+			console.log(refreshToken)
+			console.log(user)
+
+			await saveCookie(AccesstokenKey, JSON.stringify(accessToken.token), accessToken.expiresIn ?? AccesstokenExpiration)
+			await saveCookie(RefreshtokenKey, JSON.stringify(refreshToken.token), refreshToken.expiresIn ?? RefreshtokenExpiration)
+			await saveCookie(UserCookieKey, JSON.stringify(user), accessToken.expiresIn ?? AccesstokenExpiration)
 		} catch (e) {
-			let _e: any = (e as Record<string, any>).message.split(":");
+			console.log(e)
+			let _e: any = (e as BasicObject).message.split(":");
 			_e.shift();
 			_e = _e.join(":");
+			console.log(_e)
 			_e = JSON.parse(_e);
 
 			const response = _e as GraphQLResponse;
 			const erro = response.response.errors[0];
-      
+
 			setError(erro.message);
-      setTimeout(() => {
-        setError('')
-      }, 5 * 1000);
+			setTimeout(() => {
+				setError("");
+			}, 5 * 1000);
 		}
 	}
 
@@ -89,6 +103,7 @@ export default function Login({}: LoginProps) {
 						/>
 						<button
 							className="btn font-bold text-white bg-lime-900 border-lime-900 text-lg"
+							type="button"
 							onClick={handleSend}
 						>
 							ENTRAR
