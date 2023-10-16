@@ -2,11 +2,11 @@
 import { PropsWithChildren, useState } from "react";
 import Image from "next/image";
 import { Input } from "./Input";
-import { graphqlClient } from "@/lib/graphql-request/client";
 import { LOGIN } from "@/lib/mutation/user";
 import { BasicObject, GraphQLResponse, fetchGraphQL } from "@/utils";
 import { saveCookie } from "@/app/actions";
 import { AccesstokenExpiration, AccesstokenKey, RefreshtokenExpiration, RefreshtokenKey, UserCookieKey } from "@/utils/constants";
+import { useRouter } from "next/navigation";
 
 interface LoginProps extends PropsWithChildren {}
 
@@ -14,18 +14,10 @@ export default function Login({}: LoginProps) {
 	const [email, setEmail] = useState("email@mail.com");
 	const [password, setPassword] = useState("123");
 	const [error, setError] = useState("");
+	const {push} = useRouter()
 
 	async function handleSend() {
 		try {
-			// console.log(email);
-			// console.log(password);
-
-			// const res = await graphqlClient.request(LOGIN, {
-			// 	data: {
-			// 		email,
-			// 		password,
-			// 	},
-			// });
 
 			const res: BasicObject<BasicObject> = await fetchGraphQL(LOGIN, "login", {
 				variables: {
@@ -36,7 +28,6 @@ export default function Login({}: LoginProps) {
 				},
 			});
 
-			// console.log(res);
 			const accessToken = res.accessToken;
 			const refreshToken = res.refreshToken;
 			const user = res.user;
@@ -47,6 +38,8 @@ export default function Login({}: LoginProps) {
 			await saveCookie(AccesstokenKey, JSON.stringify(accessToken.token), accessToken.expiresIn ?? AccesstokenExpiration)
 			await saveCookie(RefreshtokenKey, JSON.stringify(refreshToken.token), refreshToken.expiresIn ?? RefreshtokenExpiration)
 			await saveCookie(UserCookieKey, JSON.stringify(user), accessToken.expiresIn ?? AccesstokenExpiration)
+
+			push('/dashboard')
 		} catch (e) {
 			console.log(e)
 			let _e: any = (e as BasicObject).message.split(":");

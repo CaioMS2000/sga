@@ -1,34 +1,43 @@
-import { getCookie, serverSideCookieType } from "@/app/actions";
+import { getCookie } from "@/app/actions";
+import { Admin } from "@/models/enum";
 import { UserModel } from "@/models/userModel";
+import { buildUser } from "@/utils";
 import { UserCookieKey } from "@/utils/constants";
-import { PropsWithChildren } from "react";
+import { HTMLProps, PropsWithChildren } from "react";
 
-interface NavBarProps extends PropsWithChildren {}
+interface NavBarProps extends PropsWithChildren, HTMLProps<HTMLDivElement> {}
 
-export async function NavBar({}: NavBarProps) {
-	let _user = await getCookie(UserCookieKey);
-
-	let user: UserModel;
+export async function NavBar({...rest}: NavBarProps) {
 	let hasImage: boolean;
+	// let _user = await getCookie(UserCookieKey);
+	// let user: UserModel;
+	const user: UserModel = await buildUser();
+	hasImage = Boolean(user.profileImagePath.length);
 
-	if (_user) {
-		user = JSON.parse(_user.value) as UserModel;
-		hasImage = Boolean(user.profileImagePath.length);
-	} else {
-		hasImage = false;
-	}
+	// if (_user) {
+	// 	user = JSON.parse(_user.value) as UserModel;
+	// 	hasImage = Boolean(user.profileImagePath.length);
+	// } else {
+	// 	hasImage = false;
+	// }
 
 	return (
 		<>
-			<div className="navbar bg-base-100">
+			<div {...rest} className={"navbar" + ` ${rest.className}`}>
 				<div className="flex-1">
 					<a className="btn btn-ghost normal-case text-xl">
-						<div className="w-60 rounded-full">
+						<div className="w-60 rounded-full bg-white p-2">
 							<img alt="" src="/image/crmvgo-logo-top.png" />
 						</div>
 					</a>
 				</div>
-				<div className="flex-none">
+				<div className="flex gap-3">
+					<div className="flex-col">
+						<p className='font-bold'>{user!.name.split(' ')[0]}</p>
+						{user!.roles.includes(Admin) && (
+							<p className='text-[10px]'>Admin</p>
+						)}
+					</div>
 					<div className="dropdown dropdown-end">
 						<label
 							tabIndex={0}

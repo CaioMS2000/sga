@@ -5,6 +5,9 @@ import {
 	Request,
 	Response,
 } from "./_index";
+import { getCookie } from "@/app/actions";
+import { UserCookieKey } from "./constants";
+import { UserModel } from "@/models/userModel";
 
 export type BasicObject<T = any> = Record<string, T>;
 
@@ -51,4 +54,11 @@ export function objectHasUndefinedValue(obj: object) {
 export interface GraphQLResponse {
 	response: Response;
 	request: Request;
+}
+
+export async function buildUser(){
+	const _user = await getCookie(UserCookieKey);
+	const user = JSON.parse(_user!.value) as UserModel;
+
+	return user
 }
