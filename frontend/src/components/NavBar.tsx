@@ -25,9 +25,9 @@ export async function NavBar({...rest}: NavBarProps) {
 		<>
 			<div {...rest} className={"navbar" + ` ${rest.className}`}>
 				<div className="flex-1">
-					<a className="btn btn-ghost normal-case text-xl">
+					<a href="/dashboard">
 						<div className="w-60 rounded-full bg-white p-2">
-							<img alt="" src="/image/crmvgo-logo-top.png" />
+							<img alt="Logo" src="/image/crmvgo-logo-top.png" />
 						</div>
 					</a>
 				</div>

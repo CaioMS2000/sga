@@ -19,7 +19,8 @@ export default function Login({}: LoginProps) {
 	async function handleSend() {
 		try {
 
-			const res: BasicObject<BasicObject> = await fetchGraphQL(LOGIN, "login", {
+			const res: BasicObject<BasicObject> = await fetchGraphQL(LOGIN, {
+				key: "login",
 				variables: {
 					data: {
 						email,
@@ -31,9 +32,9 @@ export default function Login({}: LoginProps) {
 			const accessToken = res.accessToken;
 			const refreshToken = res.refreshToken;
 			const user = res.user;
-			console.log(accessToken)
-			console.log(refreshToken)
-			console.log(user)
+			// console.log(accessToken)
+			// console.log(refreshToken)
+			// console.log(user)
 
 			await saveCookie(AccesstokenKey, JSON.stringify(accessToken.token), accessToken.expiresIn ?? AccesstokenExpiration)
 			await saveCookie(RefreshtokenKey, JSON.stringify(refreshToken.token), refreshToken.expiresIn ?? RefreshtokenExpiration)

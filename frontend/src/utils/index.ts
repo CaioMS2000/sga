@@ -13,10 +13,9 @@ export type BasicObject<T = any> = Record<string, T>;
 
 export async function fetchGraphQL(
 	query: string,
-	key?: string,
 	options: GraphQLRequestOptions = {}
 ): Promise<any> {
-	const { variables, headers } = options;
+	const { variables, headers, key } = options;
 	const response: FetchGraphQLResponse = await graphqlClient.request(
 		query,
 		variables,

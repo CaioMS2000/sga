@@ -13,10 +13,14 @@ export default async function Dashboard({}: DashboardProps) {
 	return (
 		<>
 			<div className="grid grid-cols-3 gap-4">
-				<div className="flex items-center justify-around p-4 border-2 rounded-lg bg-base-100">
-					<BsFillBoxFill />
-					<p>Faça um pedido</p>
-				</div>
+				<a href="/dashboard/items">
+					{/* <div className="flex items-center justify-around p-4 border-2 rounded-lg bg-base-100"> */}
+					{/* <div className="flex items-center justify-around p-4 border-2 rounded-lg bg-emerald-900"> */}
+					<div className="flex items-center justify-around p-4 border-2 rounded-lg bg-green-900">
+						<BsFillBoxFill className='text-white'/>
+						<p className='text-white font-bold'>Faça um pedido</p>
+					</div>
+				</a>
 			</div>
 		</>
 	);

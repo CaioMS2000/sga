@@ -3,6 +3,7 @@ export type FetchGraphQLResponse = { [key: string]: any };
 export interface GraphQLRequestOptions {
   variables?: Record<string, any>;
   headers?: Record<string, string>;
+  key?: string;
 }
 
 export interface Location {

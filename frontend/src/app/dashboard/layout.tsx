@@ -9,12 +9,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 	return (
 		<>
 			<div className="flex bg-darkGreen2">
-				<aside id="side-bar" className="h-screen w-64 p-2 border-white border-2">
-                        <SideBar className=""/>
+				<aside id="side-bar" className="flex-grow max-w-[16rem] min-h-screen p-2 border-white border-2">
+                        <SideBar />
 				</aside>
-				<div className="h-screen flex flex-col flex-1">
-					<div id="top-bar" className="flex h-fit">
-                        <NavBar className="border-white border-2 border-l-0"/>
+				<div className="min-h-screen flex flex-col flex-1">
+					<div id="top-bar" className="flex h-fit border-white border-2 border-l-0">
+                        <NavBar />
 					</div>
 					<main className="flex-1 p-6">
 						{children}
