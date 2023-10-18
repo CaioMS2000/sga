@@ -45,7 +45,7 @@ export class UserService {
 		// });
 
 		const isValid = true;
-		const invalidToken = "notDefined"
+		const invalidToken: string = "notDefined"
 
 		if (!isValid) {
 			// token invalido

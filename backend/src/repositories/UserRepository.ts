@@ -15,8 +15,6 @@ export interface GetUserProps{
   accessToken?: string
 }
 
-Prisma.Prisma__UserClient
-
 interface IUsersRepository {
   getAllUsers(context: ServerContextData): Promise<PrismaUser[]>;
   createUser(user: CreateUserInput, context: ServerContextData): Promise<PrismaUser>;

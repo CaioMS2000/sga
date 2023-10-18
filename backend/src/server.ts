@@ -13,6 +13,7 @@ import { prisma } from './lib/prisma';
 import { print } from './utils';
 import { AnalysisResolver } from './resolvers/analysis-resolver';
 import { DepartmentResolver } from './resolvers/department-resolver';
+import { CategoryResolver } from './resolvers/categories-resolver';
 
 export type ServerContextData = {
     prisma: PrismaClient,
@@ -35,6 +36,7 @@ async function main() {
             OrderResolver,
             AnalysisResolver,
             DepartmentResolver,
+            CategoryResolver,
         ],
         emitSchemaFile: path.resolve(__dirname, 'schema.gql')
     })
