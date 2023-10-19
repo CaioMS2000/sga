@@ -48,5 +48,8 @@ export class Item extends BaseModel implements PrismaItem{
     invoiceId: number
     
     @Field()
+    amount: number
+    
+    @Field()
     available: boolean
 }

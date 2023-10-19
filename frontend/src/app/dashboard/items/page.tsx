@@ -7,13 +7,17 @@ import { PropsWithChildren } from "react";
 interface pageProps extends PropsWithChildren {}
 
 export default async function page({}: pageProps) {
-	const items: ItemModel[] = await fetchGraphQL(GET_ITEMS, {
+	let items: ItemModel[] = await fetchGraphQL(GET_ITEMS, {
         key: "items"
     });
 
+	items = items.filter(item => {
+		if(item.amount > 0 && item.available) return true;
+		return false
+	})
+
 	return (
 		<>
-			<h1>Items</h1>
 			<div className="grid grid-cols-2 gap-5">
 				{items.map((item) => {
 					return <ItemCard key={item.id} item={item} />;

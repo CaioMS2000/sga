@@ -73,25 +73,25 @@ export class ItemResolver {
     return res;
   }
 
-  @Mutation(() => Item)
+  @Mutation(() => Order)
   async initItemOrder(@Arg("data") data: CreateOrderInput, @Ctx() context: ServerContextData) {
     try {
       const {prisma} = context
       const res = await this.ItemService.initItemOrder({order: data, context, props: {includeOrder: true}});
 
-      const order: PrismaOrder|null = await prisma.order.findFirst({
-        where: {
-          item: {
-            id: res.id
-          }
-        }
-      })
+      // const order: PrismaOrder|null = await prisma.order.findFirst({
+      //   where: {
+      //     item: {
+      //       id: res.id
+      //     }
+      //   }
+      // })
 
-      const analysis: PrismaAnalysis|null = await prisma.analysis.findFirst({
-        where: {
-          orderId: order?.id
-        }
-      })
+      // const analysis: PrismaAnalysis|null = await prisma.analysis.findFirst({
+      //   where: {
+      //     orderId: order?.id
+      //   }
+      // })
       
       return res;
     } catch (error) {
@@ -108,10 +108,14 @@ export class ItemResolver {
 
   @FieldResolver(() => Order)
   async order(@Root() item: Item, @Ctx() context: ServerContextData) {
+    if(!item.order) return null;
     try{
       const {prisma} = context
       const order = await prisma.order.findUnique({
         where: { id: item.order.id },
+        include: {
+          requester: true,
+        }
       });
   
       if (!order) {
@@ -131,6 +135,9 @@ export class ItemResolver {
       const {prisma} = context
       const storage = await prisma.storage.findUnique({
         where: { id: item.storage.id },
+        include: {
+          storekeeper: true
+        }
       });
   
       if (!storage) {
@@ -146,11 +153,13 @@ export class ItemResolver {
 
   @FieldResolver(() => Delivery)
   async delivery(@Root() item: Item, @Ctx() context: ServerContextData) {
+    if(!item.delivery) return null;
     try {
       const {prisma} = context
       const delivery = await prisma.delivery.findUnique({
         where: { id: item.delivery.id },
       });
+      console.log(delivery)
   
       if (!delivery) {
         throw new Error(`Delivery with id ${item.delivery.id} not found`);
@@ -184,6 +193,9 @@ export class ItemResolver {
       const {prisma} = context
       const invoice = await prisma.invoice.findUnique({
         where: { id: item.invoice.id },
+        include: {
+          supplier: true
+        }
       });
   
       if (!invoice) {

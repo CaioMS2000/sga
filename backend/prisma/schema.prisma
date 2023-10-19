@@ -132,6 +132,7 @@ model Item {
   description String @default("")
   value Float
   available Boolean @default(true)
+  amount Int @default(1)
 
   order Order? @relation(fields: [orderId], references: [id])
   orderId Int? @unique

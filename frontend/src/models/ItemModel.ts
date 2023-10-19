@@ -1,4 +1,8 @@
 import { CategoryModel } from "./categoryModel";
+import { DeliveryModel } from "./deliveryModel";
+import { InvoiceModel } from "./invoiceModel";
+import { OrderModel } from "./orderModel";
+import { StorageModel } from "./storageModel";
 
 export type ItemModel = {
   name: string;
@@ -6,5 +10,15 @@ export type ItemModel = {
   value: number;
   id: number;
   imagePath: string;
-  categories?: CategoryModel;
+  categories?: CategoryModel[];
+  order: OrderModel;
+  orderId: number;
+  storage: StorageModel;
+  storageId: number;
+  delivery: DeliveryModel;
+  deliveryId: number;
+  invoice: InvoiceModel;
+  invoiceId: number;
+  amount: number;
+  available: boolean;
 }

@@ -1,7 +1,7 @@
 import { ItemModel } from "@/models/ItemModel";
 import { PropsWithChildren } from "react";
 import { RiQuestionFill } from "react-icons/ri";
-import Button from "./Button";
+import Button from "./RedirectButton";
 
 interface ItemCardProps extends PropsWithChildren {
 	item: ItemModel;

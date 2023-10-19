@@ -11,20 +11,63 @@ export const CREATE_ITEM = gql`
 	}
 `;
 
+// export const INIT_ORDER = gql`
+// 	mutation ($data: CreateOrderInput!) {
+// 		initItemOrder(data: $data) {
+// 			name
+// 			description
+// 			value
+// 			id
+// 			imagePath
+// 			value
+// 			order {
+// 				code
+// 				createdAt
+// 				analysis {
+// 					id
+// 				}
+// 			}
+// 		}
+// 	}
+// `;
 export const INIT_ORDER = gql`
 	mutation ($data: CreateOrderInput!) {
 		initItemOrder(data: $data) {
-			name
-			description
-			value
 			id
-			imagePath
-			value
-			order {
-				code
+			code
+			createdAt
+			updatedAt
+			analysis{
 				createdAt
-				analysis {
+				updatedAt
+				isApproved
+				analyst{
 					id
+					profileImagePath
+					name
+					email
+					roles
+				}
+			}
+			requester{
+				id
+				profileImagePath
+				name
+				email
+				roles
+			}
+			item{
+				id
+				name
+				imagePath
+				description
+				value
+				amount
+				categories{
+					id
+					code
+					name
+					description
 				}
 			}
 		}

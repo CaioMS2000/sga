@@ -14,7 +14,7 @@ mutation CreateUser($data:CreateCategoryInput!){
 
 {
   "data": {
-    "name": "Produtos de limpeza",
-    "description": "Produtos de limpeza em geral"
+    "name": "Eletrônicos",
+    "description": "Eletrônicos de forma geral"
   }
 }
