@@ -20,7 +20,7 @@ export async function SideBar({...rest}: SideBarProps) {
 		<>
 			<ul className={"menu w-56" + ` ${rest.className}`}>
                 {
-                    items.map((item, index) => (<li key={index} className='mb-4 last:mb-0'><a>{<item.icon size={20}/>}<p className='font-bold'>{item.label}</p></a></li>))
+                    items.map((item, index) => (<li key={index} className='mb-4 last:mb-0'><a href={item.url}>{<item.icon size={20}/>}<p className='font-bold'>{item.label}</p></a></li>))
                 }
 				{/* <li>
 					<a>
@@ -48,6 +48,7 @@ export async function SideBar({...rest}: SideBarProps) {
 
 type MenuItemType = {
     label: string;
+    url: string;
     permission?: Role;
     icon: IconType
 }
@@ -55,19 +56,23 @@ const menuItems: MenuItemType[] = [
     {
         icon: BsFillShieldLockFill,
         label: 'Admin',
-        permission: Admin
+        permission: Admin,
+        url: '/admin',
     },
     {
         icon: AiFillHome,
         label: 'Página inicial',
+        url: '/dashboard',
     },
     {
         icon: FaThList,
         label: 'Pedidos',
+        url: '/dashboard/orders',
     },
     {
         icon: BsPersonFillGear,
         label: 'Gerenciamento de usuários',
-        permission: Admin
+        permission: Admin,
+        url: '/admin/users',
     },
 ]

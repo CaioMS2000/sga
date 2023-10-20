@@ -33,7 +33,18 @@ export const GET_ALL_ORDERS = gql`
 			code
 			createdAt
 			updatedAt
-			requesterId
+			requester {
+				id
+				profileImagePath
+				name
+				email
+				roles
+				department {
+					code
+					name
+					description
+				}
+			}
 			item {
 				name
 				description

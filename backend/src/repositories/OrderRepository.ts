@@ -6,7 +6,8 @@ export class OrderRepository{
         const res = await prisma.order.findMany({
             include:{
                 item: true,
-                analysis: true
+                analysis: true,
+                requester: true,
             }
         })
     
@@ -21,7 +22,8 @@ export class OrderRepository{
             },
             include:{
                 item: true,
-                analysis: true
+                analysis: true,
+                requester: true,
             }
         })
 

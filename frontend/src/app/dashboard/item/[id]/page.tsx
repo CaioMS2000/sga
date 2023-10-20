@@ -1,3 +1,4 @@
+import Image from "next/image";
 import OrderButton from "@/components/OrderButton";
 import { INIT_ORDER } from "@/lib/mutation/item";
 import { GET_ITEM_BY_ID } from "@/lib/query/item";
