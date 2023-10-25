@@ -17,7 +17,7 @@ export default async function OrderHorizontalCard({
 	return (
 		<>
 			<a href={`/dashboard/order/${code}`}>
-        <div className="container flex flex-row bg-teal-800 p-4 rounded-lg items-center">
+        <div className="container flex flex-row bg-teal-800 w-fit p-4 rounded-lg items-center">
           <div className="border-neutral-400 border-2 p-3 h-fit rounded-lg">
                   <img
                     src={item.imagePath}
@@ -28,12 +28,6 @@ export default async function OrderHorizontalCard({
           <div className="divider divider-horizontal" />
           {/* <div className="flex flex-col"></div> */}
           <div className="join join-vertical gap-3">
-            <div className="flex gap-3 border-neutral-400 border-2 p-3">
-              <span className="badge bg-neutral-400 border-neutral-400 bg-opacity-40 p-3">
-                Código
-              </span>
-              <p>{code}</p>
-            </div>
             <div className="flex gap-3 border-neutral-400 border-2 p-3">
               <span className="badge bg-neutral-400 border-neutral-400 bg-opacity-40 p-3">
                 Status

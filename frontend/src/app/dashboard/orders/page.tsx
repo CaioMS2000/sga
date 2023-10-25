@@ -16,7 +16,7 @@ export default async function Orders({}:OrdersProps){
 
   return(
       <>
-      <div className="flex flex-col">
+      <div className="flex flex-col items-center">
         {
           orders.map(order => (<OrderHorizontalCard key={order.id} order={order}/>))
         }

@@ -7,7 +7,18 @@ export const GET_ORDER = gql`
 			code
 			createdAt
 			updatedAt
-			requesterId
+			requester {
+				id
+				profileImagePath
+				name
+				email
+				roles
+				department {
+					code
+					name
+					description
+				}
+			}
 			item {
 				name
 				description
@@ -20,7 +31,18 @@ export const GET_ORDER = gql`
 				updatedAt
 				createdAt
 				isApproved
-				analystId
+				analyst{
+					id
+					profileImagePath
+					name
+					email
+					roles
+					department {
+						code
+						name
+						description
+					}
+				}
 			}
 		}
 	}

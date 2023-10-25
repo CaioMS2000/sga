@@ -61,3 +61,12 @@ export async function buildUser(){
 
 	return user
 }
+
+export function YearMonthDay(date: Date){
+	const data = new Date(date);
+	const day = data.getDate();
+	const month = data.getMonth() + 1; // Os meses são indexados de 0 a 11
+	const year = data.getFullYear();
+
+	return {day, month, year}
+}
