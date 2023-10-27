@@ -88,10 +88,10 @@ async function handleAdminPath(
 	accesstoken: RequestCookie | undefined,
 	request: NextRequest
 ) {
-	// console.log("usuario acessando area admin");
-	let user: any = JSON.parse(
-		request.cookies.get("crmvgo.sga.user")?.value || ""
-	);
+	// console.log("usuario acessando area admin")
+	const userFromCookies = request.cookies.get(UserCookieKey)!
+	// console.log(userFromCookies)
+	let user: any = JSON.parse(userFromCookies.value);
 
 	if (!Boolean(user)) {
 		console.log("necessário recuperar");

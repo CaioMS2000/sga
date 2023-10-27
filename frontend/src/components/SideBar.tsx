@@ -57,7 +57,7 @@ const menuItems: MenuItemType[] = [
         icon: BsFillShieldLockFill,
         label: 'Admin',
         permission: Admin,
-        url: '/admin',
+        url: '/dashboard/admin',
     },
     {
         icon: AiFillHome,
@@ -73,6 +73,6 @@ const menuItems: MenuItemType[] = [
         icon: BsPersonFillGear,
         label: 'Gerenciamento de usuários',
         permission: Admin,
-        url: '/admin/users',
+        url: '/dashboard/admin/users',
     },
 ]

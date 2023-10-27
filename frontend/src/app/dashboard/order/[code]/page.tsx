@@ -1,7 +1,8 @@
 import OrderValidation from "@/components/OrderValidation";
 import { GET_ORDER } from "@/lib/query/order";
+import { Admin, Manager } from "@/models/enum";
 import { OrderModel } from "@/models/orderModel";
-import { YearMonthDay, fetchGraphQL } from "@/utils";
+import { YearMonthDay, buildUser, fetchGraphQL } from "@/utils";
 import { PropsWithChildren } from "react";
 
 interface OrderProps extends PropsWithChildren {
@@ -31,9 +32,18 @@ export default async function Order({ params: { code } }: OrderProps) {
 	const analysisDate = order.analysis
 		? YearMonthDay(order.analysis.createdAt)
 		: undefined;
-	console.log(order);
 	const requesterHasImage = Boolean(order.requester?.profileImagePath);
 	const analystHasImage = Boolean(order.analysis?.analyst.profileImagePath);
+	const user = await buildUser()
+	const thisUserCanValidate = (() => {
+		if(user.roles.includes(Admin)) return true;
+
+		if(user.roles.includes(Manager)){
+			return user.department.some(thisDep => order.requester.department.some(reqDep => thisDep == reqDep))
+		}
+
+		return false
+	})()
 
 	return (
 		<>
@@ -111,8 +121,8 @@ export default async function Order({ params: { code } }: OrderProps) {
 					</div>
 				</div>
 
-				<div className="flex w-fit mx-auto flex-col">
-					<div className="rounded-lg p-4 grid grid-cols-2 mb-5 bg-gray-700">
+				<div className="flex w-fit mx-auto md:flex-row flex-col lg:flex-col ">
+					<div className="rounded-lg p-4 grid grid-cols-2 mb-5 lg:mb-5 md:mb-0 md:mr-3 bg-gray-700">
 						<div className="avatar">
 							<div className="rounded-full">
 								{requesterHasImage && (
@@ -166,8 +176,8 @@ export default async function Order({ params: { code } }: OrderProps) {
 						</>
 					)}
           {
-            !order.analysis && (
-              <OrderValidation/>
+            (thisUserCanValidate && !order.analysis) && (
+              <OrderValidation analystId={user.id} orderId={order.id}/>
             )
           }
 				</div>
