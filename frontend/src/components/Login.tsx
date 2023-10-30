@@ -70,6 +70,7 @@ export default function Login({}: LoginProps) {
 					<div className="image-wrapper p-3 bg-white rounded-3xl flex justify-center max-w-xs mb-10">
 						<Image
 							src={"/image/crmvgo-logo-top.png"}
+							priority={true}
 							width={300}
 							height={300}
 							alt=""

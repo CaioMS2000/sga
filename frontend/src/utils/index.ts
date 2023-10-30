@@ -8,6 +8,7 @@ import {
 import { getCookie } from "@/app/actions";
 import { UserCookieKey } from "./constants";
 import { UserModel } from "@/models/userModel";
+import { Role } from "@/models/enum";
 
 export type BasicObject<T = any> = Record<string, T>;
 
@@ -70,3 +71,17 @@ export function YearMonthDay(date: Date){
 
 	return {day, month, year}
 }
+
+export function stringToRole(value: string): Role | undefined {
+	const roleStringMap: { [key: string]: Role } = {
+		"Admin": Role.Admin,
+  		"Analyst": Role.Analyst,
+  		"Auditor": Role.Auditor,
+  		"Requester": Role.Requester,
+  		"StoreKeeper": Role.StoreKeeper,
+  		"Manager": Role.Manager,
+	};
+
+    return roleStringMap[value];
+}
+  
