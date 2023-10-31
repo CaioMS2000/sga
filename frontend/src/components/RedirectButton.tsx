@@ -6,7 +6,7 @@ interface ButtonProps extends PropsWithChildren, HTMLProps<HTMLButtonElement> {
     url: string
 }
 
-export default async function Button({children, url, ...rest}:ButtonProps){
+export default  function Button({children, url, ...rest}:ButtonProps){
     const {push} = useRouter()
 
   return(

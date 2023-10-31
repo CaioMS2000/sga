@@ -1,10 +1,20 @@
 "use client";
 import { UserModel } from "@/models/userModel";
 import { ChangeEvent, PropsWithChildren, useEffect, useState } from "react";
-import { Admin, Analyst, Auditor, Manager, Requester, Role, StoreKeeper } from "@/models/enum";
+import {
+	Admin,
+	Analyst,
+	Auditor,
+	Manager,
+	Requester,
+	Role,
+	StoreKeeper,
+} from "@/models/enum";
 import { fetchGraphQL, stringToRole } from "@/utils";
 import { DepartmentModel } from "@/models/departmentModel";
 import { GET_DEPARTMENTS } from "@/lib/query/department";
+import RedirectButton from '@/components/RedirectButton';
+import { RolesSelector } from "./RolesSelector";
 
 interface UsersListProps extends PropsWithChildren {
 	AllUsers: any[];
@@ -12,17 +22,22 @@ interface UsersListProps extends PropsWithChildren {
 
 export default function UsersList({ AllUsers }: UsersListProps) {
 	const users: UserModel[] = AllUsers;
-	const [selectValue, setSelectValue] = useState(filterOptions[0].value);
+	const [filterSelectValue, setFilterSelectValue] = useState(
+		filterOptions[0].value
+	);
 	const [selectLabel, setSelectLabel] = useState(filterOptions[0].label);
 	const [filteredUsers, setFilteredUsers] = useState(users);
-	const [filterValue, setFilterValue] = useState("");
-	const [availableDepartments, setAvailableDepartments] = useState([] as DepartmentModel[])
+	const [nameFilterValue, setNameFilterValue] = useState("");
+	const [emailFilterValue, setEmailFilterValue] = useState("");
+	const [availableDepartments, setAvailableDepartments] = useState(
+		[] as DepartmentModel[]
+	);
 
-	async function fetchDepartments(){
+	async function fetchDepartments() {
 		const res = await fetchGraphQL(GET_DEPARTMENTS, {
-			key: 'departments'
-		})
-		setAvailableDepartments(res)
+			key: "departments",
+		});
+		setAvailableDepartments(res);
 	}
 
 	function handleSelectChange(event: ChangeEvent<HTMLSelectElement>) {
@@ -30,74 +45,103 @@ export default function UsersList({ AllUsers }: UsersListProps) {
 		const option = getOptionByValue(selectedValue);
 
 		if (option) {
-			setSelectValue(selectedValue);
+			setFilterSelectValue(selectedValue);
 			setSelectLabel(selectedValue);
 		}
 	}
 
-	const [selectedRole, setSelectedRole] = useState<'none'|Role>('none')
+	const [selectedRole, setSelectedRole] = useState<"none" | Role>("none");
+	function handleRoleChange(event: ChangeEvent<HTMLSelectElement>) {
+		const selectedValue: string = event.target.value;
 
-    function handleRoleChange(event: ChangeEvent<HTMLSelectElement>){
-        const selectedValue: string = event.target.value;
+		const fromEnum = stringToRole(selectedValue);
+		setSelectedRole(fromEnum ?? "none");
+	}
 
-        const fromEnum = stringToRole(selectedValue)
-        setSelectedRole(fromEnum ?? 'none')
-    }
+	const [selectedDepartment, setSelectedDepartment] = useState("none");
+	function handleDepartmentChange(event: ChangeEvent<HTMLSelectElement>) {
+		const selectedValue: string = event.target.value;
 
-    useEffect(() => {
-        if(filterValue.length == 0){
-            setFilteredUsers(users)
-            return;
-        }
+		setSelectedDepartment(selectedValue);
+	}
 
-        switch (selectValue) {
+	useEffect(() => {
+		switch (filterSelectValue) {
+			case "all":
+				setFilteredUsers(users);
+				break;
 
-            case 'all':
-                setFilteredUsers(users)
-                break;
+			case "name":
+				setFilteredUsers(
+					users.filter((u) => {
+						const flag = u.name
+							.toLowerCase()
+							.includes(nameFilterValue.toLowerCase());
+						return flag;
+					})
+				);
+				break;
 
-            case 'name':
-                setFilteredUsers(users.filter(u => {
-                    console.log(`nome: procurando ${filterValue} em ${u.name}`)
-                    const flag = u.name.toLowerCase().includes(filterValue.toLowerCase())
-					console.log(`${flag?'tem':'nao tem'}`)
-					return flag
-                }))
-                break;
+			case "email":
+				setFilteredUsers(
+					users.filter((u) => {
+						const flag = u.email
+							.toLowerCase()
+							.includes(emailFilterValue.toLowerCase());
+						return flag;
+					})
+				);
+				break;
 
-            case 'email':
-                setFilteredUsers(users.filter(u => {
-                    console.log(`email: procurando ${filterValue} em ${u.email}`)
-                    const flag = u.email.toLowerCase().includes(filterValue.toLowerCase())
-					console.log(`${flag?'tem':'nao tem'}`)
-					return flag
-                }))
-                break;
-        
-            default:
-                setFilteredUsers([])
-                break;
-        }
-    }, [selectValue, filterValue])
+			case "roles":
+				if (selectedRole != "none") {
+					setFilteredUsers(
+						users.filter((u) => {
+							const flag = u.roles.includes(selectedRole);
+							return flag;
+						})
+					);
+				} else {
+					setFilteredUsers(users);
+				}
+				break;
 
-    useEffect(() => {
-        console.log(filterValue)
-    }, [filterValue])
+			case "department":
+				if (selectedDepartment != "none") {
+					setFilteredUsers(
+						users.filter((u) => {
+							const flag = u.department.some(
+								(dep) => dep.code == selectedDepartment
+							);
+							return flag;
+						})
+					);
+				} else {
+					setFilteredUsers(users);
+				}
+				break;
 
-    useEffect(() => {
-        console.log(availableDepartments)
-    }, [availableDepartments])
+			default:
+				break;
+		}
+	}, [
+		filterSelectValue,
+		nameFilterValue,
+		emailFilterValue,
+		selectedRole,
+		selectedDepartment,
+	]);
 
-    useEffect(() => {
-        fetchDepartments()
-    }, [])
+	useEffect(() => {
+		fetchDepartments();
+	}, []);
 
 	return (
 		<>
 			<select
 				aria-label="users-list-filter"
-				className="select w-full max-w-xs"
-				value={selectValue}
+				className="select w-full max-w-xs mr-3 bg-slate-900"
+				value={filterSelectValue}
 				onChange={handleSelectChange}
 			>
 				{filterOptions.map((fOpt, index) => (
@@ -106,42 +150,70 @@ export default function UsersList({ AllUsers }: UsersListProps) {
 					</option>
 				))}
 			</select>
-			{(selectValue.toLowerCase() == "name" || selectValue.toLowerCase() == "email") && (
+			{filterSelectValue.toLowerCase() == "name" && (
 				<>
 					<input
 						type="text"
 						placeholder={`Filtrar por ${selectLabel}`}
-						value={filterValue}
+						value={nameFilterValue}
+						className="bg-slate-900 p-2 rounded-lg"
 						onChange={(e) => {
-                            setFilterValue(e.target.value)
-                        }}
+							setNameFilterValue(e.target.value);
+						}}
 					/>
 				</>
 			)}
-			{(selectValue.toLowerCase() == "roles") && (
-				<>
-					<RolesSelector handleChange={handleRoleChange} selectedValue={selectedRole}/>
-				</>
-			)}
-			{(selectValue.toLowerCase() == "department") && (
+			{filterSelectValue.toLowerCase() == "email" && (
 				<>
 					<input
 						type="text"
 						placeholder={`Filtrar por ${selectLabel}`}
-						value={filterValue}
+						value={emailFilterValue}
+						className="bg-slate-900 p-2 rounded-lg"
 						onChange={(e) => {
-                            setFilterValue(e.target.value)
-                        }}
+							setEmailFilterValue(e.target.value);
+						}}
+					/>
+				</>
+			)}
+			{filterSelectValue.toLowerCase() == "roles" && (
+				<>
+					<RolesSelector
+						handleChange={handleRoleChange}
+						selectedValue={selectedRole}
+						className="w-full max-w-xs bg-slate-900"
+					/>
+				</>
+			)}
+			{filterSelectValue.toLowerCase() == "department" && (
+				<>
+					<DepartmentSelector
+						departments={availableDepartments}
+						selectedValue={selectedDepartment}
+						handleChange={handleDepartmentChange}
 					/>
 				</>
 			)}
 			<div className="divider" />
+			<div className='flex justify-center'>
+				<RedirectButton className='border-teal-700 bg-teal-700 text-white' url="/dashboard/admin/users/create">Criar novo usuário</RedirectButton>
+			</div>
 			{filteredUsers &&
 				filteredUsers.map((user) => (
-					<div key={user.id}>
-						{user.name}
-						<br />
-						{user.email}
+					<div key={user.id} className='grid grid-cols-2 w-fit rounded-lg border-2 border-gray-400 p-3'>
+						<div className="avatar w-fit ">
+							<div className="w-24 rounded-full">
+								<img
+									alt="user profile image"
+									src={user.profileImagePath || "/image/empty-profile-image.png"}
+								/>
+							</div>
+						</div>
+
+						<div className=' flex flex-col justify-center'>
+							<p>{user.name}</p>
+							<p>{user.email}</p>
+						</div>
 					</div>
 				))}
 		</>
@@ -165,37 +237,34 @@ function getOptionByValue(value: string) {
 	return filterOptions.find((option) => option.value === value);
 }
 
-
-interface RolesSelectorProps extends PropsWithChildren{
-    handleChange: (arg: any) => void;
-    selectedValue: any;
+interface DepartmentSelectorProps extends PropsWithChildren {
+	departments: DepartmentModel[];
+	handleChange: (arg: any) => void;
+	selectedValue: any;
 }
 
-function RolesSelector({handleChange, selectedValue}:RolesSelectorProps){
-
-  return(
-      <>
-      <select aria-label="role-selector" name="role-selector" id="role-selector" value={selectedValue} onChange={handleChange}>
-        <option value='none'>Cargos</option>
-        <option value={Admin}>Admin</option>
-        <option value={Analyst}>Analyst</option>
-        <option value={Auditor}>Auditor</option>
-        <option value={Requester}>Requester</option>
-        <option value={StoreKeeper}>StoreKeeper</option>
-        <option value={Manager}>Manager</option>
-      </select>
-      </>
-  )
-}
-
-
-interface DepartmentSelectorProps extends PropsWithChildren{
-}
-
-export function DepartmentSelector({}:DepartmentSelectorProps){
-
-  return(
-      <>
-      </>
-  )
+export function DepartmentSelector({
+	departments,
+	handleChange,
+	selectedValue,
+}: DepartmentSelectorProps) {
+	return (
+		<>
+			<select
+				aria-label="department-selector"
+				className="select w-full max-w-xs bg-slate-900"
+				name="department-selector"
+				id="department-selector"
+				value={selectedValue}
+				onChange={handleChange}
+			>
+				<option value="none">Selecione</option>
+				{departments.map((dep) => (
+					<option key={dep.id} value={dep.code}>
+						{dep.name}
+					</option>
+				))}
+			</select>
+		</>
+	);
 }
