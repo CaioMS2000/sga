@@ -1,6 +1,12 @@
 "use client";
 import { UserModel } from "@/models/userModel";
-import { ChangeEvent, PropsWithChildren, useEffect, useState } from "react";
+import {
+	ChangeEvent,
+	PropsWithChildren,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import {
 	Admin,
 	Analyst,
@@ -13,8 +19,9 @@ import {
 import { fetchGraphQL, stringToRole } from "@/utils";
 import { DepartmentModel } from "@/models/departmentModel";
 import { GET_DEPARTMENTS } from "@/lib/query/department";
-import RedirectButton from '@/components/RedirectButton';
+import RedirectButton from "@/components/RedirectButton";
 import { RolesSelector } from "./RolesSelector";
+import { DepartmentSelector } from "./DepartmentSelector";
 
 interface UsersListProps extends PropsWithChildren {
 	AllUsers: any[];
@@ -132,8 +139,20 @@ export default function UsersList({ AllUsers }: UsersListProps) {
 		selectedDepartment,
 	]);
 
+	const [maxWidth, setMaxWidth] = useState(0);
+	const elementRefs = filteredUsers.map(() => useRef<HTMLDivElement>(null));
+
 	useEffect(() => {
 		fetchDepartments();
+
+		let max = 0;
+		elementRefs.forEach((ref) => {
+			if (ref.current) {
+				max = Math.max(max, ref.current.offsetWidth);
+			}
+		});
+		console.log(`max: ${max}`);
+		setMaxWidth(max);
 	}, []);
 
 	return (
@@ -182,7 +201,7 @@ export default function UsersList({ AllUsers }: UsersListProps) {
 						handleChange={handleRoleChange}
 						selectedValue={selectedRole}
 						className="w-full max-w-xs bg-slate-900"
-					/>
+						/>
 				</>
 			)}
 			{filterSelectValue.toLowerCase() == "department" && (
@@ -191,26 +210,43 @@ export default function UsersList({ AllUsers }: UsersListProps) {
 						departments={availableDepartments}
 						selectedValue={selectedDepartment}
 						handleChange={handleDepartmentChange}
+						className="w-full max-w-xs bg-slate-900"
 					/>
 				</>
 			)}
 			<div className="divider" />
-			<div className='flex justify-center'>
-				<RedirectButton className='border-teal-700 bg-teal-700 text-white' url="/dashboard/admin/users/create">Criar novo usuário</RedirectButton>
+			<div className="flex justify-center">
+				<RedirectButton
+					className="border-teal-700 bg-teal-700 text-white mb-5"
+					url="/dashboard/admin/users/create"
+				>
+					Criar novo usuário
+				</RedirectButton>
 			</div>
 			{filteredUsers &&
-				filteredUsers.map((user) => (
-					<div key={user.id} className='grid grid-cols-2 w-fit rounded-lg border-2 border-gray-400 p-3'>
+				filteredUsers.map((user, index) => (
+					<div
+						key={user.id}
+						ref={elementRefs[index]}
+						// className={`grid grid-cols-2 w-${maxWidth?`[${maxWidth}px]`:'fit'} ${maxWidth?`max-w-[${maxWidth}px]`:''} rounded-lg border-2 border-gray-400 p-3`}
+						// className={`grid grid-cols-2 ${maxWidth?`max-w-[${maxWidth}px]`:''} rounded-lg border-2 border-gray-400 p-3`}
+						// className={`grid grid-cols-2 max-w-[50px] rounded-lg border-2 border-gray-400 p-3`}
+						className={`grid grid-cols-2 rounded-lg border-2 border-gray-400 p-3 mb-5 last:mb-0`}
+						style={{ width: maxWidth ? `${maxWidth}px` : "fit-content" }}
+					>
 						<div className="avatar w-fit ">
 							<div className="w-24 rounded-full">
 								<img
 									alt="user profile image"
-									src={user.profileImagePath || "/image/empty-profile-image.png"}
+									src={
+										user.profileImagePath ||
+										"/image/empty-profile-image.png"
+									}
 								/>
 							</div>
 						</div>
 
-						<div className=' flex flex-col justify-center'>
+						<div className=" flex flex-col justify-center">
 							<p>{user.name}</p>
 							<p>{user.email}</p>
 						</div>
@@ -235,36 +271,4 @@ const filterOptions: FilterOption[] = [
 
 function getOptionByValue(value: string) {
 	return filterOptions.find((option) => option.value === value);
-}
-
-interface DepartmentSelectorProps extends PropsWithChildren {
-	departments: DepartmentModel[];
-	handleChange: (arg: any) => void;
-	selectedValue: any;
-}
-
-export function DepartmentSelector({
-	departments,
-	handleChange,
-	selectedValue,
-}: DepartmentSelectorProps) {
-	return (
-		<>
-			<select
-				aria-label="department-selector"
-				className="select w-full max-w-xs bg-slate-900"
-				name="department-selector"
-				id="department-selector"
-				value={selectedValue}
-				onChange={handleChange}
-			>
-				<option value="none">Selecione</option>
-				{departments.map((dep) => (
-					<option key={dep.id} value={dep.code}>
-						{dep.name}
-					</option>
-				))}
-			</select>
-		</>
-	);
 }

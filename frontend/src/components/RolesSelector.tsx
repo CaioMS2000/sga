@@ -9,18 +9,24 @@ import {
 	StoreKeeper,
 } from "@/models/enum";
 
-interface RolesSelectorProps extends PropsWithChildren, SelectHTMLAttributes<HTMLSelectElement> {
+interface RolesSelectorProps
+	extends PropsWithChildren,
+		SelectHTMLAttributes<HTMLSelectElement> {
 	handleChange: (arg: any) => void;
 	selectedValue: any;
 }
 
-export function RolesSelector({ handleChange, selectedValue, ...rest }: RolesSelectorProps) {
+export function RolesSelector({
+	handleChange,
+	selectedValue,
+	...rest
+}: RolesSelectorProps) {
 	return (
 		<>
 			<select
-            {...rest}
+				{...rest}
 				aria-label="role-selector"
-				className={'select' + rest.className}
+				className={"select " + rest.className}
 				name="role-selector"
 				id="role-selector"
 				value={selectedValue}

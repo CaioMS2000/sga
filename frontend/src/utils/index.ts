@@ -9,6 +9,7 @@ import { getCookie } from "@/app/actions";
 import { UserCookieKey } from "./constants";
 import { UserModel } from "@/models/userModel";
 import { Role } from "@/models/enum";
+import { DepartmentModel } from "@/models/departmentModel";
 
 export type BasicObject<T = any> = Record<string, T>;
 
@@ -84,4 +85,7 @@ export function stringToRole(value: string): Role | undefined {
 
     return roleStringMap[value];
 }
-  
+
+export function departmentFromCode(code: string, departments: DepartmentModel[]){
+	return departments.filter(dep => dep.code == code).pop()
+}
