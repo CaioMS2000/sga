@@ -10,6 +10,7 @@ import { UserCookieKey } from "./constants";
 import { UserModel } from "@/models/userModel";
 import { Role } from "@/models/enum";
 import { DepartmentModel } from "@/models/departmentModel";
+import { redirect } from "next/navigation";
 
 export type BasicObject<T = any> = Record<string, T>;
 
@@ -59,9 +60,25 @@ export interface GraphQLResponse {
 
 export async function buildUser(){
 	const _user = await getCookie(UserCookieKey);
-	const user = JSON.parse(_user!.value) as UserModel;
-
-	return user
+	console.log(_user)
+	let flag = false
+	
+	const keys = Object.keys(_user)
+	console.log(keys)
+	keys.forEach(k => {
+		if(_user[k] == undefined){
+			flag = true
+		}
+	})
+	// if(flag) redirect('/');
+	// if(!_user || _user == undefined || _user == null) redirect('/');
+	if(flag) return undefined;
+	if(!_user || _user == undefined || _user == null) return undefined;
+	else{
+		const user = JSON.parse(_user.value) as UserModel;
+	
+		return user
+	}
 }
 
 export function YearMonthDay(date: Date){

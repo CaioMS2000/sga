@@ -18,6 +18,7 @@ export async function getAllCookies() {
 }
 
 export async function deleteCookie(key: string) {
+	cookies().set(key, '', { maxAge: 0 });
 	return cookies().delete(key);
 }
 

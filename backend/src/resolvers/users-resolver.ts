@@ -161,6 +161,7 @@ export class UserResolver {
       password: data.password,
       roles: data.roles,
       profileImagePath: data.profileImagePath,
+      departmentCode: data.departmentCode
     };
 
     const res = await this.UserService.createUser(user, context);

@@ -54,6 +54,7 @@ export class UserRepository implements IUsersRepository {
     if(!user.departmentCode){
       delete createOptoins.data.department
     }
+    delete createOptoins.data.departmentCode
 
     const res = await prisma.user.create({...createOptoins});
 

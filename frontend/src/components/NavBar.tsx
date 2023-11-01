@@ -4,6 +4,8 @@ import { UserModel } from "@/models/userModel";
 import { buildUser } from "@/utils";
 import { UserCookieKey } from "@/utils/constants";
 import { HTMLProps, PropsWithChildren } from "react";
+import LogoutButton from "./LogoutButton";
+import { redirect } from "next/navigation";
 
 interface NavBarProps extends PropsWithChildren, HTMLProps<HTMLDivElement> {}
 
@@ -11,7 +13,8 @@ export async function NavBar({...rest}: NavBarProps) {
 	let hasImage: boolean;
 	// let _user = await getCookie(UserCookieKey);
 	// let user: UserModel;
-	const user: UserModel = await buildUser();
+	const user = await buildUser();
+	if(user == undefined) redirect('/');
 	hasImage = Boolean(user.profileImagePath.length);
 
 	// if (_user) {
@@ -74,7 +77,7 @@ export async function NavBar({...rest}: NavBarProps) {
 								<a>Settings</a>
 							</li>
 							<li>
-								<a>Logout</a>
+								<LogoutButton>Logout</LogoutButton>
 							</li>
 						</ul>
 					</div>

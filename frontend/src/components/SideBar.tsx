@@ -5,11 +5,13 @@ import { IconType } from "react-icons";
 import { AiFillHome } from 'react-icons/ai';
 import { FaThList } from 'react-icons/fa';
 import { BsPersonFillGear, BsFillShieldLockFill } from 'react-icons/bs';
+import { redirect } from "next/navigation";
 
 interface SideBarProps extends PropsWithChildren, HTMLProps<HTMLDivElement> {}
 
 export async function SideBar({...rest}: SideBarProps) {
     const user = await buildUser();
+    if(user == undefined) redirect('/');
     const items = menuItems.filter(item => {
         if(item.permission == undefined) return true;
 

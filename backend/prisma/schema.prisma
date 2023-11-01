@@ -77,7 +77,7 @@ model Order{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  requester User @relation("orders", fields: [requesterId], references: [id])
+  requester User @relation("orders", fields: [requesterId], references: [id], onDelete: Cascade)
   requesterId Int
 
   analysis Analysis?
@@ -155,7 +155,7 @@ model AccessToken{
   updatedAt DateTime @updatedAt
   token String @unique
   expiresIn Int @default(3600) //1h
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int @unique
 }
 
@@ -165,7 +165,7 @@ model RefreshToken{
   updatedAt DateTime @updatedAt
   token String @unique
   expiresIn Int @default(36000) //10h
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId Int @unique
 }
 

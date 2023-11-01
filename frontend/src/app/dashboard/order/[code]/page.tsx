@@ -3,6 +3,7 @@ import { GET_ORDER } from "@/lib/query/order";
 import { Admin, Manager } from "@/models/enum";
 import { OrderModel } from "@/models/orderModel";
 import { YearMonthDay, buildUser, fetchGraphQL } from "@/utils";
+import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
 
 interface OrderProps extends PropsWithChildren {
@@ -35,7 +36,9 @@ export default async function Order({ params: { code } }: OrderProps) {
 	const requesterHasImage = Boolean(order.requester?.profileImagePath);
 	const analystHasImage = Boolean(order.analysis?.analyst.profileImagePath);
 	const user = await buildUser()
+	if(user == undefined) redirect('/');
 	const thisUserCanValidate = (() => {
+		console.log(user, '\n\n\n', order.requester)
 		if(user.roles.includes(Admin)) return true;
 
 		if(user.roles.includes(Manager)){

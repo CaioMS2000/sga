@@ -6,6 +6,7 @@ import { ItemModel } from "@/models/ItemModel";
 import { buildUser, fetchGraphQL } from "@/utils";
 import { PropsWithChildren } from "react";
 import { RiQuestionFill } from "react-icons/ri";
+import { redirect } from "next/navigation";
 
 interface ItemProps extends PropsWithChildren {
 	params: {
@@ -23,6 +24,7 @@ export default async function Item({ params: { id } }: ItemProps) {
 	const itemImageFlag = Boolean(item.imagePath.length);
 	const categories = item.categories;
 	const currentUser = await buildUser()
+	if(currentUser == undefined) redirect('/');
 
 	return (
 		<>
