@@ -62,10 +62,11 @@ export async function buildUser(){
 	const _user = await getCookie(UserCookieKey);
 	console.log(_user)
 	let flag = false
-	
+	// @ts-expect-error
 	const keys = Object.keys(_user)
 	console.log(keys)
 	keys.forEach(k => {
+		// @ts-expect-error
 		if(_user[k] == undefined){
 			flag = true
 		}
@@ -105,4 +106,8 @@ export function stringToRole(value: string): Role | undefined {
 
 export function departmentFromCode(code: string, departments: DepartmentModel[]){
 	return departments.filter(dep => dep.code == code).pop()
+}
+
+export function usersInSameDepartment(userA: UserModel, userB: UserModel){
+	return userA.department.some(depA => userB.department.some(depB => depA.code == depB.code))
 }

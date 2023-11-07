@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 // import { prisma } from './lib/prisma';
 import { User } from '@prisma/client';
 import { PrismaClient } from '@prisma/client';
+import { Admin } from './dto/models/enum';
 
 const prisma = new PrismaClient();
 
@@ -104,7 +105,35 @@ async function main(prisma: PrismaClient){
 
         })
 
+        await prisma.department.createMany({
+            data: [
+                {
+                    code: string.uuid(),
+                    name: 'DTI',
+                    description: 'Departamento da Tecnologia da Informação'
+                },
+                {
+                    code: string.uuid(),
+                    name: 'DRH',
+                    description: 'Departamento de Recursos Humanos'
+                },
+                {
+                    code: string.uuid(),
+                    name: 'DJUR',
+                    description: 'Departamento Jurídico'
+                },
+            ]
+        })
+
     }
+    // else{
+    //     await prisma.user.create({data:{
+    //         email: 'email@mail.com',
+    //         password: '123',
+    //         name: 'Caio',
+    //         roles: [Admin],
+    //     }})
+    // }
 
     setTimeout(async () => {
         console.log(await prisma.item.findMany())

@@ -2,7 +2,7 @@ import OrderValidation from "@/components/OrderValidation";
 import { GET_ORDER } from "@/lib/query/order";
 import { Admin, Manager } from "@/models/enum";
 import { OrderModel } from "@/models/orderModel";
-import { YearMonthDay, buildUser, fetchGraphQL } from "@/utils";
+import { YearMonthDay, buildUser, fetchGraphQL, usersInSameDepartment } from "@/utils";
 import { redirect } from "next/navigation";
 import { PropsWithChildren } from "react";
 
@@ -42,7 +42,8 @@ export default async function Order({ params: { code } }: OrderProps) {
 		if(user.roles.includes(Admin)) return true;
 
 		if(user.roles.includes(Manager)){
-			return user.department.some(thisDep => order.requester.department.some(reqDep => thisDep == reqDep))
+			// return user.department.some(thisDep => order.requester.department.some(reqDep => thisDep.code == reqDep.code))
+			return usersInSameDepartment(user, order.requester)
 		}
 
 		return false

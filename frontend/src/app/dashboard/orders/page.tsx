@@ -3,7 +3,7 @@ import { GET_ALL_ORDERS } from '@/lib/query/order';
 import { Admin, Manager } from '@/models/enum';
 import { OrderModel } from '@/models/orderModel';
 import { UserModel } from '@/models/userModel';
-import { buildUser, fetchGraphQL } from '@/utils';
+import { buildUser, fetchGraphQL, usersInSameDepartment } from '@/utils';
 import { PropsWithChildren } from 'react';
 
 interface OrdersProps extends PropsWithChildren{
@@ -23,7 +23,7 @@ export default async function Orders({}:OrdersProps){
       <>
       <div className="flex flex-col items-center">
         {
-          orders.filter(order => thisUserShouldSeeThisOrder(currentUser, order)).map(order => (<OrderHorizontalCard key={order.id} order={order}/>))
+          orders.filter(order => thisUserShouldSeeThisOrder(currentUser!, order)).map(order => (<OrderHorizontalCard key={order.id} order={order}/>))
         }
       </div>
       </>
@@ -38,7 +38,8 @@ function thisUserShouldSeeThisOrder(currentUser: UserModel, order: OrderModel){
   if(requester.email == currentUser.email) return true;
 
   if(currentUser.roles.includes(Manager)){
-    return currentUser.department.some(thisDep => requester.department.some(reqDep => thisDep == reqDep))
+    // return currentUser.department.some(thisDep => requester.department.some(reqDep => thisDep.code == reqDep.code))
+    return usersInSameDepartment(currentUser, requester)
   }
 
   return false;
