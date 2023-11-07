@@ -9,13 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@types/uuid": "^9.0.7",
     "encoding": "^0.1.13",
     "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "next": "13.5.4",
     "react": "^18",
     "react-dom": "^18",
-    "react-icons": "^4.11.0"
+    "react-icons": "^4.11.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/node": "^20",

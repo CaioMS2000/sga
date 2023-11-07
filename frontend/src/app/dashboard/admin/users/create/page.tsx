@@ -16,6 +16,9 @@ import {
 import { ChangeEvent, PropsWithChildren, useEffect, useState } from "react";
 import { DepartmentSelector } from "@/components/DepartmentSelector";
 import { RolesSelector } from "@/components/RolesSelector";
+import { CustomSelector } from "@/components/Selector";
+
+type RoleOrNone = "none" | Role;
 
 interface CreateUserProps extends PropsWithChildren {}
 
@@ -26,12 +29,20 @@ export default function CreateUser({}: CreateUserProps) {
 
 	const [departments, setDepartments] = useState([] as DepartmentModel[]);
 
-	const [selectedRole, setSelectedRole] = useState<"none" | Role>("none");
+	const [selectedRole, setSelectedRole] = useState<RoleOrNone[]>(["none"]);
 	function handleRoleChange(event: ChangeEvent<HTMLSelectElement>) {
 		const selectedValue: string = event.target.value;
 
 		const fromEnum = stringToRole(selectedValue);
-		setSelectedRole(fromEnum ?? "none");
+		if(fromEnum){
+			setSelectedRole(prevState => {
+				const newSet = new Set([...prevState, fromEnum])
+				return Array.from(newSet)
+			})
+		}
+		else{
+			setSelectedRole(prevState => ["none"])
+		}
 	}
 
 	const [selectedDepartment, setSelectedDepartment] = useState("none");
@@ -111,16 +122,31 @@ export default function CreateUser({}: CreateUserProps) {
 
 					<div className="grid grid-cols-2 grid-rows-1 gap-2 justify-center">
 						<div className="flex justify-center">
-							<RolesSelector
+							{/* <RolesSelector
 								handleChange={handleRoleChange}
-								selectedValue={selectedRole}
+								selectedValue={selectedRole.filter(r => r != 'none')}
 								className="w-full max-w-xs bg-opacity-0 border-4 input-bordered"
+							/> */}
+							<CustomSelector
+								className="bg-opacity-0 border-4 input-bordered min-w-[20rem]"
+								handleChange={handleRoleChange}
+								selectedValue={selectedRole.filter(r => r != 'none')}
+								values={[[Admin, Admin], [Analyst, Analyst], [Auditor, Auditor], [Requester, Requester], [StoreKeeper, StoreKeeper], [Manager, Manager]]}
+								optionLabel="Cargos"
+								multipleValues={true}
 							/>
 						</div>
 						<div className="flex justify-center">
-							<DepartmentSelector
+							{/* <DepartmentSelector
 								className="w-full max-w-xs bg-opacity-0 border-4 input-bordered"
 								departments={departments}
+								selectedValue={selectedDepartment}
+								handleChange={handleDepartmentChange}
+							/> */}
+							<CustomSelector
+								className="bg-opacity-0 border-4 input-bordered min-w-[20rem]"
+								values={departments.map(dep => [dep.code, dep.name])}
+								optionLabel="Departamentos"
 								selectedValue={selectedDepartment}
 								handleChange={handleDepartmentChange}
 							/>
@@ -138,11 +164,11 @@ export default function CreateUser({}: CreateUserProps) {
 											departments
 										)!,
 									],
-									roles: [
-										selectedRole == "none"
-											? Requester
-											: selectedRole,
-									],
+									// @ts-expect-error
+									roles:
+										selectedRole[0] == "none"
+											? [Requester]
+											: selectedRole.filter(r => r != 'none'),
 									profileImagePath: "",
 									email,
 									password,
