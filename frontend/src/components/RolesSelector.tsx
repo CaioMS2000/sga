@@ -13,7 +13,7 @@ interface RolesSelectorProps
 	extends PropsWithChildren,
 		SelectHTMLAttributes<HTMLSelectElement> {
 	handleChange: (arg: any) => void;
-	selectedValue: any[];
+	selectedValue: any;
 }
 
 export function RolesSelector({
@@ -29,7 +29,7 @@ export function RolesSelector({
 				className={"select " + rest.className}
 				name="role-selector"
 				id="role-selector"
-				value={"none"}
+				value={selectedValue}
 				onChange={handleChange}
 			>
 				<option value="none">Cargos</option>
@@ -40,18 +40,6 @@ export function RolesSelector({
 				<option value={StoreKeeper}>StoreKeeper</option>
 				<option value={Manager}>Manager</option>
 			</select>
-			<div className="divider w-full"></div>
-			{selectedValue && (
-				<>
-					<div className="flex flex-col p-0">
-						{selectedValue.map((value, index) => (
-							<div key={index} className="font-bold rounded-lg">
-								{value}
-							</div>
-						))}
-					</div>
-				</>
-			)}
 		</>
 	);
 }

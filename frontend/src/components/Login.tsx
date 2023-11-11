@@ -1,5 +1,5 @@
 "use client";
-import { PropsWithChildren, useState } from "react";
+import { KeyboardEventHandler, PropsWithChildren, useRef, useState, forwardRef } from "react";
 import Image from "next/image";
 import { Input } from "./Input";
 import { LOGIN } from "@/lib/mutation/user";
@@ -13,10 +13,17 @@ interface LoginProps extends PropsWithChildren {}
 export default function Login({}: LoginProps) {
 	const [email, setEmail] = useState("email@mail.com");
 	const [password, setPassword] = useState("123");
+	const emailInputRef = useRef<HTMLInputElement>(null);
+	const passwordInputRef = useRef<HTMLInputElement>(null);
 	const [error, setError] = useState("");
 	const {push} = useRouter()
 
+	function handleKeyDown(event: KeyboardEventHandler<HTMLInputElement> ){
+		console.log(event)
+	}
+
 	async function handleSend() {
+		return;
 		try {
 
 			const res: BasicObject<BasicObject> = await fetchGraphQL(LOGIN, {
@@ -32,9 +39,6 @@ export default function Login({}: LoginProps) {
 			const accessToken = res.accessToken;
 			const refreshToken = res.refreshToken;
 			const user = res.user;
-			// console.log(accessToken)
-			// console.log(refreshToken)
-			// console.log(user)
 
 			await saveCookie(AccesstokenKey, JSON.stringify(accessToken.token), accessToken.expiresIn ?? AccesstokenExpiration)
 			await saveCookie(RefreshtokenKey, JSON.stringify(refreshToken.token), refreshToken.expiresIn ?? RefreshtokenExpiration)
@@ -84,16 +88,20 @@ export default function Login({}: LoginProps) {
 					<div className="divider max-w-[10rem] min-w-[8rem] mx-auto" />
 					<div className="container flex flex-col items-center gap-5">
 						<Input
+						ref={emailInputRef}
 							label="Email"
 							placeholder="seuemail@exemplo.com"
 							inputChange={setEmail}
+							onKeyDown={handleKeyDown}
 							value={email}
 						/>
 						<Input
+						ref={passwordInputRef}
 							label="Senha"
 							placeholder=""
 							type="password"
 							inputChange={setPassword}
+							onKeyDown={handleKeyDown}
 							value={password}
 						/>
 						<button

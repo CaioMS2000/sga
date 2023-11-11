@@ -139,20 +139,19 @@ export default function UsersList({ AllUsers }: UsersListProps) {
 		selectedDepartment,
 	]);
 
-	const [maxWidth, setMaxWidth] = useState(0);
-	const elementRefs = filteredUsers.map(() => useRef<HTMLDivElement>(null));
+	// const [maxWidth, setMaxWidth] = useState(0);
+	// const elementRefs = filteredUsers.map(() => useRef<HTMLDivElement>(null));
 
 	useEffect(() => {
 		fetchDepartments();
 
-		let max = 0;
-		elementRefs.forEach((ref) => {
-			if (ref.current) {
-				max = Math.max(max, ref.current.offsetWidth);
-			}
-		});
-		console.log(`max: ${max}`);
-		setMaxWidth(max);
+		// let max = 0;
+		// elementRefs.forEach((ref) => {
+		// 	if (ref.current) {
+		// 		max = Math.max(max, ref.current.offsetWidth);
+		// 	}
+		// });
+		// setMaxWidth(max);
 	}, []);
 
 	return (
@@ -223,16 +222,13 @@ export default function UsersList({ AllUsers }: UsersListProps) {
 					Criar novo usuário
 				</RedirectButton>
 			</div>
-			{filteredUsers &&
+			{
 				filteredUsers.map((user, index) => (
 					<div
 						key={user.id}
-						ref={elementRefs[index]}
-						// className={`grid grid-cols-2 w-${maxWidth?`[${maxWidth}px]`:'fit'} ${maxWidth?`max-w-[${maxWidth}px]`:''} rounded-lg border-2 border-gray-400 p-3`}
-						// className={`grid grid-cols-2 ${maxWidth?`max-w-[${maxWidth}px]`:''} rounded-lg border-2 border-gray-400 p-3`}
-						// className={`grid grid-cols-2 max-w-[50px] rounded-lg border-2 border-gray-400 p-3`}
-						className={`grid grid-cols-2 rounded-lg border-2 border-gray-400 p-3 mb-5 last:mb-0`}
-						style={{ width: maxWidth ? `${maxWidth}px` : "fit-content" }}
+						// ref={elementRefs[index]}
+						className={`grid grid-cols-2 rounded-lg border-2 max-w-[300px] border-gray-400 p-3 mb-5 last:mb-0`}
+						// style={{ width: maxWidth ? `${maxWidth}px` : "fit-content" }}
 					>
 						<div className="avatar w-fit ">
 							<div className="w-24 rounded-full">

@@ -60,11 +60,9 @@ export interface GraphQLResponse {
 
 export async function buildUser(){
 	const _user = await getCookie(UserCookieKey);
-	console.log(_user)
 	let flag = false
 	// @ts-expect-error
 	const keys = Object.keys(_user)
-	console.log(keys)
 	keys.forEach(k => {
 		// @ts-expect-error
 		if(_user[k] == undefined){
