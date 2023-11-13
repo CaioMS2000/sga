@@ -1,6 +1,6 @@
 import OrderHorizontalCard from '@/components/OrderHorizontalCard';
 import { GET_ALL_ORDERS } from '@/lib/query/order';
-import { Admin, Manager } from '@/models/enum';
+import { Admin, Manager, StoreKeeper } from '@/models/enum';
 import { OrderModel } from '@/models/orderModel';
 import { UserModel } from '@/models/userModel';
 import { buildUser, fetchGraphQL, usersInSameDepartment } from '@/utils';
@@ -40,6 +40,12 @@ function thisUserShouldSeeThisOrder(currentUser: UserModel, order: OrderModel){
   if(currentUser.roles.includes(Manager)){
     // return currentUser.department.some(thisDep => requester.department.some(reqDep => thisDep.code == reqDep.code))
     return usersInSameDepartment(currentUser, requester)
+  }
+
+  if(currentUser.roles.includes(StoreKeeper)){
+    if(order.analysis?.isApproved){
+      return true
+    }
   }
 
   return false;
