@@ -12,6 +12,7 @@ interface CustomSelectorProps
 	selectedValue: any;
 	optionLabel: string;
 	multipleValues?: boolean;
+	value?: any;
 }
 
 export function CustomSelector({
@@ -20,6 +21,7 @@ export function CustomSelector({
 	selectedValue,
 	optionLabel,
 	multipleValues = false,
+	value = 'none',
 	...rest
 }: CustomSelectorProps) {
 	const [randomId, setRandomId] = useState('')
@@ -37,7 +39,7 @@ export function CustomSelector({
 					className={"select " + rest.className}
 					name={`${randomId}-selector`}
 					id={`${randomId}-selector`}
-					value={selectedValue}
+					value={value}
 					onChange={handleChange}
 				>
 					<option value="none">{optionLabel}</option>
@@ -50,7 +52,7 @@ export function CustomSelector({
 				{
 					(multipleValues && selectedValue) && (
 						<div className="flex flex-col">{(selectedValue as any[]).map((value, index) => (
-							<div key={index} className="font-bold rounded-lg border-gray-400 border-2 mb-3 last:mb-0 first:mt-2">{value}</div>
+							<div key={index} className="font-bold rounded-lg border-gray-400 border-2 mb-3 w-fit p-3 last:mb-0 first:mt-2">{value}</div>
 						))}</div>
 					)
 				}

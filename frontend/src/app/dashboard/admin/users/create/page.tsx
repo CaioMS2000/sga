@@ -37,7 +37,8 @@ export default function CreateUser({}: CreateUserProps) {
 		if(fromEnum){
 			setSelectedRole(prevState => {
 				const newSet = new Set([...prevState, fromEnum])
-				return Array.from(newSet)
+				const asArray = Array.from(newSet)
+				return asArray
 			})
 		}
 		else{
@@ -137,6 +138,7 @@ export default function CreateUser({}: CreateUserProps) {
 								values={departments.map(dep => [dep.code, dep.name])}
 								optionLabel="Departamentos"
 								selectedValue={selectedDepartment}
+								value={selectedDepartment}
 								handleChange={handleDepartmentChange}
 							/>
 						</div>
@@ -154,10 +156,7 @@ export default function CreateUser({}: CreateUserProps) {
 										)!,
 									],
 									// @ts-expect-error
-									roles:
-										selectedRole[0] == "none"
-											? [Requester]
-											: selectedRole.filter(r => r != 'none'),
+									roles: selectedRole.filter(r => r != 'none'),
 									profileImagePath: "",
 									email,
 									password,

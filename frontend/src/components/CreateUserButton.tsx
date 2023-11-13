@@ -9,7 +9,6 @@ interface ButtonProps extends PropsWithChildren, HTMLProps<HTMLButtonElement> {
 }
 
 export default function Button({children, userData, ...rest}:ButtonProps){
-  console.log('userdata', userData)
 
   async function handleCreateUser(){
 		const user = await fetchGraphQL(CREATE_USER, {
