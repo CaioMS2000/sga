@@ -58,6 +58,11 @@ input CreateDeliveryInput {
   userId: Float!
 }
 
+input CreateDepartmentInput {
+  description: String = ""
+  name: String!
+}
+
 input CreateInvoiceInput {
   supplier: CreateSupplierInput!
 }
@@ -157,6 +162,7 @@ type Item {
 type Mutation {
   createAnalysis(data: CreateAnalysisInput!): Analysis!
   createCategory(data: CreateCategoryInput!): Category!
+  createDepartment(data: CreateDepartmentInput!): Department!
   createItem(data: CreateItemInput!): Item!
   createUser(data: CreateUserInput!): User!
   deleteItem(id: Float!): Item!

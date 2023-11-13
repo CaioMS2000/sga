@@ -122,11 +122,6 @@ export default function CreateUser({}: CreateUserProps) {
 
 					<div className="grid grid-cols-2 grid-rows-1 gap-2 justify-center">
 						<div className="flex justify-center">
-							{/* <RolesSelector
-								handleChange={handleRoleChange}
-								selectedValue={selectedRole.filter(r => r != 'none')}
-								className="w-full max-w-xs bg-opacity-0 border-4 input-bordered"
-							/> */}
 							<CustomSelector
 								className="bg-opacity-0 border-4 input-bordered min-w-[20rem]"
 								handleChange={handleRoleChange}
@@ -137,12 +132,6 @@ export default function CreateUser({}: CreateUserProps) {
 							/>
 						</div>
 						<div className="flex justify-center">
-							{/* <DepartmentSelector
-								className="w-full max-w-xs bg-opacity-0 border-4 input-bordered"
-								departments={departments}
-								selectedValue={selectedDepartment}
-								handleChange={handleDepartmentChange}
-							/> */}
 							<CustomSelector
 								className="bg-opacity-0 border-4 input-bordered min-w-[20rem]"
 								values={departments.map(dep => [dep.code, dep.name])}

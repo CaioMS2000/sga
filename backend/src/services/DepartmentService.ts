@@ -15,4 +15,8 @@ export class DepartmentService{
 	async getDpartmentByCode(code: string, context: ServerContextData) {
 		return await this.DepartmentRepository.getDpartmentByCode(code, context);
 	}
+
+    async createDepartment(name: string, description: string,  context: ServerContextData){
+        return await this.DepartmentRepository.createDepartment(name, description, context)
+    }
 }

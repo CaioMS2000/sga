@@ -37,7 +37,7 @@ export function CustomSelector({
 					className={"select " + rest.className}
 					name={`${randomId}-selector`}
 					id={`${randomId}-selector`}
-					value={"none"}
+					value={selectedValue}
 					onChange={handleChange}
 				>
 					<option value="none">{optionLabel}</option>

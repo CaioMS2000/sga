@@ -1,6 +1,7 @@
 import { IsOptional, IsString } from "class-validator";
-import { Field } from "type-graphql";
+import { Field, InputType } from "type-graphql";
 
+@InputType()
 export class CreateDepartmentInput{
 
     @IsString()

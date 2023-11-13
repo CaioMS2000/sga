@@ -18,4 +18,14 @@ export class DepartmentRepository {
 
 		return res;
 	}
+
+	async createDepartment(name: string, description: string,  context: ServerContextData){
+		const { prisma } = context;
+		const res = await prisma.department.create({data: {
+			name,
+			description
+		}})
+
+		return res
+	}
 }
