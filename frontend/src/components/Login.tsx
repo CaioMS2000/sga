@@ -1,7 +1,7 @@
 "use client";
 import { KeyboardEventHandler, PropsWithChildren, useRef, useState, forwardRef } from "react";
 import Image from "next/image";
-import { Input } from "./Input";
+import Input from "./Input";
 import { LOGIN } from "@/lib/mutation/user";
 import { BasicObject, GraphQLResponse, fetchGraphQL } from "@/utils";
 import { saveCookie } from "@/app/actions";
@@ -13,17 +13,30 @@ interface LoginProps extends PropsWithChildren {}
 export default function Login({}: LoginProps) {
 	const [email, setEmail] = useState("email@mail.com");
 	const [password, setPassword] = useState("123");
-	const emailInputRef = useRef<HTMLInputElement>(null);
-	const passwordInputRef = useRef<HTMLInputElement>(null);
+	const emailInputRef = useRef<HTMLInputElement|null>(null);
+	const passwordInputRef = useRef<HTMLInputElement|null>(null);
 	const [error, setError] = useState("");
 	const {push} = useRouter()
 
-	function handleKeyDown(event: KeyboardEventHandler<HTMLInputElement> ){
-		console.log(event)
+	const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (event) => {
+		if(event.key == 'Enter'){
+
+			if(!emailInputRef.current?.value){
+				return emailInputRef.current?.focus()
+			}
+
+			if(!passwordInputRef.current?.value){
+				return passwordInputRef.current?.focus()
+			}
+
+			emailInputRef.current?.blur()
+			passwordInputRef.current?.blur()
+			handleSend()
+
+		}
 	}
 
 	async function handleSend() {
-		return;
 		try {
 
 			const res: BasicObject<BasicObject> = await fetchGraphQL(LOGIN, {
