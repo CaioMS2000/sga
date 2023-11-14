@@ -69,8 +69,7 @@ export async function buildUser(){
 			flag = true
 		}
 	})
-	// if(flag) redirect('/');
-	// if(!_user || _user == undefined || _user == null) redirect('/');
+
 	if(flag) return undefined;
 	if(!_user || _user == undefined || _user == null) return undefined;
 	else{

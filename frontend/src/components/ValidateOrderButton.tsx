@@ -11,11 +11,11 @@ interface ButtonProps extends PropsWithChildren, HTMLProps<HTMLButtonElement> {
 }
 
 export default function Button({children, analystId, orderId, isApproved, ...rest}:ButtonProps){
-  // console.log(analystId, orderId, isApproved,)
+  
   const {refresh} = useRouter()
   
   async function handleAnalysis(){
-    console.log(analystId, orderId, isApproved,)
+
 		const analysis = await fetchGraphQL(CREATE_ANALYSIS, {
 			variables: {
 				data: {
@@ -27,7 +27,6 @@ export default function Button({children, analystId, orderId, isApproved, ...res
       key: 'createAnalysis'
 		})
 
-		console.log(analysis)
     refresh()
 	}
 

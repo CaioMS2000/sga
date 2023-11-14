@@ -38,7 +38,6 @@ export default async function Order({ params: { code } }: OrderProps) {
 	const user = await buildUser()
 	if(user == undefined) redirect('/');
 	const thisUserCanValidate = (() => {
-		console.log(user, '\n\n\n', order.requester)
 		if(user.roles.includes(Admin)) return true;
 
 		if(user.roles.includes(Manager)){
@@ -158,8 +157,7 @@ export default async function Order({ params: { code } }: OrderProps) {
 											<img
 												alt=""
 												src={
-													order.requester
-														.profileImagePath
+													order.analysis.analyst.profileImagePath
 												}
 											/>
 										)}
@@ -174,7 +172,7 @@ export default async function Order({ params: { code } }: OrderProps) {
 								</div>
 								<div className="flex flex-col justify-between">
 									<p>Analista</p>
-									<p>{order.requester?.name}</p>
+									<p>{order.analysis.analyst.name}</p>
 								</div>
 							</div>
 						</>
