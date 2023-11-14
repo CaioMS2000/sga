@@ -50,7 +50,7 @@ export default async function Order({ params: { code } }: OrderProps) {
 
 	return (
 		<>
-			<div className="grid justify-center gap-3 xl:grid-cols-2 xl:items-start ">
+			<div className="grid justify-center gap-3 grid-cols-2 xl:items-start ">
 				<div className="flex w-fit">
 					<div className="card w-96 bg-CRMVGO_darkGreen shadow-xl p-6">
 						<div className="mx-auto italic badge bg-opacity-25 border-opacity-25 mb-1 h-fit text-[12px]">
