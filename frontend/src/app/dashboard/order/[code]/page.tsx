@@ -1,6 +1,6 @@
 import OrderValidation from "@/components/OrderValidation";
 import { GET_ORDER } from "@/lib/query/order";
-import { Admin, Manager } from "@/models/enum";
+import { Admin, Manager, StoreKeeper } from "@/models/enum";
 import { OrderModel } from "@/models/orderModel";
 import { YearMonthDay, buildUser, fetchGraphQL, usersInSameDepartment } from "@/utils";
 import { redirect } from "next/navigation";
@@ -47,6 +47,7 @@ export default async function Order({ params: { code } }: OrderProps) {
 
 		return false
 	})()
+	const userIsStorekeeper = user.roles.includes(StoreKeeper)
 
 	return (
 		<>
@@ -184,6 +185,13 @@ export default async function Order({ params: { code } }: OrderProps) {
           }
 				</div>
 			</div>
+			{
+				userIsStorekeeper && (
+					<>
+					Ação de almoxarife
+					</>
+				)
+			}
 		</>
 	);
 }
