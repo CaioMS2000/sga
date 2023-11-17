@@ -101,7 +101,10 @@ export class ItemResolver {
 
   @Mutation(() => Item)
   async setItemDelivery(@Arg("data") data: CreateDeliveryInput, @Ctx() context: ServerContextData) {
-    const res = await this.ItemService.setItemDelivery({delivery: data, context});
+    const res = await this.ItemService.setItemDelivery({delivery: data, context, props: {
+      includeDelivery: true,
+      includeOrder: true
+    }});
     
     return res;
   }
@@ -159,7 +162,6 @@ export class ItemResolver {
       const delivery = await prisma.delivery.findUnique({
         where: { id: item.delivery.id },
       });
-      console.log(delivery)
   
       if (!delivery) {
         throw new Error(`Delivery with id ${item.delivery.id} not found`);

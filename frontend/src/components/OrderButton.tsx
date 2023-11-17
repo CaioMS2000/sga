@@ -23,7 +23,6 @@ export default function Button({children, requesterId, itemId, ...rest}:ButtonPr
 			}
 		})
 
-		console.log(order)
     push(`/dashboard/order/${order.code}`)
 	}
 

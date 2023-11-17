@@ -24,7 +24,6 @@ export default function Button({children, userData, ...rest}:ButtonProps){
         }
 			}
 		})
-    console.log(user)
 
     location.reload()
 	}

@@ -16,6 +16,7 @@ query GetItemById($id: Float!){
       name
       description
     }
+    deliveryId
     delivery{
       code
       status
@@ -87,5 +88,5 @@ query GetItemById($id: Float!){
 }
 
 {
-  "id": 3
+  "id": 21
 }

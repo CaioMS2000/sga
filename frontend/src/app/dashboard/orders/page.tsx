@@ -14,9 +14,6 @@ export default async function Orders({}:OrdersProps){
   const orders: OrderModel[] = await fetchGraphQL(GET_ALL_ORDERS, {
     key: 'orders'
   })
-  orders.forEach(order => {
-    console.log(order)
-  })
   const currentUser = await buildUser()
 
   return(

@@ -117,7 +117,11 @@ export class ItemRepository {
 			where: { id: id },
 			include: {
 				categories: true,
-				delivery: true,
+				delivery: {
+					include:{
+						attender: true
+					}
+				},
 				invoice: {
 					include:{
 						supplier: true
@@ -131,6 +135,9 @@ export class ItemRepository {
 				storage: true,
 			},
 		});
+
+		console.log('#getItemById')
+		console.log(res)
 
 		return res;
 	}
@@ -220,7 +227,8 @@ export class ItemRepository {
 		props?: getItemProps;
 	}) {
 		const { prisma } = context;
-		const { includeDelivery = false } = props || { includeDelivery: false };
+		const { includeDelivery = false, includeOrder = false } = props || { includeDelivery: false };
+		console.log(delivery, includeDelivery, includeOrder)
 
 		const res = await prisma.item.update({
 			where: {
@@ -239,7 +247,28 @@ export class ItemRepository {
 				},
 			},
 			include: {
-				delivery: includeDelivery,
+				delivery: includeDelivery? {
+					include: {
+						attender: true
+					}
+				}:includeDelivery,
+				order: includeOrder?{
+					include: {
+						requester: true,
+						analysis: true,
+					}
+				}: includeOrder,
+				categories: true,
+				invoice: {
+					include:{
+						supplier: true
+					}
+				},
+				storage: {
+					include:{
+						storekeeper: true
+					}
+				},
 			},
 		});
 
