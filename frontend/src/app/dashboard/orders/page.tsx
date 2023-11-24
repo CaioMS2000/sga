@@ -14,13 +14,15 @@ export default async function Orders({}:OrdersProps){
   const orders: OrderModel[] = await fetchGraphQL(GET_ALL_ORDERS, {
     key: 'orders'
   })
+
   const currentUser = await buildUser()
+  const userIsStorekeeper = currentUser!.roles.includes(StoreKeeper)
 
   return(
       <>
       <div className="flex flex-col items-center">
         {
-          orders.filter(order => thisUserShouldSeeThisOrder(currentUser!, order)).map(order => (<OrderHorizontalCard key={order.id} order={order}/>))
+          orders.filter(order => thisUserShouldSeeThisOrder(currentUser!, order)).map(order => (<OrderHorizontalCard key={order.id} order={order} storeKeeperView={userIsStorekeeper}/>))
         }
       </div>
       </>

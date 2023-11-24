@@ -89,6 +89,22 @@ export const GET_ALL_ORDERS = gql`
 				value
 				imagePath
 				id
+				delivery {
+					code
+					status
+					attenderId
+					attender {
+						profileImagePath
+						name
+						email
+						roles
+						department {
+							code
+							name
+							description
+						}
+					}
+				}
 			}
 			analysis {
 				id

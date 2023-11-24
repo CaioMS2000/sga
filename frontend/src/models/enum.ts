@@ -8,10 +8,10 @@ export enum Role {
 }
 
 export enum Status {
-  Waiting = "Waiting",
-  Separation = "Separation",
-  InProgress = "InProgress",
-  Concluded = "Concluded",
+  Waiting = "Waiting",//laranja
+  Separation = "Separation",//amarelo
+  InProgress = "InProgress",//azul
+  Concluded = "Concluded",//verde
 }
 
 export enum OrderStatus {

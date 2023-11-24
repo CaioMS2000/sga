@@ -8,7 +8,7 @@ import {
 import { getCookie } from "@/app/actions";
 import { UserCookieKey } from "./constants";
 import { UserModel } from "@/models/userModel";
-import { Role } from "@/models/enum";
+import { Role, Status } from "@/models/enum";
 import { DepartmentModel } from "@/models/departmentModel";
 import { redirect } from "next/navigation";
 
@@ -108,3 +108,24 @@ export function departmentFromCode(code: string, departments: DepartmentModel[])
 export function usersInSameDepartment(userA: UserModel, userB: UserModel){
 	return userA.department.some(depA => userB.department.some(depB => depA.code == depB.code))
 }
+
+
+export const statusToText = (status: Status): string => {
+	const statusTranslations = {
+		[Status.Waiting]: "Aguardando",
+		[Status.Separation]: "Em Separação",
+		[Status.InProgress]: "Em Progresso",
+		[Status.Concluded]: "Concluído",
+	};
+
+	return statusTranslations[status] || status;
+};
+
+export const getEnumFromString = <T>(enumObj: T, value: string): T[keyof T] | undefined => {
+	// @ts-expect-error
+	const enumValues = Object.values(enumObj) as string[];
+	const matchingValue = enumValues.find((enumValue) => enumValue === value);
+  
+	return matchingValue as T[keyof T] | undefined;
+  };
+  
