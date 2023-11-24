@@ -1,7 +1,7 @@
 import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType()
-export class BaseModel{
+export abstract class BaseModel{
     @Field()
     id: number;
 

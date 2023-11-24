@@ -44,6 +44,9 @@ export class ItemResolver {
   async getItemById(@Arg("id") id: number, @Ctx() context: ServerContextData) {
     const res = await this.ItemService.getItemById(id, context);
 
+    console.log('#getItemById')
+		console.log(res)
+
     return res;
   }
 
@@ -161,6 +164,9 @@ export class ItemResolver {
       const {prisma} = context
       const delivery = await prisma.delivery.findUnique({
         where: { id: item.delivery.id },
+        include: {
+          attender: true
+        }
       });
   
       if (!delivery) {

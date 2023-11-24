@@ -136,9 +136,6 @@ export class ItemRepository {
 			},
 		});
 
-		console.log('#getItemById')
-		console.log(res)
-
 		return res;
 	}
 

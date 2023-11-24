@@ -7,7 +7,7 @@ import { Waiting } from './enum';
 import { Item, User } from '.';
 
 @ObjectType()
-export class Delivery extends BaseModel implements PrismaDelivery{
+export class Delivery extends BaseModel{
 
     @Field()
     code: string
