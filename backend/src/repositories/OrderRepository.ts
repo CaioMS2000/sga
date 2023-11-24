@@ -23,7 +23,11 @@ export class OrderRepository{
             include:{
                 item: {
                     include:{
-                        delivery: true,
+                        delivery: {
+                            include:{
+                                attender: true
+                            }
+                        },
                     }
                 },
                 analysis: true,

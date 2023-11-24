@@ -33,6 +33,13 @@ export class OrderResolver {
       const {prisma} = context
       const item = await prisma.item.findUnique({
         where: { id: order.item.id },
+        include:{
+          delivery:{
+            include:{
+              attender: true,
+            }
+          }
+        }
       });
 
       if (!item) {
