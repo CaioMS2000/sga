@@ -189,7 +189,7 @@ export default async function Order({ params: { code } }: OrderProps) {
 					</div>
 				</div>
 				{
-					((!order.item.delivery) && userIsStorekeeper) && (
+					userIsStorekeeper && (
 						<>
 						<StorekeeperOrderHandler order={order} user={user}/>
 						</>
