@@ -157,3 +157,28 @@ export const CREATE_DELIVERY = gql`
         }
     }
 `;
+
+export const UPDATE_DELIVERY = gql`
+	mutation UpdateDeliveriy($data: UpdateDeliveryInput!){
+		updateDelivery(data: $data){
+			id
+			code
+			status
+			attender{
+				name
+				email
+				password
+				profileImagePath
+				roles
+				id
+			}
+			item{
+				id
+				name
+				description
+				value
+				imagePath
+			}
+		}
+	}
+`

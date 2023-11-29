@@ -14,6 +14,7 @@ import { print } from './utils';
 import { AnalysisResolver } from './resolvers/analysis-resolver';
 import { DepartmentResolver } from './resolvers/department-resolver';
 import { CategoryResolver } from './resolvers/categories-resolver';
+import { DeliveryResolver } from './resolvers/delivery-resolver';
 
 export type ServerContextData = {
     prisma: PrismaClient,
@@ -37,6 +38,7 @@ async function main() {
             AnalysisResolver,
             DepartmentResolver,
             CategoryResolver,
+            DeliveryResolver,
         ],
         emitSchemaFile: path.resolve(__dirname, 'schema.gql')
     })
@@ -81,3 +83,26 @@ async function main() {
 }
 
 main()
+
+// query GetAllDeliveries{
+//     deliveries{
+//       id
+//       code
+//       status
+//       attender{
+//           name
+//           email
+//           password
+//           profileImagePath
+//           roles
+//           id
+//       }
+//       item{
+//           id
+//           name
+//           description
+//           value
+//           imagePath
+//       }
+//     }
+//   }

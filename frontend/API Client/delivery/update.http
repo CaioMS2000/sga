@@ -1,0 +1,34 @@
+POST http://localhost:4000/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+# Authorization: Bearer
+
+mutation UpdateDeliveriy($data: UpdateDeliveryInput!){
+  updateDelivery(data: $data){
+    id
+    code
+    status
+    attender{
+        name
+        email
+        password
+        profileImagePath
+        roles
+        id
+    }
+    item{
+        id
+        name
+        description
+        value
+        imagePath
+    }
+  }
+}
+
+{
+    "data":{
+        "status": "Waiting",
+        "code": "c544197f-0e3c-4c33-bf4f-ca4d0c072b00"
+    }
+}

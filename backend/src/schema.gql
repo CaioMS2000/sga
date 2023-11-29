@@ -170,6 +170,7 @@ type Mutation {
   initItemOrder(data: CreateOrderInput!): Order!
   login(data: SignInInput!): SessionData!
   setItemDelivery(data: CreateDeliveryInput!): Item!
+  updateDelivery(data: UpdateDeliveryInput!): Delivery!
   updateItem(data: BasicChangeItemInput!): Item!
   updateUser(data: UpdateUserInput!): User!
 }
@@ -188,6 +189,7 @@ type Order {
 type Query {
   analysis: [Analysis!]!
   categories: [Category!]!
+  deliveries: [Delivery!]!
   departments: [Department!]!
   getAnalysisById(id: Float!): Analysis!
   getCategory(code: String!): Category!
@@ -276,6 +278,12 @@ type Token {
   token: String!
   updatedAt: DateTime!
   userId: Float!
+}
+
+input UpdateDeliveryInput {
+  attender: CreateUserInput
+  code: String!
+  status: Status!
 }
 
 input UpdateUserInput {
