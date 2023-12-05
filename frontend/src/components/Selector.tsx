@@ -51,8 +51,8 @@ export function CustomSelector({
 				</select>
 				{
 					(multipleValues && selectedValue) && (
-						<div className="flex flex-col">{(selectedValue as any[]).map((value, index) => (
-							<div key={index} className="font-bold rounded-lg border-gray-400 border-2 mb-3 w-fit p-3 last:mb-0 first:mt-2">{value}</div>
+						<div className="mt-2 flex flex-col">{(selectedValue as any[]).map((value, index) => (
+							<div key={index} className="font-bold text-sm rounded-lg border-gray-400 border-2 mb-3 w-fit p-2 last:mb-0 first:mt-2">{value}</div>
 						))}</div>
 					)
 				}
