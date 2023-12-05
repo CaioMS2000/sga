@@ -1,5 +1,5 @@
 "use client";
-import { CREATE_DELIVERY } from '@/lib/mutation/delivery';
+import { CREATE_DELIVERY, UPDATE_DELIVERY } from '@/lib/mutation/delivery';
 import { DeliveryModel } from '@/models/deliveryModel';
 import { Status as _Status } from '@/models/enum';
 import { OrderModel } from '@/models/orderModel';
@@ -24,8 +24,9 @@ export default function StorekeeperOrderHandler({order, user}:StorekeeperOrderHa
     let delivery = order.item.delivery
 
     const deliveryStatus = delivery.status
-    const DeliveryStatus = <span className={`text-[1.3rem] text-${deliveryStatus == _Status.Waiting?'orange-500':(deliveryStatus == _Status.Separation?'yellow-500':(deliveryStatus == _Status.InProgress)?'blue-500':'green-500')}`}>{statusToText(deliveryStatus)}</span>;
+    const DeliveryStatus = <span className={`font-bold text-[1.3rem] text-${deliveryStatus == _Status.Waiting?'orange-500':(deliveryStatus == _Status.Separation?'yellow-500':(deliveryStatus == _Status.InProgress)?'blue-500':'green-500')}`}>{statusToText(deliveryStatus)}</span>;
     const buttonLabel = deliveryStatus == _Status.Waiting?'Estou ciente':(deliveryStatus == _Status.Separation?'Partir para entrega':'Confirmar entrega')
+    const nextDeliveryStatus = deliveryStatus == _Status.Waiting?_Status.Separation:(deliveryStatus == _Status.Separation?_Status.InProgress:_Status.Concluded)
 
     async function handleDelivery(){
         if(!delivery){
@@ -42,6 +43,26 @@ export default function StorekeeperOrderHandler({order, user}:StorekeeperOrderHa
             console.log(delivery)
             location.reload()
         }
+        else{
+            console.log(nextDeliveryStatus)
+            if(_Status.Concluded != deliveryStatus){
+                delivery = await fetchGraphQL(UPDATE_DELIVERY, {
+                    key: 'updateDelivery',
+                    variables: {
+                        data: {
+                            status: nextDeliveryStatus,
+                            code: delivery.code,
+                        }
+                    }
+                })
+        
+                console.log(delivery)
+                location.reload()
+            }
+            else{
+                console.log('concluido')
+            }
+        }
     }
 
   return(
@@ -55,7 +76,11 @@ export default function StorekeeperOrderHandler({order, user}:StorekeeperOrderHa
         </span>
         </>
       )}
-      <button className="btn bg-darkGreen border-darkGreen text-white font-bold mt-5" onClick={handleDelivery}>{buttonLabel}</button>
+      {
+        deliveryStatus != _Status.Concluded && (
+            <button className="btn bg-darkGreen border-darkGreen text-white font-bold mt-5" onClick={handleDelivery}>{buttonLabel}</button>
+        )
+      }
       </div>
       </>
   )
