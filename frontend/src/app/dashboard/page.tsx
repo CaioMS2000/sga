@@ -16,8 +16,8 @@ export default async function Dashboard({}: DashboardProps) {
 				<a href="/dashboard/items">
 					{/* <div className="flex items-center justify-around p-4 border-2 rounded-lg bg-base-100"> */}
 					{/* <div className="flex items-center justify-around p-4 border-2 rounded-lg bg-emerald-900"> */}
-					<div className="flex items-center justify-around p-4 border-2 rounded-lg bg-green-900">
-						<BsFillBoxFill className='text-white'/>
+					<div className="flex items-center w-fit gap-6 justify-around p-4 border-2 rounded-lg bg-green-900">
+						<BsFillBoxFill className='text-white w-[16px] h-[16px] min-w-[16px] min-h-[16px]'/>
 						<p className='text-white font-bold'>Faça um pedido</p>
 					</div>
 				</a>

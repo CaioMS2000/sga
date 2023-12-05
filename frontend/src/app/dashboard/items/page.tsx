@@ -18,7 +18,7 @@ export default async function page({}: pageProps) {
 
 	return (
 		<>
-			<div className="grid grid-cols-2 gap-5">
+			<div className="grid sm:grid-cols-1 lg:grid-cols-2 justify-items-center gap-5">
 				{items.map((item) => {
 					return <ItemCard key={item.id} item={item} />;
 				})}

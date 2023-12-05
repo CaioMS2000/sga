@@ -30,7 +30,7 @@ export default async function Item({ params: { id } }: ItemProps) {
 		<>
 			<div className="grid grid-cols-2 gap-5">
 				<div className="flex flex-col">
-					{categories && categories.length && (
+					{categories && categories.length > 0 && (
 						<div className="flex gap-3 flex-wrap justify-start">
 							{categories.map((cat) => (
 								<div key={cat.id} className="badge bg-teal-700 text-white font-bold last:mb-3">
