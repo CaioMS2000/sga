@@ -44,6 +44,9 @@ export default function CreateUser({}: CreateUserProps) {
 			setSelectedRole((prevState) => ["none"]);
 		}
 	}
+	function roleDelete(role: Role){
+		setSelectedRole(prevState => prevState.filter(r => r != role))
+	}
 
 	const [selectedDepartment, setSelectedDepartment] = useState("none");
 	function handleDepartmentChange(event: ChangeEvent<HTMLSelectElement>) {
@@ -130,6 +133,7 @@ export default function CreateUser({}: CreateUserProps) {
 						]}
 						optionLabel="Cargos"
 						multipleValues={true}
+						deleteOption={roleDelete}
 					/>
 					<CustomSelector
 						className="bg-opacity-0 border-4 input-bordered min-w-[20rem]"

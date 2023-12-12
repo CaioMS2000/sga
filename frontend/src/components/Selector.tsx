@@ -1,6 +1,7 @@
 "use client";
 import { PropsWithChildren, SelectHTMLAttributes, useEffect, useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
+import SelectorValue from "./SelectorValues";
 
 type CustomTuple = [any, any];
 
@@ -9,6 +10,7 @@ interface CustomSelectorProps
 		SelectHTMLAttributes<HTMLSelectElement> {
 	values: CustomTuple[];
 	handleChange: (arg: any) => void;
+	deleteOption?: (arg: any) => void;
 	selectedValue: any;
 	optionLabel: string;
 	multipleValues?: boolean;
@@ -20,6 +22,7 @@ export function CustomSelector({
 	handleChange,
 	selectedValue,
 	optionLabel,
+	deleteOption,
 	multipleValues = false,
 	value = 'none',
 	...rest
@@ -50,10 +53,11 @@ export function CustomSelector({
 					))}
 				</select>
 				{
-					(multipleValues && selectedValue) && (
+					(multipleValues && selectedValue && deleteOption) && (
 						<div className="mt-2 flex flex-col">{(selectedValue as any[]).map((value, index) => (
-							<div key={index} className="font-bold text-sm rounded-lg border-gray-400 border-2 mb-3 w-fit p-2 last:mb-0 first:mt-2">{value}</div>
-						))}</div>
+							<SelectorValue key={index} className="font-bold text-sm rounded-lg border-gray-400 border-2 mb-3 w-fit p-2 last:mb-0 first:mt-2" deleteFunction={deleteOption} referenceValue={value}>{value}</SelectorValue>
+						))}
+						</div>
 					)
 				}
 			</div>
