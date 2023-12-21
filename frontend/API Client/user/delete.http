@@ -1,0 +1,24 @@
+POST http://localhost:4000/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+Authorization: Bearer 5e5b8e5f-a523-491b-af3e-58cf2081c0dd
+refreshtoken: Bearer 8bb007be-e897-45cc-a73f-4cbe7ec02135
+
+mutation DeleteUser($id:Float!){
+  deleteUser(id: $id){
+    name
+    email
+    password
+    profileImage
+    roles
+    id
+    department{
+      code
+      name
+    }
+  }
+}
+
+{
+  "id": 3
+}

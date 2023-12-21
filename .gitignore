@@ -1,3 +1,10 @@
-node_modules
 __test-coverage
-.env*
+node_modules
+*node_modules
+*schema.gql
+**schema.gql
+.vscode
+*.vscode
+.env
+*.env
+**.env

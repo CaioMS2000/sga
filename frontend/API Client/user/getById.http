@@ -1,0 +1,27 @@
+POST http://localhost:4000/graphql
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+# Authorization: Bearer
+
+query GetUserById($id: Float!){
+  getUserById(id: $id){
+    name
+    email
+    password
+    profileImage
+    roles
+    id
+    department{
+      name
+      description
+      code
+      id
+      createdAt
+      updatedAt
+    }
+  }
+}
+
+{
+  "id": 1
+}
