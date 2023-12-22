@@ -52,7 +52,6 @@ export function redirectAuthorizedUser(baseUrl: string) {
 export async function middleware(request: NextRequest) {
 	try {
 		const accesstoken = request.cookies.get(AccesstokenKey);
-		// const refreshtoken = request.cookies.get(RefreshtokenKey);
 
 		const flag = isLogedIn(request);
 		const nextUrl = request.nextUrl;
@@ -88,9 +87,7 @@ async function handleAdminPath(
 	accesstoken: RequestCookie | undefined,
 	request: NextRequest
 ) {
-	// console.log("usuario acessando area admin")
 	const userFromCookies = request.cookies.get(UserCookieKey)!
-	// console.log(userFromCookies)
 	let user: any = JSON.parse(userFromCookies.value);
 
 	if (!Boolean(user)) {

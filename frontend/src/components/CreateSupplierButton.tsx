@@ -10,10 +10,7 @@ interface ButtonProps extends PropsWithChildren, HTMLProps<HTMLButtonElement> {
 	email: string
 	phone: string
 }
-// name
-// cnpj
-// email
-// phone
+
 export default function Button({ children, name, cnpj, email, phone, ...rest }: ButtonProps) {
 	async function handleCreateSupplier() {
 		const supplier = await fetchGraphQL(CREATE_SUPPLIER, {

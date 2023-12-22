@@ -21,7 +21,7 @@ export default async function OrderHorizontalCard({
 	) : (
 		<span className="text-orange-500">Pendente</span>
 	);
-	// const deliveryStatus = getEnumFromString(Status, item.delivery.status)
+
 	const deliveryStatus = item.delivery?.status ?? _Status.Waiting;
 	const DeliveryStatus = (
 		<span
@@ -55,7 +55,6 @@ export default async function OrderHorizontalCard({
 						/>
 					</div>
 					<div className="divider divider-horizontal" />
-					{/* <div className="flex flex-col"></div> */}
 					<div className="join join-vertical gap-3">
 						{storeKeeperView && (
 							<>

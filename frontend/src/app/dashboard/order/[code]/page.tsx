@@ -49,7 +49,6 @@ export default async function Order({ params: { code } }: OrderProps) {
 		if (user.roles.includes(Admin)) return true;
 
 		if (user.roles.includes(Manager)) {
-			// return user.department.some(thisDep => order.requester.department.some(reqDep => thisDep.code == reqDep.code))
 			return usersInSameDepartment(user, order.requester);
 		}
 
@@ -66,7 +65,6 @@ export default async function Order({ params: { code } }: OrderProps) {
 							<div className="mx-auto italic badge bg-opacity-25 border-opacity-25 mb-1 h-fit text-[12px]">
 								Código: {order.code}
 							</div>
-							{/* <figure className="px-10 pt-10"> */}
 							<figure className="p-0">
 								<img
 									src={order.item?.image}

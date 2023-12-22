@@ -7,13 +7,6 @@ import { UserModel } from '@/models/userModel';
 import { fetchGraphQL, statusToText } from '@/utils';
 import { PropsWithChildren } from 'react';
 
-// export enum Status {
-//     Waiting = "Waiting",
-//     Separation = "Separation",
-//     InProgress = "InProgress",
-//     Concluded = "Concluded",
-// }
-
 interface StorekeeperOrderHandlerProps extends PropsWithChildren{
     order: OrderModel;
     user: UserModel;

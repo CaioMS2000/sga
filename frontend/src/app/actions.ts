@@ -22,8 +22,6 @@ export async function deleteCookie(key: string) {
 	return cookies().delete(key);
 }
 
-// export type serverSideCookieType = typeof cookies;//{name, value, path}
-// export type serverSideCookieType = RequestCookie & {path?:string};
 export type serverSideCookieType = RequestCookie;
 
 export async function userIsLoggedIn(){

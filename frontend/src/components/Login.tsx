@@ -79,73 +79,67 @@ export default function Login({}: LoginProps) {
 
 	return (
 		<>
-			<div className="h-screen flex items-center justify-center">
-				{/* <div id='login-card' className="flex flex-col items-center justify-center bg-green-900 rounded-md p-6 max-w-xl"> */}
-				<div
-					id="login-card"
-					className="flex flex-col items-center justify-center bg-byzantineBlue rounded-md p-6 max-w-xl"
-				>
-					<div className="image-wrapper p-3 bg-white rounded-3xl flex justify-center max-w-xs mb-10">
-						{/* <Image
-							src={"/image/crmvgo-logo-top.png"}
-							priority={true}
-							width={300}
-							height={300}
-							alt=""
-						/> */}
-						<RiInboxArchiveFill className='w-10 h-10' />
-					</div>
-					<div>
-						<p className="font-bold text-white text-2xl">
-							Sistema de Gerenciamento de Almoxarifado
-						</p>
-					</div>
-					<div className="divider max-w-[10rem] min-w-[8rem] mx-auto" />
-					<div className="container flex flex-col items-center gap-5">
-						<Input
-						ref={emailInputRef}
-							label="Email"
-							placeholder="seuemail@exemplo.com"
-							inputChange={setEmail}
-							onKeyDown={handleKeyDown}
-							value={email}
-						/>
-						<Input
-						ref={passwordInputRef}
-							label="Senha"
-							placeholder=""
-							type="password"
-							inputChange={setPassword}
-							onKeyDown={handleKeyDown}
-							value={password}
-						/>
-						<button
-							className="btn font-bold text-white bg-lime-900 border-lime-900 text-lg"
-							type="button"
-							onClick={handleSend}
-						>
-							ENTRAR
-						</button>
-						{error && (
-							<div className="toast toast-center">
-								<div className="alert alert-error">
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										className="stroke-current shrink-0 h-6 w-6"
-										fill="none"
-										viewBox="0 0 24 24"
-									>
-										<path
-											strokeLinecap="round"
-											strokeLinejoin="round"
-											strokeWidth="2"
-											d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
-										/>
-									</svg>
-									<span>{error}</span>
+			<div className="h-screen bg-[url('/image/storage.jpg')]">
+				<div className="h-screen flex items-center justify-center bg-black/70">
+					<div
+						id="login-card"
+						className="flex flex-col items-center justify-center bg-byzantineBlue rounded-md p-6 max-w-xl"
+					>
+						<div className="image-wrapper p-3 bg-white rounded-3xl flex justify-center max-w-xs mb-10">
+							<RiInboxArchiveFill className='w-10 h-10' />
+						</div>
+						<div>
+							<p className="font-bold text-white text-2xl">
+								Sistema de Gerenciamento de Almoxarifado
+							</p>
+						</div>
+						<div className="divider max-w-[10rem] min-w-[8rem] mx-auto" />
+						<div className="container flex flex-col items-center gap-5">
+							<Input
+							ref={emailInputRef}
+								label="Email"
+								placeholder="seuemail@exemplo.com"
+								inputChange={setEmail}
+								onKeyDown={handleKeyDown}
+								value={email}
+							/>
+							<Input
+							ref={passwordInputRef}
+								label="Senha"
+								placeholder=""
+								type="password"
+								inputChange={setPassword}
+								onKeyDown={handleKeyDown}
+								value={password}
+							/>
+							<button
+								className="btn font-bold text-white bg-lime-900 border-lime-900 text-lg"
+								type="button"
+								onClick={handleSend}
+							>
+								ENTRAR
+							</button>
+							{error && (
+								<div className="toast toast-center">
+									<div className="alert alert-error">
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											className="stroke-current shrink-0 h-6 w-6"
+											fill="none"
+											viewBox="0 0 24 24"
+										>
+											<path
+												strokeLinecap="round"
+												strokeLinejoin="round"
+												strokeWidth="2"
+												d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+											/>
+										</svg>
+										<span>{error}</span>
+									</div>
 								</div>
-							</div>
-						)}
+							)}
+						</div>
 					</div>
 				</div>
 			</div>

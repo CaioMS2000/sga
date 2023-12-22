@@ -12,28 +12,18 @@ interface NavBarProps extends PropsWithChildren, HTMLProps<HTMLDivElement> {}
 
 export async function NavBar({ ...rest }: NavBarProps) {
 	let hasImage: boolean;
-	// let _user = await getCookie(UserCookieKey);
-	// let user: UserModel;
 	const user = await buildUser();
 	if (user == undefined) redirect("/");
 	hasImage = Boolean(user.profileImage.length);
 
-	// if (_user) {
-	// 	user = JSON.parse(_user.value) as UserModel;
-	// 	hasImage = Boolean(user.profileImage.length);
-	// } else {
-	// 	hasImage = false;
-	// }
+
 
 	return (
 		<>
 			<div {...rest} className={"navbar" + ` ${rest.className}`}>
-				<div className="flex-1">
+				<div className="flex-1 pl-4">
 					<a href="/dashboard">
-						<div className="w-60 rounded-full bg-white p-2">
-							{/* <img alt="Logo" src="/image/crmvgo-logo-top.png" /> */}
-							<RiInboxArchiveFill />
-						</div>
+						<RiInboxArchiveFill className='w-16 h-16' />
 					</a>
 				</div>
 				<div className="flex gap-3">
@@ -49,7 +39,6 @@ export async function NavBar({ ...rest }: NavBarProps) {
 							className="btn btn-ghost btn-circle avatar"
 						>
 							<div className="avatar">
-								{/* <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-0"> */}
 								<div className="w-13 rounded-full">
 									{hasImage && (
 										<img alt="" src={user!.profileImage} />

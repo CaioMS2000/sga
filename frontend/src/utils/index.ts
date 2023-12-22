@@ -14,7 +14,6 @@ import { redirect } from "next/navigation";
 
 export type BasicObject<T = any> = Record<string, T>;
 
-// export async function fetchGraphQL<T = any>(
 export async function fetchGraphQL<T extends Record<string, any> = any>(
 	query: string,
 	options: GraphQLRequestOptions = {}
