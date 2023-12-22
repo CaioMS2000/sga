@@ -6,7 +6,7 @@ import { LOGIN } from "@/lib/mutation/user";
 import { BasicObject, GraphQLResponse, fetchGraphQL } from "@/utils";
 import { saveCookie } from "@/app/actions";
 import { AccesstokenExpiration, AccesstokenKey, RefreshtokenExpiration, RefreshtokenKey, UserCookieKey } from "@/utils/constants";
-import { RiInboxArchiveFill } from "react-icons/ri";
+import { FaBoxArchive } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 
 interface LoginProps extends PropsWithChildren {}
@@ -83,13 +83,13 @@ export default function Login({}: LoginProps) {
 				<div className="h-screen flex items-center justify-center bg-black/70">
 					<div
 						id="login-card"
-						className="flex flex-col items-center justify-center bg-byzantineBlue rounded-md p-6 max-w-xl"
+						className="flex flex-col items-center justify-center bg-greenishBlack rounded-md px-6 py-10 max-w-xl"
 					>
-						<div className="image-wrapper p-3 bg-white rounded-3xl flex justify-center max-w-xs mb-10">
-							<RiInboxArchiveFill className='w-10 h-10' />
+						<div className="mb-10 bg-black/50 rounded-full p-10">
+							<FaBoxArchive className='w-20 h-20' />
 						</div>
-						<div>
-							<p className="font-bold text-white text-2xl">
+						<div className='max-w-lg'>
+							<p className="font-bold text-white text-2xl text-center">
 								Sistema de Gerenciamento de Almoxarifado
 							</p>
 						</div>
@@ -113,7 +113,7 @@ export default function Login({}: LoginProps) {
 								value={password}
 							/>
 							<button
-								className="btn font-bold text-white bg-lime-900 border-lime-900 text-lg"
+								className="btn font-bold text-white bg-byzantineBlue hover:bg-blue-950 border-byzantineBlue hover:border-blue-950 text-lg"
 								type="button"
 								onClick={handleSend}
 							>

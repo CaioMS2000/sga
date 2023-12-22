@@ -22,7 +22,7 @@ export default async function Dashboard({}: DashboardProps) {
 			<div className="grid grid-cols-3 gap-4">
 				{menuItems.filter(item => thisUserShuldSeeThisOption(item, currentUser!)).map((item, index) => (
 					<a key={index} href={item.url}>
-						<div className="flex items-center w-fit gap-6 justify-around p-4 border-2 rounded-lg bg-green-900">
+						<div className="flex items-center w-fit gap-6 justify-around p-4 border-2 rounded-lg bg-byzantineBlue">
 							<item.icon className='text-white w-[16px] h-[16px] min-w-[16px] min-h-[16px]'/>
 							<p className="text-white font-bold">{item.label}</p>
 						</div>
