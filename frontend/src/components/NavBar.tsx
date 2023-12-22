@@ -6,6 +6,7 @@ import { UserCookieKey } from "@/utils/constants";
 import { HTMLProps, PropsWithChildren } from "react";
 import LogoutButton from "./LogoutButton";
 import { redirect } from "next/navigation";
+import { RiInboxArchiveFill } from "react-icons/ri";
 
 interface NavBarProps extends PropsWithChildren, HTMLProps<HTMLDivElement> {}
 
@@ -30,7 +31,8 @@ export async function NavBar({ ...rest }: NavBarProps) {
 				<div className="flex-1">
 					<a href="/dashboard">
 						<div className="w-60 rounded-full bg-white p-2">
-							<img alt="Logo" src="/image/crmvgo-logo-top.png" />
+							{/* <img alt="Logo" src="/image/crmvgo-logo-top.png" /> */}
+							<RiInboxArchiveFill />
 						</div>
 					</a>
 				</div>

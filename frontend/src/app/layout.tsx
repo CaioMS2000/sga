@@ -7,8 +7,8 @@ import Debug from "@/components/Debug";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-	title: "CRMV GO - SGA",
-	description: "Sistema de Almoxarifado CRMV GO",
+	title: "SGA",
+	description: "Sistema de Almoxarifado",
 };
 
 export default function RootLayout({

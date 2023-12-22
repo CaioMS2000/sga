@@ -6,6 +6,7 @@ import { LOGIN } from "@/lib/mutation/user";
 import { BasicObject, GraphQLResponse, fetchGraphQL } from "@/utils";
 import { saveCookie } from "@/app/actions";
 import { AccesstokenExpiration, AccesstokenKey, RefreshtokenExpiration, RefreshtokenKey, UserCookieKey } from "@/utils/constants";
+import { RiInboxArchiveFill } from "react-icons/ri";
 import { useRouter } from "next/navigation";
 
 interface LoginProps extends PropsWithChildren {}
@@ -82,16 +83,17 @@ export default function Login({}: LoginProps) {
 				{/* <div id='login-card' className="flex flex-col items-center justify-center bg-green-900 rounded-md p-6 max-w-xl"> */}
 				<div
 					id="login-card"
-					className="flex flex-col items-center justify-center bg-CRMVGO_darkGreen rounded-md p-6 max-w-xl"
+					className="flex flex-col items-center justify-center bg-byzantineBlue rounded-md p-6 max-w-xl"
 				>
 					<div className="image-wrapper p-3 bg-white rounded-3xl flex justify-center max-w-xs mb-10">
-						<Image
+						{/* <Image
 							src={"/image/crmvgo-logo-top.png"}
 							priority={true}
 							width={300}
 							height={300}
 							alt=""
-						/>
+						/> */}
+						<RiInboxArchiveFill className='w-10 h-10' />
 					</div>
 					<div>
 						<p className="font-bold text-white text-2xl">
