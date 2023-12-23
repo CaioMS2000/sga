@@ -16,7 +16,7 @@ interface InputProps
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-	({ label, placeholder, inputChange, ...rest }: InputProps, ref) => {
+	({ label, placeholder, inputChange, value, ...rest }: InputProps, ref) => {
 		const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
 			inputChange(e.target.value);
 		};
@@ -31,6 +31,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 							placeholder={placeholder ?? "email@gmail.com"}
 							className="input input-bordered bg-gray-100"
 							onChange={handleInputChange}
+							value={value}
 							ref={ref}
 							{...rest}
 						/>

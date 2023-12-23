@@ -1,7 +1,7 @@
 "use client";
 import { KeyboardEventHandler, PropsWithChildren, useRef, useState, forwardRef } from "react";
 import Image from "next/image";
-import Input from "./Input";
+import Input from "./InputLeftLabeled";
 import { LOGIN } from "@/lib/mutation/user";
 import { BasicObject, GraphQLResponse, fetchGraphQL } from "@/utils";
 import { saveCookie } from "@/app/actions";

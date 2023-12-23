@@ -1,5 +1,4 @@
 "use client";
-import Input from "@/components/Input";
 import { CREATE_CATEGORY } from "@/lib/mutation/category";
 import { BasicObject, GraphQLResponse, fetchGraphQL } from "@/utils";
 import { FaFolder } from "react-icons/fa";
@@ -9,6 +8,7 @@ import {
 	useRef,
 	useState,
 } from "react";
+import Input from "@/components/InputSimple";
 
 interface CategoryCreateProps extends PropsWithChildren {}
 
@@ -38,7 +38,7 @@ export default function CategoryCreate({}: CategoryCreateProps) {
 	async function handleSend() {
 		try {
 			const res = await fetchGraphQL(CREATE_CATEGORY, {
-				key: "login",
+				key: "createCategory",
 				variables: {
 					data: {
 						name,
@@ -46,6 +46,10 @@ export default function CategoryCreate({}: CategoryCreateProps) {
 					},
 				},
 			});
+
+			console.log(res)
+			setName('')
+			setDescription('')
 		} catch (e) {
 			console.log(e);
 			let _e: any = (e as BasicObject).message.split(":");
@@ -61,26 +65,19 @@ export default function CategoryCreate({}: CategoryCreateProps) {
 
 	return (
 		<>
-			<div className="bg-gray-900">
-				<div className="font-bold flex items-center gap-3">
-                    <FaFolder /> <span>Nova categoria</span>
-                </div>
-				<Input
-					ref={nameInputRef}
-					label="Nome"
-					placeholder="Descartáveis"
-					value={name}
-					inputChange={setName}
-					onKeyDown={handleKeyDown}
-				/>
-				<Input
-					ref={descriptionInputRef}
-					label="Descrição"
-					placeholder="Descrição"
-					value={description}
-					inputChange={setDescription}
-					onKeyDown={handleKeyDown}
-				/>
+			<div className="bg-gray-900 w-fit py-20 px-10 mx-auto rounded-lg">
+				<div className="font-bold flex items-center gap-3 mb-5 text-4xl">
+					<FaFolder /> <span>Nova categoria</span>
+				</div>
+
+				<div className="flex flex-col gap-3 items-center">
+					<Input ref={nameInputRef} inputChange={setName} value={name} label="Nome" placeholder="ex: objetos descartaveis" className="input-info" label-class="font-bold" onKeyDown={handleKeyDown}/>
+
+					<Input ref={descriptionInputRef} inputChange={setDescription} value={description} label="Descrição" placeholder="opcional" className="input-info placeholder:italic" label-class="font-bold" onKeyDown={handleKeyDown}/>
+
+					<button className="btn btn-primary w-40 mt-10" onClick={handleSend}>Criar</button>
+				</div>
+
 			</div>
 		</>
 	);
