@@ -58,7 +58,6 @@ export class CategoryResolver {
             include: {
                 order: true,
                 delivery: true,
-                invoice: true,
                 storage: true,
                 categories: true,
             }

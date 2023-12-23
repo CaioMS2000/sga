@@ -4,6 +4,7 @@ import { HTMLProps, PropsWithChildren } from "react";
 import { IconType } from "react-icons";
 import { AiFillHome } from 'react-icons/ai';
 import { FaThList } from 'react-icons/fa';
+import { FaFolderPlus } from "react-icons/fa6";
 import { IoIosBusiness } from "react-icons/io";
 import { BsPersonFillGear, BsFillShieldLockFill } from 'react-icons/bs';
 import { redirect } from "next/navigation";
@@ -64,6 +65,12 @@ const menuItems: MenuItemType[] = [
 		icon: IoIosBusiness ,
 		label: "Gerenciar fornecedores",
 		url: "/dashboard/suppliers",
+		permission: StoreKeeper,
+	},
+    {
+		icon: FaFolderPlus ,
+		label: "Categorias",
+		url: "/dashboard/categories",
 		permission: StoreKeeper,
 	},
 ]
