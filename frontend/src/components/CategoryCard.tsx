@@ -36,6 +36,7 @@ export default function CategoryCard({ category }: CategoryCardProps) {
 				<div className="p-3 flex items-center">
 					{/* <DeleteCategoryIcon category={category} /> */}
 					<EditCategoryIcon
+						className="hover:cursor-pointer text-blue-500"
 						category={category}
 						onClick={() => {
 							if (modalRef.current) {
@@ -59,21 +60,21 @@ function Editing({ category }: EditingProps) {
 	const [name, setName] = useState(category.name);
 	const [description, setDescription] = useState(category.description);
 
-	async function handleSend(){
+	async function handleSend() {
 		const res = await fetchGraphQL(UPDATE_CATEGORY, {
-			key: 'editCategory',
-			variables:{
+			key: "editCategory",
+			variables: {
 				data: {
 					name: name,
 					description: description,
-					code: category.code
-				}
-			}
-		})
+					code: category.code,
+				},
+			},
+		});
 
-		console.log(res)
+		console.log(res);
 
-		location.reload()
+		location.reload();
 	}
 
 	return (
@@ -95,7 +96,12 @@ function Editing({ category }: EditingProps) {
 				label-class="font-bold"
 			/>
 
-			<button className="btn btn-primary w-40 mt-10" onClick={() => handleSend()}>Editar</button>
+			<button
+				className="btn btn-primary w-40 mt-10"
+				onClick={() => handleSend()}
+			>
+				Editar
+			</button>
 		</>
 	);
 }
