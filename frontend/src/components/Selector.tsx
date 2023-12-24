@@ -1,9 +1,18 @@
 "use client";
-import { PropsWithChildren, SelectHTMLAttributes, useEffect, useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
+import {
+	PropsWithChildren,
+	SelectHTMLAttributes,
+	useEffect,
+	useState,
+} from "react";
+import { v4 as uuidv4 } from "uuid";
 import SelectorValue from "./SelectorValues";
 
-type CustomTuple = [any, any];
+export type CustomTuple<T1 = any, T2 = any> = T1 extends never
+	? [any, any]
+	: T2 extends never
+	? [T1, T1]
+	: [T1, T2];
 
 interface CustomSelectorProps
 	extends PropsWithChildren,
@@ -24,14 +33,14 @@ export function CustomSelector({
 	optionLabel,
 	deleteOption,
 	multipleValues = false,
-	value = 'none',
+	value = "none",
 	...rest
 }: CustomSelectorProps) {
-	const [randomId, setRandomId] = useState('')
+	const [randomId, setRandomId] = useState("");
 
 	useEffect(() => {
-		setRandomId(uuidv4())
-	}, [])
+		setRandomId(uuidv4());
+	}, []);
 
 	return (
 		<>
@@ -52,14 +61,20 @@ export function CustomSelector({
 						</option>
 					))}
 				</select>
-				{
-					(multipleValues && selectedValue && deleteOption) && (
-						<div className="mt-2 flex flex-col">{(selectedValue as any[]).map((value, index) => (
-							<SelectorValue key={index} className="font-bold text-sm rounded-lg border-gray-400 border-2 mb-3 w-fit p-2 last:mb-0 first:mt-2" deleteFunction={deleteOption} referenceValue={value}>{value}</SelectorValue>
+				{multipleValues && selectedValue && deleteOption && (
+					<div className="mt-2 flex flex-col">
+						{(selectedValue as any[]).map((value, index) => (
+							<SelectorValue
+								key={index}
+								className="font-bold text-sm rounded-lg border-gray-400 border-2 mb-3 w-fit p-2 last:mb-0 first:mt-2"
+								deleteFunction={deleteOption}
+								referenceValue={value}
+							>
+								{value}
+							</SelectorValue>
 						))}
-						</div>
-					)
-				}
+					</div>
+				)}
 			</div>
 		</>
 	);

@@ -1,15 +1,70 @@
+"use client";
+import { CustomSelector, CustomTuple } from "@/components/Selector";
 import { GET_ALL_CATEGORIES } from "@/lib/query/category";
+import { GET_ALL_SUPPLIERS } from "@/lib/query/supplier";
+import { CategoryModel } from "@/models/categoryModel";
+import { SupplierModel } from "@/models/supplierModel";
 import { fetchGraphQL } from "@/utils";
-import { PropsWithChildren } from "react";
+import { ChangeEvent, PropsWithChildren, useEffect, useState } from "react";
 
 interface ItemCreateProps extends PropsWithChildren {}
 // ITEM: name, description, categories, image
 // LOT: supplier, itemAmount, price
-export default async function ItemCreate({}: ItemCreateProps) {
-	const res = await fetchGraphQL(GET_ALL_CATEGORIES, {
-		key: 'categories'
-	})
-	console.log(res)
+// must fetch: categories, supplier
+export default function ItemCreate({}: ItemCreateProps) {
+	const [availableCategories, setAvailableCategories] = useState<CategoryModel[]>([])
+	const [availableSuppliers, setAvailableSuppliers] = useState<SupplierModel[]>([])
+
+	const [categoryOptions, setCategoryOptions] = useState<CustomTuple<string, string>[]>([])
+	const [setsupplierOptions, setSetsupplierOptions] = useState<CustomTuple<string, string>[]>([])
+
+	const [selectedCategory, setSelectedCategory] = useState<CategoryModel[]>([])
+	function handleChangeCategory(event: ChangeEvent<HTMLSelectElement>){
+		const selectedValue: string = event.target.value;
+		console.log(selectedValue)
+
+		setSelectedCategory(prevstate => [...prevstate, availableCategories.find(cat => cat.code == selectedValue)!])
+	}
+	function categoryDelete(category: CategoryModel){
+		setSelectedCategory(prevState => prevState.filter(cat => cat.code != category.code))
+	}
+
+	const [selectedSupplier, setSelectedSupplier] = useState<SupplierModel|null>(null)
+	function handleChangeSupplier(event: ChangeEvent<HTMLSelectElement>){
+		const selectedValue: string = event.target.value;
+		console.log(selectedValue)
+
+		setSelectedSupplier(availableSuppliers.find(sup => sup.cnpj == selectedValue)!)
+	}
+	
+	async function fetchOptions(){
+		const categories = await fetchGraphQL<CategoryModel[]>(GET_ALL_CATEGORIES, {
+			key: 'categories'
+		})
+		
+		const suppliers = await fetchGraphQL<SupplierModel[]>(GET_ALL_SUPPLIERS, {
+			key: 'getAllSuppliers'
+		})
+
+		setAvailableCategories(categories)
+		setAvailableSuppliers(suppliers)
+
+	}
+
+	useEffect(() => {
+		fetchOptions()
+	}, [])
+
+	useEffect(() => {
+		setCategoryOptions(availableCategories.map(el => [el.code, el.name]))
+	}, [availableCategories])
+
+	useEffect(() => {
+		setSetsupplierOptions(availableSuppliers.map(el => [el.cnpj, el.name]))
+	}, [availableSuppliers])
+
+	useEffect(() => {if(selectedCategory && selectedCategory.length) console.log(selectedCategory);}, [selectedCategory])
+	useEffect(() => {if(selectedSupplier) console.log(selectedSupplier);}, [selectedSupplier])
 
 	return (
 		<>
@@ -17,6 +72,8 @@ export default async function ItemCreate({}: ItemCreateProps) {
 				<h1 className="font-bold text-[2rem] w-full text-white rounded-lg">
 					Criando um novo item
 				</h1>
+
+				<CustomSelector multipleValues={true} values={categoryOptions} handleChange={handleChangeCategory} selectedValue={selectedCategory} optionLabel="Categorias" deleteOption={categoryDelete}/>
 			</div>
 		</>
 	);
