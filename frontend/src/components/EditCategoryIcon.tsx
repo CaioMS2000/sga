@@ -7,11 +7,11 @@ interface EditCategoryIconProps extends PropsWithChildren, HTMLProps<HTMLDivElem
     category: CategoryModel;
 }
 
-export default function EditCategoryIcon({category}:EditCategoryIconProps){
+export default function EditCategoryIcon({category, className, ...rest}:EditCategoryIconProps){
 
   return(
       <>
-      <FaPen className='min-w-[20px] min-h-[20px] hover:cursor-pointer text-blue-500' />
+      <FaPen {...rest} className={'min-w-[20px] min-h-[20px] hover:cursor-pointer text-blue-500 ' + className} />
       </>
   )
 }

@@ -10,7 +10,6 @@ export default async function Categories({}: CategoriesProps) {
 	const res = await fetchGraphQL<CategoryModel[]>(GET_ALL_CATEGORIES, {
 		key: "categories",
 	});
-	console.log(res);
 
 	return (
 		<>

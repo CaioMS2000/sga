@@ -5,6 +5,7 @@ export const GET_ALL_CATEGORIES = gql`
         categories{
             name
             description
+            code
         }
     }
 `
