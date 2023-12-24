@@ -1,6 +1,7 @@
 "use client";
 import { PropsWithChildren, useState } from "react";
 import CreateSupplierButton from "@/components/CreateSupplierButton";
+import { IoIosBusiness } from "react-icons/io";
 
 interface SupplierCreateProps extends PropsWithChildren {}
 
@@ -12,12 +13,15 @@ export default function SupplierCreate({}: SupplierCreateProps) {
 
 	return (
 		<>
-			<div className="bg-darkGreen flex flex-col rounded-lg p-5 mx-auto items-center w-fit">
-				<h1 className="font-bold text-[2rem] bg-white w-fit text-darkGreen p-2 rounded-lg mb-5">
-					Criando um novo fornecedor
-				</h1>
+			<div className="bg-gray-900 flex flex-col rounded-lg py-20 px-10 mx-auto items-center w-fit">
+				<div className="flex gap-2 items-center mb-5">
+					<IoIosBusiness className="min-w-[50px] min-h-[50px]"/>
+					<h1 className="font-bold text-[2rem]">
+						Criando um novo fornecedor
+					</h1>
+				</div>
 
-				<div className="flex flex-col gap-3 items-center">
+				<div className="flex flex-col gap-5 items-center">
 					<div className="flex gap-3">
 						<input
 							type="text"
@@ -58,7 +62,7 @@ export default function SupplierCreate({}: SupplierCreateProps) {
 							}}
 						/>
 					</div>
-					<CreateSupplierButton className="w-fit text-white bg-emerald-800 border-emerald-800" name={name} email={email} cnpj={cnpj} phone={phone}>
+					<CreateSupplierButton className="w-fit text-white btn-primary mt-5" name={name} email={email} cnpj={cnpj} phone={phone}>
 						Criar
 					</CreateSupplierButton>
 				</div>
