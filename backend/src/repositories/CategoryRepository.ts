@@ -1,46 +1,67 @@
 import { randomUUID } from "node:crypto";
 import { CreateCategoryInput } from "../dto/inputs";
 import { ServerContextData } from "../server";
+import { UpdateCategoryInput } from "../dto/inputs/category/update";
 
-export class CategoryRepository{
-    async getAllCategories(context: ServerContextData) {
-        const {prisma} = context;
-        const res = await prisma.category.findMany();
-    
-        return res;
-    }
+export class CategoryRepository {
+	async getAllCategories(context: ServerContextData) {
+		const { prisma } = context;
+		const res = await prisma.category.findMany();
 
-    async createCategory(category: CreateCategoryInput, context: ServerContextData) {
-        const {prisma} = context;
-        let code: string;
+		return res;
+	}
 
-        if(!category.code || category.code == 'NON_CODE'){
-            code = randomUUID()
-        }
-        else{
-            code = category.code
-        }
+	async createCategory(
+		category: CreateCategoryInput,
+		context: ServerContextData
+	) {
+		const { prisma } = context;
+		let code: string;
 
-        const res = await prisma.category.create({
-            data: {
-                name: category.name,
-                code,
-                description: category.description,
-            }
-        })
+		if (!category.code || category.code == "NON_CODE") {
+			code = randomUUID();
+		} else {
+			code = category.code;
+		}
 
-        return res
-    }
+		const res = await prisma.category.create({
+			data: {
+				name: category.name,
+				code,
+				description: category.description,
+			},
+		});
 
-    async getCategory(code: string, context: ServerContextData) {
-        const {prisma} = context;
+		return res;
+	}
 
-        const res = await prisma.category.findFirst({
-            where: {
-                code
-            }
-        })
+	async updateCategory(
+		category: UpdateCategoryInput,
+		context: ServerContextData
+	) {
+		const { prisma } = context;
 
-        return res
-    }
+		const res = await prisma.category.update({
+			where: {
+				code: category.code,
+			},
+			data: {
+				...category,
+			},
+		});
+
+		return res;
+	}
+
+	async getCategory(code: string, context: ServerContextData) {
+		const { prisma } = context;
+
+		const res = await prisma.category.findFirst({
+			where: {
+				code,
+			},
+		});
+
+		return res;
+	}
 }

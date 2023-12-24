@@ -1,0 +1,1 @@
+files for "REST client" vscode extension

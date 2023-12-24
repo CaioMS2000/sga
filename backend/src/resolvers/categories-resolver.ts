@@ -1,8 +1,19 @@
-import { Arg, Ctx, FieldResolver, Mutation, Query, Resolver, Root } from "type-graphql";
+import {
+	Arg,
+	Ctx,
+	Field,
+	FieldResolver,
+	Mutation,
+	Query,
+	Resolver,
+	Root,
+} from "type-graphql";
 import { Category, Item } from "../dto/models";
 import { CategoryService as _CategoryService } from "../services/CategoryService";
 import { ServerContextData } from "../server";
 import { CreateCategoryInput } from "../dto/inputs";
+import { IsString } from "class-validator";
+import { UpdateCategoryInput } from "../dto/inputs/category/update";
 
 // export type OrderModelWithTypename = {
 // 	__typename?: string;
@@ -11,7 +22,7 @@ import { CreateCategoryInput } from "../dto/inputs";
 // 	analysis: AnalysisModelWithTypename;
 // } & Omit<OrderModel, "requestedAt" | "analysis">;
 
-type ItemWithoutCategory = Omit<Item, "categories">
+type ItemWithoutCategory = Omit<Item, "categories">;
 
 @Resolver(() => Category)
 export class CategoryResolver {
@@ -42,40 +53,48 @@ export class CategoryResolver {
 		return this.CategoryService.createCategory(data, context);
 	}
 
-    @FieldResolver(() => [Item])
-    async items(@Root() category: Category, @Ctx() context: ServerContextData){
-        // tive que fazer uma filtragem manual. Por algum motivo minha tentativa de usar o proprio Prisma deu errado
-        const {prisma} = context;
-        const items = await prisma.item.findMany({
-            where: {
-                categories: {
-                    some: {
-                        code: category.code
-                    }
-                }
-            },
+	@Mutation(() => Category)
+	async editCategory(
+		@Arg("data") data: UpdateCategoryInput,
+		@Ctx() context: ServerContextData
+	) {
+		return this.CategoryService.editCategory(data, context);
+	}
 
-            include: {
-                order: true,
-                delivery: true,
-                storage: true,
-                categories: true,
-            }
-        })
+	@FieldResolver(() => [Item])
+	async items(@Root() category: Category, @Ctx() context: ServerContextData) {
+		// tive que fazer uma filtragem manual. Por algum motivo minha tentativa de usar o proprio Prisma deu errado
+		const { prisma } = context;
+		const items = await prisma.item.findMany({
+			where: {
+				categories: {
+					some: {
+						code: category.code,
+					},
+				},
+			},
 
-        const res = items.filter(i => {
-            const categories = i.categories;
+			include: {
+				order: true,
+				delivery: true,
+				storage: true,
+				categories: true,
+			},
+		});
 
-            if(categories.length == 0) return false;
+		const res = items.filter((i) => {
+			const categories = i.categories;
 
-            const flag = categories.some(cat => {
-                return cat.code == category.code
-            })
+			if (categories.length == 0) return false;
 
-            return flag
-        })
+			const flag = categories.some((cat) => {
+				return cat.code == category.code;
+			});
 
-        return items
-        return res
-    }
+			return flag;
+		});
+
+		return items;
+		return res;
+	}
 }
