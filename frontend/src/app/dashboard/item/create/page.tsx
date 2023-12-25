@@ -1,5 +1,5 @@
 "use client";
-import { CustomSelector, CustomTuple } from "@/components/Selector";
+import { CustomSelector, CustomTuple } from "@/components/Selector2";
 import { GET_ALL_CATEGORIES } from "@/lib/query/category";
 import { GET_ALL_SUPPLIERS } from "@/lib/query/supplier";
 import { CategoryModel } from "@/models/categoryModel";
@@ -16,7 +16,7 @@ export default function ItemCreate({}: ItemCreateProps) {
 	const [availableSuppliers, setAvailableSuppliers] = useState<SupplierModel[]>([])
 
 	const [categoryOptions, setCategoryOptions] = useState<CustomTuple<string, string>[]>([])
-	const [setsupplierOptions, setSetsupplierOptions] = useState<CustomTuple<string, string>[]>([])
+	const [supplierOptions, setSupplierOptions] = useState<CustomTuple<string, string>[]>([])
 
 	const [selectedCategory, setSelectedCategory] = useState<CategoryModel[]>([])
 	function handleChangeCategory(event: ChangeEvent<HTMLSelectElement>){
@@ -25,8 +25,8 @@ export default function ItemCreate({}: ItemCreateProps) {
 
 		setSelectedCategory(prevstate => [...prevstate, availableCategories.find(cat => cat.code == selectedValue)!])
 	}
-	function categoryDelete(category: CategoryModel){
-		setSelectedCategory(prevState => prevState.filter(cat => cat.code != category.code))
+	function categoryDelete(code: string){
+		setSelectedCategory(prevState => prevState.filter(cat => cat.code != code))
 	}
 
 	const [selectedSupplier, setSelectedSupplier] = useState<SupplierModel|null>(null)
@@ -35,6 +35,9 @@ export default function ItemCreate({}: ItemCreateProps) {
 		console.log(selectedValue)
 
 		setSelectedSupplier(availableSuppliers.find(sup => sup.cnpj == selectedValue)!)
+	}
+	function supplierDelete(){
+		setSelectedSupplier(null)
 	}
 	
 	async function fetchOptions(){
@@ -60,7 +63,7 @@ export default function ItemCreate({}: ItemCreateProps) {
 	}, [availableCategories])
 
 	useEffect(() => {
-		setSetsupplierOptions(availableSuppliers.map(el => [el.cnpj, el.name]))
+		setSupplierOptions(availableSuppliers.map(el => [el.cnpj, el.name]))
 	}, [availableSuppliers])
 
 	useEffect(() => {if(selectedCategory && selectedCategory.length) console.log(selectedCategory);}, [selectedCategory])
@@ -73,7 +76,9 @@ export default function ItemCreate({}: ItemCreateProps) {
 					Criando um novo item
 				</h1>
 
-				<CustomSelector multipleValues={true} values={categoryOptions} handleChange={handleChangeCategory} selectedValue={selectedCategory} optionLabel="Categorias" deleteOption={categoryDelete}/>
+				<CustomSelector multipleValues={true} values={categoryOptions} handleChange={handleChangeCategory} deleteValue={categoryDelete} selectedValue={selectedCategory.map(cat => [cat.code, cat.name])} label="Categorias" />
+				
+				<CustomSelector values={supplierOptions} handleChange={handleChangeSupplier} deleteValue={supplierDelete} selectedValue={selectedSupplier?.cnpj} label="Fornecedores" />
 			</div>
 		</>
 	);
