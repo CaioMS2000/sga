@@ -18,16 +18,14 @@ export type CustomTuple<T1 = any, T2 = any> = T1 extends never
 interface CustomSelectorProps
 	extends PropsWithChildren,
 		SelectHTMLAttributes<HTMLSelectElement> {
-	multipleValues?: boolean;
 	label: string;
 	values: CustomTuple[];
-	selectedValue: any|any[];
+	selectedValue: any[];
 	handleChange: (arg: any) => void;
 	deleteValue: (arg: any) => void;
 }
 
 export function CustomSelector({
-	multipleValues = false,
 	value = "none",
 	label,
 	values,
@@ -42,6 +40,10 @@ export function CustomSelector({
 		setRandomId(uuidv4());
 	}, []);
 
+	useEffect(() => {
+		if(selectedValue && selectedValue.length)console.log(selectedValue);
+	}, [selectedValue]);
+
 	return (
 		<>
 			<div className="flex flex-col">
@@ -52,22 +54,16 @@ export function CustomSelector({
 					id={`${randomId}-selector`}
 					className={"select " + rest.className}
 					value={value}
-					onChange={e => {
-						handleChange(e)
-
-						if(!multipleValues){
-							value = selectedValue
-						}
-					}}
+					onChange={e => {handleChange(e)}}
 				>
 					<option value="none">{label}</option>
 					{values.map((v, index) => (
 						<option key={index} value={v[0]}>{v[1]}</option>
 					))}
 				</select>
-				{multipleValues && selectedValue && (
+				{selectedValue && (
 					<div className="flex flex-col gap-3 mt-5">
-						{Array.from(selectedValue).map((v, index) => (
+						{selectedValue.map((v, index) => (
 							<SelectorValue value={(v as any[])[0]} key={index} className="rounded-lg border-2 border-gray-400 px-3" label={(v as any[])[1] as string} deleteValue={deleteValue}/>
 						))}
 					</div>

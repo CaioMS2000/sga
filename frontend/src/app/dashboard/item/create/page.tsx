@@ -29,15 +29,18 @@ export default function ItemCreate({}: ItemCreateProps) {
 		setSelectedCategory(prevState => prevState.filter(cat => cat.code != code))
 	}
 
-	const [selectedSupplier, setSelectedSupplier] = useState<SupplierModel|null>(null)
+	const [selectedSupplier, setSelectedSupplier] = useState<SupplierModel[]>([])
 	function handleChangeSupplier(event: ChangeEvent<HTMLSelectElement>){
 		const selectedValue: string = event.target.value;
-		console.log(selectedValue)
+		console.log(`quero mudar para: ${selectedValue}`)
 
-		setSelectedSupplier(availableSuppliers.find(sup => sup.cnpj == selectedValue)!)
+		const newSupplier = availableSuppliers.find(sup => sup.cnpj == selectedValue)
+		console.log(newSupplier)
+
+		setSelectedSupplier(prevState => [...prevState, newSupplier!])
 	}
-	function supplierDelete(){
-		setSelectedSupplier(null)
+	function supplierDelete(cnpj: string){
+		setSelectedSupplier(prevState => prevState.filter(sup => sup.cnpj != cnpj))
 	}
 	
 	async function fetchOptions(){
@@ -66,8 +69,8 @@ export default function ItemCreate({}: ItemCreateProps) {
 		setSupplierOptions(availableSuppliers.map(el => [el.cnpj, el.name]))
 	}, [availableSuppliers])
 
-	useEffect(() => {if(selectedCategory && selectedCategory.length) console.log(selectedCategory);}, [selectedCategory])
-	useEffect(() => {if(selectedSupplier) console.log(selectedSupplier);}, [selectedSupplier])
+	// useEffect(() => {if(selectedCategory && selectedCategory.length) console.log(selectedCategory);}, [selectedCategory])
+	// useEffect(() => {if(selectedSupplier) console.log(selectedSupplier);}, [selectedSupplier])
 
 	return (
 		<>
@@ -76,9 +79,9 @@ export default function ItemCreate({}: ItemCreateProps) {
 					Criando um novo item
 				</h1>
 
-				<CustomSelector multipleValues={true} values={categoryOptions} handleChange={handleChangeCategory} deleteValue={categoryDelete} selectedValue={selectedCategory.map(cat => [cat.code, cat.name])} label="Categorias" />
+				<CustomSelector values={categoryOptions} handleChange={handleChangeCategory} deleteValue={categoryDelete} selectedValue={selectedCategory.map(cat => [cat.code, cat.name])} label="Categorias" />
 				
-				<CustomSelector values={supplierOptions} handleChange={handleChangeSupplier} deleteValue={supplierDelete} selectedValue={selectedSupplier?.cnpj} label="Fornecedores" />
+				<CustomSelector values={supplierOptions} handleChange={handleChangeSupplier} deleteValue={supplierDelete} selectedValue={selectedSupplier.map(sup => [sup.cnpj, sup.name])} label="Fornecedores" />
 			</div>
 		</>
 	);
