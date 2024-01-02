@@ -13,7 +13,11 @@ interface InputProps
 	label: string;
 	placeholder?: string;
 	'label-class'?: string;
-	inputChange: Dispatch<SetStateAction<string>>;
+	// inputChange: Dispatch<SetStateAction<string>>;
+	/**
+	 * most common: Dispatch<SetStateAction<string>>
+	 */
+	inputChange: (arg: string) => void;
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
