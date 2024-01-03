@@ -24,9 +24,7 @@ export const GET_ITEM_BY_ID = gql`
 			id
 			name
 			description
-			value
 			image
-			amount
 			available
 			categories {
 				id
@@ -48,15 +46,6 @@ export const GET_ITEM_BY_ID = gql`
 						name
 						description
 					}
-				}
-			}
-			invoice {
-				code
-				supplier {
-					name
-					cnpj
-					email
-					phone
 				}
 			}
 			order {
@@ -99,6 +88,14 @@ export const GET_ITEM_BY_ID = gql`
 						name
 						description
 					}
+				}
+			}
+			lot{
+				id
+				itemAmount
+				price
+				supplier{
+					name
 				}
 			}
 		}

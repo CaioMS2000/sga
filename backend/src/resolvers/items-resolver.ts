@@ -23,6 +23,7 @@ import { BasicChangeItemInput, CreateDeliveryInput, CreateItemInput, CreateOrder
 import { ItemService as _ItemService } from '../services/ItemService';
 import { ServerContextData } from "../server";
 import { GraphQLError } from "graphql";
+import { Lot } from "../dto/models/lot";
 
 @Resolver(() => Item)
 export class ItemResolver {
@@ -178,25 +179,31 @@ export class ItemResolver {
     }
   }
 
-  // @FieldResolver(() => Invoice)
-  // async invoice(@Root() item: Item, @Ctx() context: ServerContextData) {
-  //   try{
-  //     const {prisma} = context
-  //     const invoice = await prisma.invoice.findUnique({
-  //       where: { id: item.invoice.id },
-  //       include: {
-  //         lots: true
-  //       }
-  //     });
-  
-  //     if (!invoice) {
-  //       throw new Error(`Invoice with id ${item.invoice.id} not found`);
-  //     }
-  
-  //     return invoice;
+  @FieldResolver(() => Lot)
+  async lot(@Root() item: Item, @Ctx() context: ServerContextData) {
+    try{
+      const {prisma} = context
 
-  //   }catch(error){
-  //     throw new GraphQLError(error as string)
-  //   }
-  // }
+      const res = await prisma.lot.findFirst({
+        where:{
+          Item: {
+            id: item.id
+          }
+        },
+        include:{
+          Invoice: true,
+          supplier: true,
+        }
+      })
+
+      // console.log('##')
+      // console.log(res)
+      // console.log('##')
+
+      return res
+
+    }catch(error){
+      throw new GraphQLError(error as string)
+    }
+  }
 }

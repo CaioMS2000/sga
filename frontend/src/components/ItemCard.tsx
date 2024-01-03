@@ -12,7 +12,7 @@ export default async function ItemCard({ item }: ItemCardProps) {
 
 	return (
 		<>
-			<div className="card w-96 bg-lime-950 shadow-xl text-white">
+			<div className="card w-96 bg-gray-800 shadow-xl text-white">
 				<figure className="px-10 pt-10">
 					{itemImageFlag && (
 						<img
@@ -29,7 +29,7 @@ export default async function ItemCard({ item }: ItemCardProps) {
 					<div className="card-actions">
 						<Button
 							url={`/dashboard/item/${item.id}`}
-							className="btn bg-teal-800 border-teal-800 text-white"
+							className="btn bg-purple-900 border-purple-900 text-white"
 						>
 							Pedir
 						</Button>

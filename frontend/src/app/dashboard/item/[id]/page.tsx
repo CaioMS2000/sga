@@ -15,12 +15,13 @@ interface ItemProps extends PropsWithChildren {
 }
 
 export default async function Item({ params: { id } }: ItemProps) {
-	const item: ItemModel = await fetchGraphQL(GET_ITEM_BY_ID, {
+	const item = await fetchGraphQL(GET_ITEM_BY_ID, {
 		key: "getItemById",
 		variables: {
 			id: parseInt(id),
 		},
 	});
+	console.log(item)
 	const itemImageFlag = Boolean(item.image.length);
 	const categories = item.categories;
 	const currentUser = await buildUser();
@@ -57,7 +58,7 @@ export default async function Item({ params: { id } }: ItemProps) {
 						<p className="font-bold">{item.name}</p>
 						<p className="font-bold text-xs">{item.description}</p>
 						<p className="font-bold">
-							Valor de aquisição: R$ {item.value}
+							Valor de aquisição: R$ {item.lot.price}
 						</p>
 					</div>
 					<OrderButton

@@ -96,6 +96,7 @@ export class ItemRepository {
 				lot: {
 					include: {
 						supplier: true,
+						Invoice: true,
 					},
 				},
 				order: {
@@ -106,6 +107,8 @@ export class ItemRepository {
 				storage: true,
 			},
 		});
+
+		// console.log(res)
 
 		return res;
 	}
