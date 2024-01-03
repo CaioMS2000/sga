@@ -12,7 +12,7 @@ export default async function page({}: pageProps) {
     });
 
 	items = items.filter(item => {
-		if(item.amount > 0 && item.available) return true;
+		if(item.available) return true;
 		return false
 	})
 

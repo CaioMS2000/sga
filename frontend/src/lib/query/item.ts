@@ -6,9 +6,7 @@ export const GET_ITEMS = gql`
 			id
 			name
 			description
-			value
 			image
-			amount
 			available
 			categories {
 				id
