@@ -16,9 +16,6 @@ export class Item extends BaseModel implements PrismaItem {
 	@Field({ defaultValue: "" })
 	description: string;
 
-	@Field()
-	value: number;
-
 	@Field(() => Order, { nullable: true })
 	order: Order;
 

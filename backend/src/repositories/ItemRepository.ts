@@ -37,16 +37,8 @@ export class ItemRepository {
 		const lot = await prisma.lot.create({
 			data: {
 				supplier: {
-					connectOrCreate: {
-						where: {
-							cnpj: item.lot.supplier.cnpj,
-						},
-						create: {
-							name: item.lot.supplier.name,
-							email: item.lot.supplier.email,
-							phone: item.lot.supplier.phone,
-							cnpj: item.lot.supplier.cnpj,
-						},
+					connect: {
+						cnpj: item.lot.supplier,
 					},
 				},
 				itemAmount: item.lot.itemAmount,
@@ -68,20 +60,13 @@ export class ItemRepository {
 				},
 
 				categories: {
-					connectOrCreate: item.categories.map(
-						({ name, code, description }) => ({
-							where: { code },
-							create: {
-								name,
-								description,
-								code: randomUUID(),
-							},
-						})
-					),
+					connect: item.categories.map( cat => ({code: cat}))
 				},
 
 				lot: {
-					connect: lot,
+					connect: {
+						id: lot.id
+					},
 				},
 			},
 			include: {

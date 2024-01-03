@@ -5,8 +5,6 @@ export const CREATE_ITEM = gql`
 		createItem(data: $data) {
 			name
 			description
-			value
-			storedAt
 		}
 	}
 `;

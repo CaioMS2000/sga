@@ -2,12 +2,14 @@
 import FileInput from "@/components/FileInput";
 import Input from "@/components/InputSimple";
 import { CustomSelector, CustomTuple } from "@/components/Selector2";
+import { CREATE_ITEM } from "@/lib/mutation/item";
 import { GET_ALL_CATEGORIES } from "@/lib/query/category";
 import { GET_ALL_SUPPLIERS } from "@/lib/query/supplier";
 import { CategoryModel } from "@/models/categoryModel";
 import { SupplierModel } from "@/models/supplierModel";
-import { fetchGraphQL } from "@/utils";
+import { buildUser, fetchGraphQL } from "@/utils";
 import { ChangeEvent, PropsWithChildren, useEffect, useRef, useState } from "react";
+import Categories from "../../categories/page";
 
 interface ItemCreateProps extends PropsWithChildren {}
 // ITEM: name, description, categories, image
@@ -30,7 +32,7 @@ export default function ItemCreate({}: ItemCreateProps) {
 		_setPrice(value);
 	}
 
-	const [image, setImage] = useState<FileList | null>(null);
+	const [image, setImage] = useState('');
 
 	const [availableCategories, setAvailableCategories] = useState<
 		CategoryModel[]
@@ -101,6 +103,43 @@ export default function ItemCreate({}: ItemCreateProps) {
 
 		setAvailableCategories(categories);
 		setAvailableSuppliers(suppliers);
+	}
+
+	async function handleSend(){
+		console.log(name)
+		console.log(description)
+		console.log(itemAmount)
+		console.log(price)
+		console.log(image)
+		console.log(selectedCategory)
+		console.log(selectedSupplier)
+
+		const user = await buildUser()
+		console.log(user)
+
+		if(user){
+			const newItem = await fetchGraphQL(CREATE_ITEM, {
+				key: 'createItem',
+				variables: {
+					data: {
+						name,
+						image,
+						description,
+						storage: {
+							userId: user.id
+						},
+						categories: selectedCategory.map(cat => cat.code),
+						lot: {
+							price,
+							itemAmount,
+							supplier: selectedSupplier[0].cnpj
+						}
+					}
+				}
+			})
+	
+			console.log(newItem)
+		}
 	}
 
 	useEffect(() => {
@@ -184,8 +223,11 @@ export default function ItemCreate({}: ItemCreateProps) {
 							className=""
 							label-class="bg-slate-900 font-bold"
 							ref={fileInputRef}
+							inputChange={setImage}
 						/>
 					</div>
+
+					<button className="btn" onClick={handleSend}>Criar</button>
 
 				</div>
 			</div>

@@ -4,8 +4,11 @@ import { CreateSupplierInput } from "../supplier/create";
 
 @InputType()
 export class LotCreateInput{
-    @Field(() => CreateSupplierInput)
-    supplier: CreateSupplierInput
+    /**
+     * Supplier's CNPJ
+     */
+    @Field(() => String)
+    supplier: string
 
     @Field({defaultValue: 1})
     itemAmount: number

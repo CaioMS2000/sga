@@ -23,8 +23,11 @@ export class CreateItemInput {
 	@Field(() => CreateStorageInput)
 	storage: CreateStorageInput;
 
-	@Field(() => [CreateCategoryInput])
-	categories: CreateCategoryInput[];
+	/**
+	 * Code of category: String[]
+	 */
+	@Field(() => [String])
+	categories: string[];
 
 	@Field(() => LotCreateInput)
 	lot: LotCreateInput;
