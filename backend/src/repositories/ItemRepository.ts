@@ -1,6 +1,5 @@
 import { randomUUID } from "node:crypto";
 
-// import { prisma } from '../lib/prisma';
 import {
 	BasicChangeItemInput,
 	CreateDeliveryInput,
@@ -60,12 +59,12 @@ export class ItemRepository {
 				},
 
 				categories: {
-					connect: item.categories.map( cat => ({code: cat}))
+					connect: item.categories.map((cat) => ({ code: cat })),
 				},
 
 				lot: {
 					connect: {
-						id: lot.id
+						id: lot.id,
 					},
 				},
 			},
@@ -107,8 +106,6 @@ export class ItemRepository {
 				storage: true,
 			},
 		});
-
-		// console.log(res)
 
 		return res;
 	}

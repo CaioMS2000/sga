@@ -5,20 +5,25 @@ import { fetchGraphQL } from "@/utils";
 import { HTMLProps, PropsWithChildren } from "react";
 
 interface ButtonProps extends PropsWithChildren, HTMLProps<HTMLButtonElement> {
-	name: string
-	cnpj: string
-	email: string
-	phone: string
+	name: string;
+	cnpj: string;
+	email: string;
+	phone: string;
 }
 
-export default function Button({ children, name, cnpj, email, phone, ...rest }: ButtonProps) {
+export default function Button({
+	children,
+	name,
+	cnpj,
+	email,
+	phone,
+	...rest
+}: ButtonProps) {
 	async function handleCreateSupplier() {
 		const supplier = await fetchGraphQL(CREATE_SUPPLIER, {
 			key: "createSupplier",
-			variables: {supplier:{name, cnpj, email, phone}},
+			variables: { supplier: { name, cnpj, email, phone } },
 		});
-
-		console.log(supplier)
 
 		location.reload();
 	}

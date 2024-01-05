@@ -1,7 +1,6 @@
 import "reflect-metadata";
 import { createYoga } from "graphql-yoga";
 import express from "express";
-// import cors from 'cors';
 import { buildSchema, registerEnumType } from "type-graphql";
 import path from "node:path";
 import { PrismaClient, Role, Status } from "@prisma/client";
@@ -69,19 +68,12 @@ async function main() {
 
 	const server = express();
 
-	// server.use(cors())
 	server.use(express.json());
-	// server.use('/graphql', yoga)
 	server.use(yoga);
 
 	server.listen(4000);
 	print("Server is running on http://localhost:4000");
 	print("Playground on http://localhost:4000/graphql");
-
-	// server.listen(4000, '0.0.0.0', () => {
-	//     print('Server is running on http://0.0.0.0:4000')
-	//     print('Playground on http://0.0.0.0:4000/graphql')
-	// })
 }
 
 main();

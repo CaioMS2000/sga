@@ -44,19 +44,13 @@ export class DeliveryResolver {
 			where: { id: delivery.attenderId ?? delivery.attender.id },
 		});
 
-        return res
+		return res;
 	}
 
 	@FieldResolver(() => Item)
 	async item(@Root() delivery: Delivery, @Ctx() context: ServerContextData) {
 		const { prisma } = context;
-        console.log(delivery)
 
-		// const res = await prisma.item.findFirst({
-		// 	where: { id: delivery.item.id },
-		// });
-
-        // return res
-        return delivery.item
+		return delivery.item;
 	}
 }

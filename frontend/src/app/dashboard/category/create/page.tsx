@@ -47,9 +47,8 @@ export default function CategoryCreate({}: CategoryCreateProps) {
 				},
 			});
 
-			console.log(res)
-			setName('')
-			setDescription('')
+			setName("");
+			setDescription("");
 		} catch (e) {
 			console.log(e);
 			let _e: any = (e as BasicObject).message.split(":");
@@ -71,13 +70,35 @@ export default function CategoryCreate({}: CategoryCreateProps) {
 				</div>
 
 				<div className="flex flex-col gap-3 items-center">
-					<Input ref={nameInputRef} inputChange={setName} value={name} label="Nome" placeholder="ex: objetos descartaveis" className="input-info" label-class="font-bold" onKeyDown={handleKeyDown}/>
+					<Input
+						ref={nameInputRef}
+						inputChange={setName}
+						value={name}
+						label="Nome"
+						placeholder="ex: objetos descartaveis"
+						className="input-info"
+						label-class="font-bold"
+						onKeyDown={handleKeyDown}
+					/>
 
-					<Input ref={descriptionInputRef} inputChange={setDescription} value={description} label="Descrição" placeholder="opcional" className="input-info placeholder:italic" label-class="font-bold" onKeyDown={handleKeyDown}/>
+					<Input
+						ref={descriptionInputRef}
+						inputChange={setDescription}
+						value={description}
+						label="Descrição"
+						placeholder="opcional"
+						className="input-info placeholder:italic"
+						label-class="font-bold"
+						onKeyDown={handleKeyDown}
+					/>
 
-					<button className="btn btn-primary w-40 mt-10" onClick={handleSend}>Criar</button>
+					<button
+						className="btn btn-primary w-40 mt-10"
+						onClick={handleSend}
+					>
+						Criar
+					</button>
 				</div>
-
 			</div>
 		</>
 	);

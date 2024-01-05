@@ -14,7 +14,4 @@ export class Department extends BaseModel implements PrismaDepartment{
 
     @Field({defaultValue: ''})
     description: string;
-
-    // @Field(() => [User], {nullable: true})
-    // users: User[]
 }

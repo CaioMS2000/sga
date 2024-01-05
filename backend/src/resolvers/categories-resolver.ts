@@ -15,13 +15,6 @@ import { CreateCategoryInput } from "../dto/inputs";
 import { IsString } from "class-validator";
 import { UpdateCategoryInput } from "../dto/inputs/category/update";
 
-// export type OrderModelWithTypename = {
-// 	__typename?: string;
-// 	item: ItemModelWithTypename;
-// 	updatedAt: string;
-// 	analysis: AnalysisModelWithTypename;
-// } & Omit<OrderModel, "requestedAt" | "analysis">;
-
 type ItemWithoutCategory = Omit<Item, "categories">;
 
 @Resolver(() => Category)

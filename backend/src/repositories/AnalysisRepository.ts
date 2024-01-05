@@ -35,7 +35,6 @@ export class AnalysisRepository{
             },
             include: {
                 analyst: true,
-                // order: true
                 order: {
                     include: {
                         requester: true,

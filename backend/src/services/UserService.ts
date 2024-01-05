@@ -39,11 +39,6 @@ export class UserService {
 	async getAllUsers(context: ServerContextData) {
 		const { accessToken, refreshToken } = context;
 
-		// const { isValid, invalidToken } = await validateToken({
-		// 	accessToken: accessToken || "",
-		// 	refreshToken: refreshToken || "",
-		// });
-
 		const isValid = true;
 		const invalidToken: string = "notDefined";
 
@@ -81,8 +76,6 @@ export class UserService {
 				throw new GraphQLError(`${invalidToken} expired`);
 			}
 		}
-
-		// ValidateToken({accessToken: accessToken || '', refreshToken: refreshToken || ''})
 
 		return this.UserRepository.getAllUsers(context);
 	}
@@ -208,9 +201,6 @@ export class UserService {
 			throw new GraphQLError("Invalid credentials");
 		}
 
-		// const aToken = await this.UserRepository.createAccessToken(dbUser.id, context)
-		// const rToken = await this.UserRepository.createRefreshToken(dbUser.id, context)
-
 		const { accessToken, refreshToken } = await makeTokens({
 			id: dbUser.id,
 			context,
@@ -251,10 +241,6 @@ async function makeTokens({
 		refreshToken: string;
 	}
 
-	// const res: returType = {
-	//     accessToken: accessToken.token,
-	//     refreshToken: refreshToken.token
-	// }
 	const res = {
 		accessToken: accessToken,
 		refreshToken: refreshToken,

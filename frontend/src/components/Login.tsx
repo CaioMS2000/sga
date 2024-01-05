@@ -1,11 +1,23 @@
 "use client";
-import { KeyboardEventHandler, PropsWithChildren, useRef, useState, forwardRef } from "react";
+import {
+	KeyboardEventHandler,
+	PropsWithChildren,
+	useRef,
+	useState,
+	forwardRef,
+} from "react";
 import Image from "next/image";
 import Input from "./InputLeftLabeled";
 import { LOGIN } from "@/lib/mutation/user";
 import { BasicObject, GraphQLResponse, fetchGraphQL } from "@/utils";
 import { saveCookie } from "@/app/actions";
-import { AccesstokenExpiration, AccesstokenKey, RefreshtokenExpiration, RefreshtokenKey, UserCookieKey } from "@/utils/constants";
+import {
+	AccesstokenExpiration,
+	AccesstokenKey,
+	RefreshtokenExpiration,
+	RefreshtokenKey,
+	UserCookieKey,
+} from "@/utils/constants";
 import { FaBoxArchive } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 
@@ -14,32 +26,29 @@ interface LoginProps extends PropsWithChildren {}
 export default function Login({}: LoginProps) {
 	const [email, setEmail] = useState("email@mail.com");
 	const [password, setPassword] = useState("123");
-	const emailInputRef = useRef<HTMLInputElement|null>(null);
-	const passwordInputRef = useRef<HTMLInputElement|null>(null);
+	const emailInputRef = useRef<HTMLInputElement | null>(null);
+	const passwordInputRef = useRef<HTMLInputElement | null>(null);
 	const [error, setError] = useState("");
-	const {push} = useRouter()
+	const { push } = useRouter();
 
 	const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = (event) => {
-		if(event.key == 'Enter'){
-
-			if(!emailInputRef.current?.value){
-				return emailInputRef.current?.focus()
+		if (event.key == "Enter") {
+			if (!emailInputRef.current?.value) {
+				return emailInputRef.current?.focus();
 			}
 
-			if(!passwordInputRef.current?.value){
-				return passwordInputRef.current?.focus()
+			if (!passwordInputRef.current?.value) {
+				return passwordInputRef.current?.focus();
 			}
 
-			emailInputRef.current?.blur()
-			passwordInputRef.current?.blur()
-			handleSend()
-
+			emailInputRef.current?.blur();
+			passwordInputRef.current?.blur();
+			handleSend();
 		}
-	}
+	};
 
 	async function handleSend() {
 		try {
-
 			const res: BasicObject<BasicObject> = await fetchGraphQL(LOGIN, {
 				key: "login",
 				variables: {
@@ -54,17 +63,27 @@ export default function Login({}: LoginProps) {
 			const refreshToken = res.refreshToken;
 			const user = res.user;
 
-			await saveCookie(AccesstokenKey, JSON.stringify(accessToken.token), accessToken.expiresIn ?? AccesstokenExpiration)
-			await saveCookie(RefreshtokenKey, JSON.stringify(refreshToken.token), refreshToken.expiresIn ?? RefreshtokenExpiration)
-			await saveCookie(UserCookieKey, JSON.stringify(user), accessToken.expiresIn ?? AccesstokenExpiration)
+			await saveCookie(
+				AccesstokenKey,
+				JSON.stringify(accessToken.token),
+				accessToken.expiresIn ?? AccesstokenExpiration
+			);
+			await saveCookie(
+				RefreshtokenKey,
+				JSON.stringify(refreshToken.token),
+				refreshToken.expiresIn ?? RefreshtokenExpiration
+			);
+			await saveCookie(
+				UserCookieKey,
+				JSON.stringify(user),
+				accessToken.expiresIn ?? AccesstokenExpiration
+			);
 
-			push('/dashboard')
+			push("/dashboard");
 		} catch (e) {
-			console.log(e)
 			let _e: any = (e as BasicObject).message.split(":");
 			_e.shift();
 			_e = _e.join(":");
-			console.log(_e)
 			_e = JSON.parse(_e);
 
 			const response = _e as GraphQLResponse;
@@ -86,9 +105,9 @@ export default function Login({}: LoginProps) {
 						className="flex flex-col items-center justify-center bg-greenishBlack rounded-md px-6 py-10 max-w-xl"
 					>
 						<div className="mb-10 bg-black/50 rounded-full p-10">
-							<FaBoxArchive className='w-20 h-20' />
+							<FaBoxArchive className="w-20 h-20" />
 						</div>
-						<div className='max-w-lg'>
+						<div className="max-w-lg">
 							<p className="font-bold text-white text-2xl text-center">
 								Sistema de Gerenciamento de Almoxarifado
 							</p>
@@ -96,7 +115,7 @@ export default function Login({}: LoginProps) {
 						<div className="divider max-w-[10rem] min-w-[8rem] mx-auto" />
 						<div className="container flex flex-col items-center gap-5">
 							<Input
-							ref={emailInputRef}
+								ref={emailInputRef}
 								label="Email"
 								placeholder="seuemail@exemplo.com"
 								inputChange={setEmail}
@@ -104,7 +123,7 @@ export default function Login({}: LoginProps) {
 								value={email}
 							/>
 							<Input
-							ref={passwordInputRef}
+								ref={passwordInputRef}
 								label="Senha"
 								placeholder=""
 								type="password"

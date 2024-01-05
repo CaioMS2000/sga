@@ -21,7 +21,6 @@ export default async function Item({ params: { id } }: ItemProps) {
 			id: parseInt(id),
 		},
 	});
-	console.log(item)
 	const itemImageFlag = Boolean(item.image.length);
 	const categories = item.categories;
 	const currentUser = await buildUser();

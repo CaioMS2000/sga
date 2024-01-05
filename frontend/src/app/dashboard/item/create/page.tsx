@@ -8,7 +8,13 @@ import { GET_ALL_SUPPLIERS } from "@/lib/query/supplier";
 import { CategoryModel } from "@/models/categoryModel";
 import { SupplierModel } from "@/models/supplierModel";
 import { buildUser, fetchGraphQL } from "@/utils";
-import { ChangeEvent, PropsWithChildren, useEffect, useRef, useState } from "react";
+import {
+	ChangeEvent,
+	PropsWithChildren,
+	useEffect,
+	useRef,
+	useState,
+} from "react";
 import Categories from "../../categories/page";
 
 interface ItemCreateProps extends PropsWithChildren {}
@@ -16,7 +22,7 @@ interface ItemCreateProps extends PropsWithChildren {}
 // LOT: supplier, itemAmount, price
 // must fetch: categories, supplier
 export default function ItemCreate({}: ItemCreateProps) {
-	const fileInputRef = useRef<HTMLInputElement|null>(null);
+	const fileInputRef = useRef<HTMLInputElement | null>(null);
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
 
@@ -32,7 +38,7 @@ export default function ItemCreate({}: ItemCreateProps) {
 		_setPrice(value);
 	}
 
-	const [image, setImage] = useState('');
+	const [image, setImage] = useState("");
 
 	const [availableCategories, setAvailableCategories] = useState<
 		CategoryModel[]
@@ -105,40 +111,29 @@ export default function ItemCreate({}: ItemCreateProps) {
 		setAvailableSuppliers(suppliers);
 	}
 
-	async function handleSend(){
-		console.log(name)
-		console.log(description)
-		console.log(itemAmount)
-		console.log(price)
-		console.log(image)
-		console.log(selectedCategory)
-		console.log(selectedSupplier)
+	async function handleSend() {
+		const user = await buildUser();
 
-		const user = await buildUser()
-		console.log(user)
-
-		if(user){
+		if (user) {
 			const newItem = await fetchGraphQL(CREATE_ITEM, {
-				key: 'createItem',
+				key: "createItem",
 				variables: {
 					data: {
 						name,
 						image,
 						description,
 						storage: {
-							userId: user.id
+							userId: user.id,
 						},
-						categories: selectedCategory.map(cat => cat.code),
+						categories: selectedCategory.map((cat) => cat.code),
 						lot: {
 							price,
 							itemAmount,
-							supplier: selectedSupplier[0].cnpj
-						}
-					}
-				}
-			})
-	
-			console.log(newItem)
+							supplier: selectedSupplier[0].cnpj,
+						},
+					},
+				},
+			});
 		}
 	}
 
@@ -218,7 +213,12 @@ export default function ItemCreate({}: ItemCreateProps) {
 					</div>
 
 					<div className="flex flex-col">
-						<p className="font-bold">Foto <span className="font-normal italic">(opcional)</span></p>
+						<p className="font-bold">
+							Foto{" "}
+							<span className="font-normal italic">
+								(opcional)
+							</span>
+						</p>
 						<FileInput
 							className=""
 							label-class="bg-slate-900 font-bold"
@@ -227,8 +227,9 @@ export default function ItemCreate({}: ItemCreateProps) {
 						/>
 					</div>
 
-					<button className="btn" onClick={handleSend}>Criar</button>
-
+					<button className="btn" onClick={handleSend}>
+						Criar
+					</button>
 				</div>
 			</div>
 		</>
