@@ -127,5 +127,18 @@ export const getEnumFromString = <T>(enumObj: T, value: string): T[keyof T] | un
 	const matchingValue = enumValues.find((enumValue) => enumValue === value);
   
 	return matchingValue as T[keyof T] | undefined;
-  };
-  
+};
+
+function isNumeric(str: string) {
+	return /^\d+$/.test(str);
+}
+
+export function formatUniqueDigit(number: string){
+	if(isNumeric(number)){
+		if(number.length == 1){
+			return `0${number}`
+		}
+	}
+	
+	return number;
+}

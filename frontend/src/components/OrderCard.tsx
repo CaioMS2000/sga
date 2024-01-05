@@ -1,7 +1,8 @@
 import { OrderModel } from "@/models/orderModel";
 import { PropsWithChildren } from "react";
 import { Status as _Status } from "@/models/enum";
-import { getEnumFromString, statusToText } from "@/utils";
+import { formatUniqueDigit, getEnumFromString, statusToText } from "@/utils";
+import { RiQuestionFill } from "react-icons/ri";
 
 interface OrderHorizontalCardProps extends PropsWithChildren {
 	order: OrderModel;
@@ -12,14 +13,15 @@ export default async function OrderHorizontalCard({
 	order: { code, item, analysis, requester, createdAt },
 	storeKeeperView = false,
 }: OrderHorizontalCardProps) {
+	const itemImageFlag = Boolean(item.image.length);
 	const Status = analysis ? (
 		analysis.isApproved ? (
-			<span className="text-green-600">Aprovado</span>
+			<span className="font-bold text-green-600">Aprovado</span>
 		) : (
-			<span className="text-red-600">Rejeitado</span>
+			<span className="font-bold text-red-600">Rejeitado</span>
 		)
 	) : (
-		<span className="text-orange-500">Pendente</span>
+		<span className="font-bold text-orange-500">Pendente</span>
 	);
 
 	const deliveryStatus = item.delivery?.status ?? _Status.Waiting;
@@ -39,23 +41,34 @@ export default async function OrderHorizontalCard({
 		</span>
 	);
 	const data = new Date(createdAt);
-	const day = data.getDate();
-	const month = data.getMonth() + 1; // Os meses são indexados de 0 a 11
+	const day = formatUniqueDigit(String(data.getDate()));
+	const month = formatUniqueDigit(String(data.getMonth() + 1)); // Os meses são indexados de 0 a 11
 	const year = data.getFullYear();
+	const hours = formatUniqueDigit(String(data.getHours()));
+	const minutes = formatUniqueDigit(String(data.getMinutes()));
 
 	return (
 		<>
 			<a href={`/dashboard/order/${code}`}>
-				<div className="container flex flex-row bg-teal-800 w-fit p-4 rounded-lg items-center">
-					<div className="border-neutral-400 border-2 p-3 h-fit rounded-lg">
-						<img
-							src={item.image}
-							alt={`Item do pedido ${code}`}
-							className="max-h-40 rounded-lg"
-						/>
-					</div>
-					<div className="divider divider-horizontal" />
+				<div className="container flex flex-row bg-zinc-800 w-fit p-4 rounded-lg items-center">
+					{itemImageFlag && (
+						<>
+							<div className="border-neutral-400 border-2 p-3 h-fit rounded-lg">
+								<img
+									src={item.image}
+									alt={`Item do pedido ${code}`}
+									className="max-h-40 rounded-lg"
+								/>
+							</div>
+							<div className="divider divider-horizontal" />
+						</>
+					)}
 					<div className="join join-vertical gap-3">
+						{!itemImageFlag && (
+							<div className="flex border-neutral-400 border-2 p-3">
+								<p className="font-bold text-xl text-center w-full">{item.name}</p>
+							</div>
+						)}
 						{storeKeeperView && (
 							<>
 								<div className="flex gap-3 border-neutral-400 border-2 p-3">

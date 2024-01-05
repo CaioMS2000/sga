@@ -1,4 +1,4 @@
-import OrderHorizontalCard from '@/components/OrderHorizontalCard';
+import OrderHorizontalCard from '@/components/OrderCard';
 import { GET_ALL_ORDERS } from '@/lib/query/order';
 import { Admin, Manager, StoreKeeper } from '@/models/enum';
 import { OrderModel } from '@/models/orderModel';
