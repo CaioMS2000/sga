@@ -31,7 +31,6 @@ export const CREATE_ANALYSIS = gql`
 				item {
 					name
 					description
-					value
 					categories {
 						code
 						name

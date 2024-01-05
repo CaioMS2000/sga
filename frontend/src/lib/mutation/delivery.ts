@@ -6,9 +6,7 @@ export const CREATE_DELIVERY_ = gql`
 			id
 			name
 			description
-			value
 			image
-			amount
 			available
 			categories {
 				id
@@ -30,15 +28,6 @@ export const CREATE_DELIVERY_ = gql`
 						name
 						description
 					}
-				}
-			}
-			invoice {
-				code
-				supplier {
-					name
-					cnpj
-					email
-					phone
 				}
 			}
 			order {
@@ -93,24 +82,13 @@ export const CREATE_DELIVERY = gql`
 			id
 			name
 			description
-			value
 			image
-			amount
 			available
 			categories {
 				id
 				code
 				name
 				description
-			}
-			invoice {
-				code
-				supplier {
-					name
-					cnpj
-					email
-					phone
-				}
 			}
 			order {
 				code
@@ -176,7 +154,6 @@ export const UPDATE_DELIVERY = gql`
 				id
 				name
 				description
-				value
 				image
 			}
 		}

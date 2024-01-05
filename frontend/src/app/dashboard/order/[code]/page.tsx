@@ -65,13 +65,13 @@ export default async function Order({ params: { code } }: OrderProps) {
 							<div className="mx-auto italic badge bg-opacity-25 border-opacity-25 mb-1 h-fit text-[12px]">
 								Código: {order.code}
 							</div>
-							<figure className="p-0">
+							{order.item?.image && (<figure className="p-0">
 								<img
 									src={order.item?.image}
 									alt="Shoes"
 									className="rounded-xl"
 								/>
-							</figure>
+							</figure>)}
 							<div className="badge mx-auto my-3 bg-teal-800 border-teal-800 text-white">
 								<a href="#" target="_blank">
 									Nota fiscal
@@ -95,7 +95,7 @@ export default async function Order({ params: { code } }: OrderProps) {
 									<span className="font-bold">
 										Custo por unidade:
 									</span>{" "}
-									R${order.item?.value}
+									R$ {order.item?.lot.price}
 								</p>
 								<p>
 									<span className="font-bold">

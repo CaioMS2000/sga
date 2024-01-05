@@ -40,6 +40,10 @@ export const GET_ORDER = gql`
 						}
 					}
 				}
+				lot{
+					price
+					itemAmount
+				}
 			}
 			analysis {
 				id
