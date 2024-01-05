@@ -40,8 +40,6 @@ export const INIT_ORDER = gql`
 				name
 				image
 				description
-				value
-				amount
 				categories {
 					id
 					code

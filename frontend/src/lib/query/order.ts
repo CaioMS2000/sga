@@ -22,7 +22,6 @@ export const GET_ORDER = gql`
 			item {
 				name
 				description
-				value
 				image
 				id
 				delivery {
@@ -86,7 +85,6 @@ export const GET_ALL_ORDERS = gql`
 			item {
 				name
 				description
-				value
 				image
 				id
 				delivery {
