@@ -45,9 +45,6 @@ export class ItemResolver {
   async getItemById(@Arg("id") id: number, @Ctx() context: ServerContextData) {
     const res = await this.ItemService.getItemById(id, context);
 
-    console.log('#getItemById')
-		console.log(res)
-
     return res;
   }
 
@@ -195,10 +192,6 @@ export class ItemResolver {
           supplier: true,
         }
       })
-
-      // console.log('##')
-      // console.log(res)
-      // console.log('##')
 
       return res
 
