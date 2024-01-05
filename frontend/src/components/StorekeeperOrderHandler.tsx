@@ -63,8 +63,8 @@ export default function StorekeeperOrderHandler({order, user}:StorekeeperOrderHa
 
   return(
       <>
-      <div className="bg-slate-700 rounded-lg h-fit p-3 text-2xl text-center flex flex-col">
-      <h3 className="font-bold bg-slate-400 p-3 mb-5 text-black rounded-lg">Almoxarife</h3>
+      <div className="bg-zinc-800 rounded-lg h-fit p-3 text-2xl text-center flex flex-col">
+      <h3 className="font-bold mb-5 text-white rounded-lg">Almoxarife</h3>
       {delivery && (
         <>
         <span className='flex'><p className="text-[1.3rem] mr-1">Status:</p>
@@ -74,7 +74,7 @@ export default function StorekeeperOrderHandler({order, user}:StorekeeperOrderHa
       )}
       {
         deliveryStatus != _Status.Concluded && (
-            <button className="btn bg-darkGreen border-darkGreen text-white font-bold mt-5" onClick={handleDelivery}>{buttonLabel}</button>
+            <button className="btn bg-purple-700 hover:bg-purple-900 border-purple-700 hover:border-purple-900 text-white font-bold mt-5" onClick={handleDelivery}>{buttonLabel}</button>
         )
       }
       </div>

@@ -55,6 +55,7 @@ export default async function Order({ params: { code } }: OrderProps) {
 		return false;
 	})();
 	const userIsStorekeeper = user.roles.includes(StoreKeeper);
+	const userIsAdmin = user.roles.includes(Admin);
 
 	return (
 		<>
@@ -196,7 +197,7 @@ export default async function Order({ params: { code } }: OrderProps) {
 						)}
 					</div>
 				</div>
-				{userIsStorekeeper && (
+				{(userIsStorekeeper || userIsAdmin) && (
 					<>
 						<StorekeeperOrderHandler order={order} user={user} />
 					</>
