@@ -3,6 +3,7 @@ import { Invoice as PrismaInvoice } from '@prisma/client';
 
 import { BaseModel } from './baseModel';
 import { Item, Supplier } from '.';
+import { Lot } from './lot';
 
 @ObjectType()
 export class Invoice extends BaseModel implements PrismaInvoice{
@@ -10,12 +11,6 @@ export class Invoice extends BaseModel implements PrismaInvoice{
     @Field()
     code: string
     
-    @Field(() => Item)
-    item: Item
-    
-    @Field(() => Supplier)
-    supplier: Supplier
-    
-    @Field()
-    supplierId: number
+    @Field(() => [Lot])
+    lots: Lot[]
 }

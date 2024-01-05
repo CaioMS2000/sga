@@ -17,14 +17,14 @@ export class Lot extends BaseModel implements PrismaLot{
     @Field()
     price: number
     
-    @Field(() => [Invoice])
-    invoices: Invoice[]
+    @Field(() => Invoice)
+    invoices: Invoice
 
     @Field()
     invoiceId: number
 
-    @Field(() => [Supplier])
-    supplier: Supplier[]
+    @Field(() => Supplier)
+    supplier: Supplier
 
     @Field()
     supplierId: number

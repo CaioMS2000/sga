@@ -15,7 +15,7 @@ interface ItemProps extends PropsWithChildren {
 }
 
 export default async function Item({ params: { id } }: ItemProps) {
-	const item = await fetchGraphQL(GET_ITEM_BY_ID, {
+	const item = await fetchGraphQL<ItemModel>(GET_ITEM_BY_ID, {
 		key: "getItemById",
 		variables: {
 			id: parseInt(id),
