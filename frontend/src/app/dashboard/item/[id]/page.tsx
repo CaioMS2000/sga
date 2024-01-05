@@ -62,7 +62,7 @@ export default async function Item({ params: { id } }: ItemProps) {
 						</p>
 					</div>
 					<OrderButton
-						className="bg-green-600 text-white"
+						className="bg-purple-900 hover:bg-purple-950 text-white"
 						itemId={item.id}
 						requesterId={currentUser.id}
 					>

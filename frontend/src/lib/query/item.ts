@@ -14,6 +14,14 @@ export const GET_ITEMS = gql`
 				name
 				description
 			}
+			lot{
+				id
+				itemAmount
+				price
+				supplier{
+					name
+				}
+			}
 		}
 	}
 `;
