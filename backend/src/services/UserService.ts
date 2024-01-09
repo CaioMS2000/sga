@@ -37,45 +37,6 @@ export class UserService {
 	}
 
 	async getAllUsers(context: ServerContextData) {
-		const { accessToken, refreshToken } = context;
-
-		const isValid = true;
-		const invalidToken: string = "notDefined";
-
-		if (!isValid) {
-			// token invalido
-
-			if (invalidToken === "accessToken") {
-				// token de acesso é o invalido
-				// renovando os tokens
-				const user = await context.prisma.user.findFirst({
-					where: {
-						accessToken: {
-							token: accessToken,
-						},
-					},
-				});
-
-				if (!user) {
-					throw new GraphQLError(`Token's owner not found`);
-				} else {
-					const {
-						accessToken: accessToken2,
-						refreshToken: refreshToken2,
-					} = await makeTokens({
-						id: user?.id,
-						context,
-						repository: this.UserRepository,
-					});
-
-					context.accessToken = accessToken2.token;
-					context.refreshToken = refreshToken2.token;
-				}
-			} else {
-				// "refresh token" é o invalido
-				throw new GraphQLError(`${invalidToken} expired`);
-			}
-		}
 
 		return this.UserRepository.getAllUsers(context);
 	}
