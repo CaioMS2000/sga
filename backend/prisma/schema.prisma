@@ -1,210 +1,211 @@
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 model Record {
-  id        Int      @id @default(autoincrement())
-  code      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    id        Int      @id @default(autoincrement())
+    code      String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  auditor   User @relation(fields: [auditorId], references: [id])
-  auditorId Int
+    auditor   User @relation(fields: [auditorId], references: [id])
+    auditorId Int
 }
 
 model Supplier {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String   @default("")
-  cnpj      String   @unique
-  email     String?
-  phone     String?
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    name      String   @default("")
+    cnpj      String   @unique
+    email     String?
+    phone     String?
 
-  lots Lot[]
+    lots Lot[]
 }
 
 model Department {
-  id          Int      @id @default(autoincrement())
-  code        String  @unique @default(uuid())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  name        String
-  description String   @default("")
+    id          Int      @id @default(autoincrement())
+    code        String   @unique @default(uuid())
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    name        String
+    description String   @default("")
 
-  users User[]
+    users User[]
 }
 
 model Category {
-  id          Int      @id @default(autoincrement())
-  code        String   @unique
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  name        String
-  description String   @default("")
+    id          Int      @id @default(autoincrement())
+    code        String   @unique
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    name        String
+    description String   @default("")
 
-  items Item[]
+    items Item[]
 }
 
 model Analysis {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  isApproved Boolean
+    isApproved Boolean
 
-  analyst   User @relation("analysis", fields: [analystId], references: [id])
-  analystId Int
+    analyst   User @relation("analysis", fields: [analystId], references: [id])
+    analystId Int
 
-  order   Order @relation(fields: [orderId], references: [id])
-  orderId Int   @unique
+    order   Order @relation(fields: [orderId], references: [id])
+    orderId Int   @unique
 }
 
 model Order {
-  id        Int      @id @default(autoincrement())
-  code      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    id        Int      @id @default(autoincrement())
+    code      String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  requester   User @relation("orders", fields: [requesterId], references: [id], onDelete: Cascade)
-  requesterId Int
+    requester   User @relation("orders", fields: [requesterId], references: [id], onDelete: Cascade)
+    requesterId Int
 
-  analysis Analysis?
+    analysis Analysis?
 
-  item Item?
+    item Item?
 }
 
 model Delivery {
-  id        Int      @id @default(autoincrement())
-  code      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  status    Status   @default(Waiting)
+    id        Int      @id @default(autoincrement())
+    code      String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    status    Status   @default(Waiting)
 
-  attender   User @relation(fields: [attenderId], references: [id])
-  attenderId Int
+    attender   User @relation(fields: [attenderId], references: [id])
+    attenderId Int
 
-  item Item?
+    item Item?
 }
 
 model Invoice {
-  id        Int      @id @default(autoincrement())
-  code      String   @unique @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    id        Int      @id @default(autoincrement())
+    code      String   @unique @default(uuid())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  lots Lot[]
+    lots Lot[]
 }
 
 model Lot {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  Item       Item?
-  Invoice    Invoice  @relation(fields: [invoiceId], references: [id])
-  invoiceId  Int
-  supplier   Supplier @relation(fields: [supplierId], references: [id])
-  supplierId Int
-  itemAmount Int
-  price      Float
+    Item       Item?
+    Invoice    Invoice  @relation(fields: [invoiceId], references: [id])
+    invoiceId  Int
+    supplier   Supplier @relation(fields: [supplierId], references: [id])
+    supplierId Int
+    itemAmount Int
+    price      Float
 }
 
 model Storage {
-  id        Int      @id @default(autoincrement())
-  code      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+    id        Int      @id @default(autoincrement())
+    code      String   @unique
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  storekeeper   User @relation(fields: [storekeeperId], references: [id])
-  storekeeperId Int
+    storekeeper   User @relation(fields: [storekeeperId], references: [id])
+    storekeeperId Int
 
-  item Item?
+    item Item?
 }
 
 model Item {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  name        String
-  image       String   @default("")
-  description String   @default("")
-  available   Boolean  @default(true)
+    id          Int      @id @default(autoincrement())
+    code        String   @default(uuid())
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    name        String
+    image       String   @default("")
+    description String   @default("")
+    available   Boolean  @default(true)
 
-  order   Order? @relation(fields: [orderId], references: [id])
-  orderId Int?   @unique
+    order   Order? @relation(fields: [orderId], references: [id])
+    orderId Int?   @unique
 
-  storage   Storage @relation(fields: [storageId], references: [id])
-  storageId Int     @unique
+    storage   Storage @relation(fields: [storageId], references: [id])
+    storageId Int     @unique
 
-  delivery   Delivery? @relation(fields: [deliveryId], references: [id])
-  deliveryId Int?      @unique
+    delivery   Delivery? @relation(fields: [deliveryId], references: [id])
+    deliveryId Int?      @unique
 
-  categories Category[]
-  lot        Lot        @relation(fields: [lotId], references: [id])
+    categories Category[]
+    lot        Lot        @relation(fields: [lotId], references: [id])
 
-  lotId Int @unique
+    lotId Int @unique
 }
 
 model AccessToken {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  token     String   @unique
-  expiresIn Int      @default(3600) //1h
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int      @unique
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    token     String   @unique
+    expiresIn Int      @default(3600) //1h
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    Int      @unique
 }
 
 model RefreshToken {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  token     String   @unique
-  expiresIn Int      @default(36000) //10h
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    Int      @unique
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+    token     String   @unique
+    expiresIn Int      @default(36000) //10h
+    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId    Int      @unique
 }
 
 model User {
-  id           Int      @id @default(autoincrement())
-  isActive     Boolean  @default(true)
-  isDeleted    Boolean  @default(false)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  profileImage String   @default("")
-  name         String
-  email        String   @unique
-  password     String
-  roles        Role[]
+    id           Int      @id @default(autoincrement())
+    isActive     Boolean  @default(true)
+    isDeleted    Boolean  @default(false)
+    createdAt    DateTime @default(now())
+    updatedAt    DateTime @updatedAt
+    profileImage String   @default("")
+    name         String
+    email        String   @unique
+    password     String
+    roles        Role[]
 
-  orders       Order[]       @relation("orders")
-  analysis     Analysis[]    @relation("analysis")
-  storage      Storage[]
-  delivery     Delivery[]
-  department   Department[]
-  records      Record[]
-  accessToken  AccessToken?
-  refreshToken RefreshToken?
+    orders       Order[]       @relation("orders")
+    analysis     Analysis[]    @relation("analysis")
+    storage      Storage[]
+    delivery     Delivery[]
+    department   Department[]
+    records      Record[]
+    accessToken  AccessToken?
+    refreshToken RefreshToken?
 }
 
 enum Role {
-  Admin
-  Analyst
-  Auditor
-  Requester
-  StoreKeeper
-  Manager
+    Admin
+    Analyst
+    Auditor
+    Requester
+    StoreKeeper
+    Manager
 }
 
 enum Status {
-  Waiting
-  Separation
-  InProgress
-  Concluded
+    Waiting
+    Separation
+    InProgress
+    Concluded
 }
