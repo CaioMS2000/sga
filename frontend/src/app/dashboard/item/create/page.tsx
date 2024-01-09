@@ -16,12 +16,12 @@ import {
 	useState,
 } from "react";
 import Categories from "../../categories/page";
+import Toast from "@/components/Toast";
 
 interface ItemCreateProps extends PropsWithChildren {}
-// ITEM: name, description, categories, image
-// LOT: supplier, itemAmount, price
-// must fetch: categories, supplier
+
 export default function ItemCreate({}: ItemCreateProps) {
+	const [createItemFlag, setCreateItemFlag] = useState(false);
 	const fileInputRef = useRef<HTMLInputElement | null>(null);
 	const [name, setName] = useState("");
 	const [description, setDescription] = useState("");
@@ -92,6 +92,16 @@ export default function ItemCreate({}: ItemCreateProps) {
 		);
 	}
 
+	function clearInputs(){
+		setName('')
+		setDescription('')
+		_setItemAmount(0)
+		_setPrice(0)
+		setImage('')
+		setSelectedCategory([])
+		setSelectedSupplier([])
+	}
+	
 	async function fetchOptions() {
 		const categories = await fetchGraphQL<CategoryModel[]>(
 			GET_ALL_CATEGORIES,
@@ -134,6 +144,11 @@ export default function ItemCreate({}: ItemCreateProps) {
 					},
 				},
 			});
+
+			console.log(newItem);
+			clearInputs()
+			setCreateItemFlag(true)
+			setTimeout(() => setCreateItemFlag(false), 2 * 1000)
 		}
 	}
 
@@ -148,10 +163,6 @@ export default function ItemCreate({}: ItemCreateProps) {
 	useEffect(() => {
 		setSupplierOptions(availableSuppliers.map((el) => [el.cnpj, el.name]));
 	}, [availableSuppliers]);
-
-	// ITEM: name, description, categories, image
-	// LOT: supplier, itemAmount, price
-	// must fetch: categories, supplier
 
 	return (
 		<>
@@ -232,6 +243,11 @@ export default function ItemCreate({}: ItemCreateProps) {
 					</button>
 				</div>
 			</div>
+			{createItemFlag && (
+				<Toast className="alert-success">
+					<span className="text-xl font-bold">Item criado com sucesso</span>
+				</Toast>
+			)}
 		</>
 	);
 }

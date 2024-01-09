@@ -35,7 +35,7 @@ export default async function Item({ params: { id } }: ItemProps) {
 							{categories.map((cat) => (
 								<div
 									key={cat.id}
-									className="badge bg-teal-700 text-white font-bold last:mb-3"
+									className="badge bg-purple-900 text-white font-bold last:mb-3"
 								>
 									<p>{cat.name}</p>
 								</div>
@@ -44,12 +44,12 @@ export default async function Item({ params: { id } }: ItemProps) {
 					)}
 
 					{itemImageFlag && (
-						<img alt={`Image for ${item.name}`} src={item.image} />
+						<img alt={`Image for ${item.name}`} src={item.image} className="max-h-[500px]" />
 					)}
 					{!itemImageFlag && <RiQuestionFill size={70} />}
 				</div>
 
-				<div className="flex flex-col justify-between">
+				<div className="flex flex-col justify-between h-fit">
 					<div className="bg-teal-700 text-white font-bold w-fit p-3 rounded-lg mb-5">
 						Nota Fiscal
 					</div>

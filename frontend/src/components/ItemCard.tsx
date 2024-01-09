@@ -29,8 +29,8 @@ export default function ItemCard({ item }: ItemCardProps) {
 					{itemImageFlag && (
 						<img
 							src={item.image}
-							alt="Shoes"
-							className="rounded-xl"
+							alt={`${item.name}`}
+							className="rounded-xl max-h-[100px]"
 						/>
 					)}
 					{!itemImageFlag && <RiQuestionFill size={70} />}
