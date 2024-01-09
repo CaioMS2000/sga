@@ -1,5 +1,6 @@
 import "reflect-metadata";
 import { createYoga } from "graphql-yoga";
+import {json as jsonParser} from "body-parser";
 import express from "express";
 import { buildSchema, registerEnumType } from "type-graphql";
 import path from "node:path";
@@ -68,6 +69,7 @@ async function main() {
 
 	const server = express();
 
+    server.use(jsonParser({ limit: "50mb" }));
 	server.use(express.json());
 	server.use(yoga);
 
