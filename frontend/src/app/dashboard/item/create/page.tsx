@@ -59,7 +59,6 @@ export default function ItemCreate({}: ItemCreateProps) {
 	);
 	function handleChangeCategory(event: ChangeEvent<HTMLSelectElement>) {
 		const selectedValue: string = event.target.value;
-		console.log(selectedValue);
 
 		setSelectedCategory((prevstate) => [
 			...prevstate,
@@ -77,12 +76,10 @@ export default function ItemCreate({}: ItemCreateProps) {
 	);
 	function handleChangeSupplier(event: ChangeEvent<HTMLSelectElement>) {
 		const selectedValue: string = event.target.value;
-		console.log(`quero mudar para: ${selectedValue}`);
 
 		const newSupplier = availableSuppliers.find(
 			(sup) => sup.cnpj == selectedValue
 		);
-		console.log(newSupplier);
 
 		setSelectedSupplier((prevState) => [...prevState, newSupplier!]);
 	}
@@ -145,7 +142,6 @@ export default function ItemCreate({}: ItemCreateProps) {
 				},
 			});
 
-			console.log(newItem);
 			clearInputs()
 			setCreateItemFlag(true)
 			setTimeout(() => setCreateItemFlag(false), 2 * 1000)

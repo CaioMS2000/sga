@@ -72,8 +72,6 @@ function Editing({ category }: EditingProps) {
 			},
 		});
 
-		console.log(res);
-
 		location.reload();
 	}
 

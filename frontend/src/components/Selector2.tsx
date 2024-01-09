@@ -40,10 +40,6 @@ export function CustomSelector({
 		setRandomId(uuidv4());
 	}, []);
 
-	useEffect(() => {
-		if(selectedValue && selectedValue.length)console.log(selectedValue);
-	}, [selectedValue]);
-
 	return (
 		<>
 			<div className="flex flex-col w-fit">

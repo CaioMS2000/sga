@@ -42,8 +42,8 @@ export default async function Order({ params: { code } }: OrderProps) {
 	const requesterHasImage = Boolean(order.requester?.profileImage);
 	const analystHasImage = Boolean(order.analysis?.analyst.profileImage);
 	const item = order.item;
-	console.log("\n\n\n", item);
 	const user = await buildUser();
+
 	if (user == undefined) redirect("/");
 	const thisUserCanValidate = (() => {
 		if (user.roles.includes(Admin)) return true;
@@ -54,6 +54,7 @@ export default async function Order({ params: { code } }: OrderProps) {
 
 		return false;
 	})();
+	
 	const userIsStorekeeper = user.roles.includes(StoreKeeper);
 	const userIsAdmin = user.roles.includes(Admin);
 

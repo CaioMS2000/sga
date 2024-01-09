@@ -10,7 +10,6 @@ export default async function Suppliers({}: SuppliersProps) {
 	const res = await fetchGraphQL<SupplierModel[]>(GET_ALL_SUPPLIERS, {
 		key: "getAllSuppliers",
 	});
-	console.log(res);
 
 	return (
 		<div className="w-full flex flex-col">

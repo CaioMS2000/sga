@@ -100,18 +100,6 @@ export default function CreateUser({}: CreateUserProps) {
 		return () => {};
 	}, []);
 
-	// useEffect(() => {
-	// 	console.log(selectedRole);
-
-	// 	return () => {};
-	// }, [selectedRole]);
-
-	// useEffect(() => {
-	// 	console.log(selectedDepartment);
-
-	// 	return () => {};
-	// }, [selectedDepartment]);
-
 	return (
 		<>
 			<div className="bg-gray-900 flex flex-col rounded-lg p-3 py-10 items-center">
