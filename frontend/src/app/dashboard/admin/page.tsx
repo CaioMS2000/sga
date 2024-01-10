@@ -1,5 +1,6 @@
 import { PropsWithChildren } from 'react';
 import { BsPersonFillGear } from 'react-icons/bs';
+import { BsDiagram3Fill } from "react-icons/bs";
 import { MenuItemType } from '@/components/SideBar';
 
 interface AdminProps extends PropsWithChildren{
@@ -28,5 +29,10 @@ const menuItems: MenuItemType[] = [
 		icon: BsPersonFillGear,
 		label: "Gerenciar usuários",
 		url: "/dashboard/admin/users",
+	},
+	{
+		icon: BsDiagram3Fill,
+		label: "Gerenciar departamentos",
+		url: "/dashboard/admin/departments",
 	},
 ];

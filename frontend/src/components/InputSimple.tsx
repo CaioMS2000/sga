@@ -13,6 +13,7 @@ interface InputProps
 	label: string;
 	placeholder?: string;
 	'label-class'?: string;
+	'super-class'?: string;
 	// inputChange: Dispatch<SetStateAction<string>>;
 	/**
 	 * most common: Dispatch<SetStateAction<string>>
@@ -21,10 +22,10 @@ interface InputProps
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-	({ label, placeholder, className, inputChange, value, 'label-class':label_class, ...rest }: InputProps, ref) => {
+	({ label, placeholder, className, inputChange, value, 'label-class':label_class, 'super-class':super_class,...rest }: InputProps, ref) => {
 		return (
 			<>
-				<label className="form-control w-full max-w-xs">
+				<label className={"form-control w-full " + super_class}>
 					<div className="label">
 						<span className={"label-text " + label_class}>{label}</span>
 					</div>
@@ -33,7 +34,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 						type="text"
 						placeholder={placeholder}
 						value={value}
-						className={"input input-bordered w-full max-w-xs " + className}
+						className={"input input-bordered w-full " + className}
 						onChange={e => inputChange(e.target.value)}
 						ref={ref}
 					/>

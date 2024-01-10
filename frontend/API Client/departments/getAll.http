@@ -11,6 +11,7 @@ query GetAllDepartments{
     id
     createdAt
     updatedAt
+    employees
   }
 }
 

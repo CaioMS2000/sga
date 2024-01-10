@@ -9,6 +9,7 @@ export const GET_DEPARTMENTS = gql`
 			id
 			createdAt
 			updatedAt
+			employees
 		}
 	}
 `;
