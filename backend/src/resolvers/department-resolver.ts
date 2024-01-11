@@ -1,5 +1,5 @@
 import { Arg, Ctx, FieldResolver, Mutation, ObjectType, Query, Resolver, Root } from "type-graphql";
-import { Department } from "../dto/models";
+import { Department, User } from "../dto/models";
 import { DepartmentService as _DepartmentService } from "../services/DepartmentService";
 import { ServerContextData } from "../server";
 import { CreateDepartmentInput } from "../dto/inputs";
@@ -26,6 +26,28 @@ export class DepartmentResolver {
     @Mutation(() => Department)
     async createDepartment(@Arg("data") data: CreateDepartmentInput, @Ctx() context: ServerContextData) {
         return await this.DepartmentService.createDepartment(data.name, data.description, context)
+    }
+
+    @FieldResolver(() => [User])
+    async users(@Root() department: Department, @Ctx() context: ServerContextData) {
+        try {
+            const { prisma } = context
+
+            const users = await prisma.user.findMany({
+                where: {
+                    department:{
+                        some: {
+                            code: department.code
+                        }
+                    }
+                },
+            })
+
+            return users
+
+        } catch (error) {
+            throw new GraphQLError(error as string)
+        }
     }
 
     @FieldResolver(() => Number)

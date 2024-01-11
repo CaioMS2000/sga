@@ -3,7 +3,11 @@ import { ServerContextData } from "../server";
 export class DepartmentRepository {
 	async getAllDepartments(context: ServerContextData) {
 		const { prisma } = context;
-		const res = await prisma.department.findMany();
+		const res = await prisma.department.findMany({
+            include: {
+                users: true
+            }
+        });
 
 		return res;
 	}

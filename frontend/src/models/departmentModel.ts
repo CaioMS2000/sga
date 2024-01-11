@@ -1,3 +1,5 @@
+import { UserModel } from "./userModel";
+
 export type DepartmentModel = {
     id: number;
     employees: number;
@@ -6,4 +8,5 @@ export type DepartmentModel = {
     updatedAt: Date;
     name: string;
     description: string;
+    users: UserModel[];
 }

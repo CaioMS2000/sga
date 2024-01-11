@@ -13,3 +13,6 @@ export const CREATE_DEPARTMENT = gql`
         }
     }
 `
+
+export const UNLINK_USER_FROM_DEPARTMENT = gql`
+`

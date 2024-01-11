@@ -23,21 +23,23 @@ export default async function Departments({}: DepartmentsProps) {
 			<div className="grid grid-cols-3 gap-4 mt-10">
 				{departments.map((dep) => (
 					<>
-						<div className="flex justify-center">
-							<div className="flex flex-col border-2 rounded-lg p-3 self-center">
-								<div className="flex justify-between">
-									<p className="font-bold">{dep.name}</p>
-									<p className="italic">
-										{dep.employees} funcionário
-										{dep.employees == 1 ? "" : "s"}
+						<a href={`/dashboard/admin/department/${dep.code}`}>
+							<div className="flex justify-center">
+								<div className="flex flex-col border-2 rounded-lg p-3 w-full">
+									<div className="flex justify-between">
+										<p className="font-bold">{dep.name}</p>
+										<p className="italic">
+											{dep.employees} funcionário
+											{dep.employees == 1 ? "" : "s"}
+										</p>
+									</div>
+									<div className="divider mt-1 before:bg-white after:bg-white" />
+									<p className="font-semibold">
+										{dep.description}
 									</p>
 								</div>
-								<div className="divider mt-1 before:bg-white after:bg-white" />
-								<p className="font-semibold">
-									{dep.description}
-								</p>
 							</div>
-						</div>
+						</a>
 					</>
 				))}
 			</div>
