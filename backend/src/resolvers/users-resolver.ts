@@ -216,6 +216,38 @@ export class UserResolver {
 		return res;
 	}
 
+    @Mutation(() => Boolean)
+    async unlinUserFromDepartment(@Arg("userId") userId: number, @Arg("departmentCode") departmentCode: string, @Ctx() context: ServerContextData){
+        const {prisma} = context
+        const user = await prisma.user.findFirst({
+            where:{
+                id: userId
+            },
+            include: {
+                department: true
+            }
+        })
+
+        if(user?.department.some(dep => dep.code == departmentCode)){            
+            const user = await prisma.user.update({
+                where:{
+                    id: userId
+                },
+                data: {
+                    department:{
+                        disconnect:{
+                            code: departmentCode
+                        }
+                    }
+                }
+            })
+
+            return true
+        }
+
+        return false
+    }
+
 	@FieldResolver(() => [Order])
 	async requestedOrder(
 		@Root() user: User,

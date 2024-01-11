@@ -61,7 +61,7 @@ export default async function Department({
 												<td>
 												{/* <IoIosClose/>
 												<AiOutlineClose/> */}
-												<UnlinkUserFromDepartmentButton unlinkFunction={() => {}}>
+												<UnlinkUserFromDepartmentButton departmentCode={department.code} user={u}>
 													<ImCross className="hover:cursor-pointer text-red-500"/>
 												</UnlinkUserFromDepartmentButton>
 												</td>

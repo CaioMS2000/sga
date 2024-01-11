@@ -31,6 +31,7 @@ export const GET_DEPARTMENT_BY_CODE = gql`
 			users{
 				name
 				email
+				id
 			}
 		}
 	}

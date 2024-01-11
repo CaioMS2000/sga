@@ -15,4 +15,7 @@ export const CREATE_DEPARTMENT = gql`
 `
 
 export const UNLINK_USER_FROM_DEPARTMENT = gql`
+    mutation($userId: Float!, $departmentCode: String!){
+        unlinUserFromDepartment(userId: $userId, departmentCode: $departmentCode)
+    }
 `

@@ -33,9 +33,10 @@ export default function DebugProvider({ children }: DebugProviderProps) {
 	const ENVIRONMENT = process.env.NODE_ENV;
 
 	const [str, setStr] = useState("");
-	const [debuging, setDebuging] = useState(
-	  isDevelopmentEnv || isTestEnv ? true : false,
-	);
+	// const [debuging, setDebuging] = useState(
+	//   isDevelopmentEnv || isTestEnv ? true : false,
+	// );
+	const [debuging, setDebuging] = useState(false);
 
 	useEffect(() => {
 		const handleKeyDown = (event: KeyboardEvent) => {
