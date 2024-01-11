@@ -22,7 +22,7 @@ interface InputProps
 }
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-	({ label, placeholder, className, inputChange, value, 'label-class':label_class, 'super-class':super_class,...rest }: InputProps, ref) => {
+	({ label, placeholder, className, inputChange, value, 'label-class':label_class, 'super-class':super_class, type,...rest }: InputProps, ref) => {
 		return (
 			<>
 				<label className={"form-control w-full " + super_class}>
@@ -31,7 +31,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 					</div>
 					<input
 						{...rest}
-						type="text"
+						type={type}
 						placeholder={placeholder}
 						value={value}
 						className={"input input-bordered w-full " + className}

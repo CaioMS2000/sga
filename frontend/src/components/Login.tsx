@@ -7,7 +7,7 @@ import {
 	forwardRef,
 } from "react";
 import Image from "next/image";
-import Input from "./InputLeftLabeled";
+import Input from "./InputSimple";
 import { LOGIN } from "@/lib/mutation/user";
 import { BasicObject, GraphQLResponse, fetchGraphQL } from "@/utils";
 import { saveCookie } from "@/app/actions";
@@ -121,6 +121,8 @@ export default function Login({}: LoginProps) {
 								inputChange={setEmail}
 								onKeyDown={handleKeyDown}
 								value={email}
+								super-class="max-w-[400px]"
+								label-class="font-bold text-lg"
 							/>
 							<Input
 								ref={passwordInputRef}
@@ -130,6 +132,8 @@ export default function Login({}: LoginProps) {
 								inputChange={setPassword}
 								onKeyDown={handleKeyDown}
 								value={password}
+								super-class="max-w-[400px]"
+								label-class="font-bold text-lg"
 							/>
 							<button
 								className="btn font-bold text-white bg-byzantineBlue hover:bg-blue-950 border-byzantineBlue hover:border-blue-950 text-lg"
