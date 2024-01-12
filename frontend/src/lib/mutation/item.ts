@@ -9,6 +9,12 @@ export const CREATE_ITEM = gql`
 	}
 `;
 
+export const CREATE_ITEMS = gql`
+	mutation ($data: [CreateItemInput!]!) {
+		createItems(data: $data)
+	}
+`;
+
 export const INIT_ORDER = gql`
 	mutation ($data: CreateOrderInput!) {
 		initItemOrder(data: $data) {

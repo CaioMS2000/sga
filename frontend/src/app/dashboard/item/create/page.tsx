@@ -2,7 +2,7 @@
 import FileInput from "@/components/FileInput";
 import Input from "@/components/InputSimple";
 import { CustomSelector, CustomTuple } from "@/components/Selector2";
-import { CREATE_ITEM } from "@/lib/mutation/item";
+import { CREATE_ITEM, CREATE_ITEMS } from "@/lib/mutation/item";
 import { GET_ALL_CATEGORIES } from "@/lib/query/category";
 import { GET_ALL_SUPPLIERS } from "@/lib/query/supplier";
 import { CategoryModel } from "@/models/categoryModel";
@@ -11,94 +11,50 @@ import { buildUser, fetchGraphQL } from "@/utils";
 import {
 	ChangeEvent,
 	PropsWithChildren,
+	forwardRef,
 	useEffect,
 	useRef,
 	useState,
 } from "react";
 import Categories from "../../categories/page";
 import Toast from "@/components/Toast";
+import { FaPlus } from "react-icons/fa";
+import { IoIosClose } from "react-icons/io";
+
+interface ItemFormData {
+	name: string;
+	description: string;
+	amount: string;
+	price: string;
+	image: string;
+	category: CategoryModel[];
+	supplier: SupplierModel | null;
+}
+
+const emptyFormData: ItemFormData = {
+	amount: "0",
+	category: [],
+	description: "",
+	image: "",
+	name: "",
+	price: "0",
+	supplier: null,
+};
+
+type ItemFormKeys = keyof ItemFormData;
 
 interface ItemCreateProps extends PropsWithChildren {}
 
 export default function ItemCreate({}: ItemCreateProps) {
 	const [createItemFlag, setCreateItemFlag] = useState(false);
-	const fileInputRef = useRef<HTMLInputElement | null>(null);
-	const [name, setName] = useState("");
-	const [description, setDescription] = useState("");
-
-	const [itemAmount, _setItemAmount] = useState(0.0);
-	function setItemAmount(data: string) {
-		const value = parseFloat(data);
-		_setItemAmount(value);
-	}
-
-	const [price, _setPrice] = useState(0.0);
-	function setPrice(data: string) {
-		const value = parseFloat(data);
-		_setPrice(value);
-	}
-
-	const [image, setImage] = useState("");
-
 	const [availableCategories, setAvailableCategories] = useState<
 		CategoryModel[]
 	>([]);
 	const [availableSuppliers, setAvailableSuppliers] = useState<
 		SupplierModel[]
 	>([]);
+	const [forms, setForms] = useState<ItemFormData[]>([{ ...emptyFormData }]);
 
-	const [categoryOptions, setCategoryOptions] = useState<
-		CustomTuple<string, string>[]
-	>([]);
-	const [supplierOptions, setSupplierOptions] = useState<
-		CustomTuple<string, string>[]
-	>([]);
-
-	const [selectedCategory, setSelectedCategory] = useState<CategoryModel[]>(
-		[]
-	);
-	function handleChangeCategory(event: ChangeEvent<HTMLSelectElement>) {
-		const selectedValue: string = event.target.value;
-
-		setSelectedCategory((prevstate) => [
-			...prevstate,
-			availableCategories.find((cat) => cat.code == selectedValue)!,
-		]);
-	}
-	function categoryDelete(code: string) {
-		setSelectedCategory((prevState) =>
-			prevState.filter((cat) => cat.code != code)
-		);
-	}
-
-	const [selectedSupplier, setSelectedSupplier] = useState<SupplierModel[]>(
-		[]
-	);
-	function handleChangeSupplier(event: ChangeEvent<HTMLSelectElement>) {
-		const selectedValue: string = event.target.value;
-
-		const newSupplier = availableSuppliers.find(
-			(sup) => sup.cnpj == selectedValue
-		);
-
-		setSelectedSupplier((prevState) => [...prevState, newSupplier!]);
-	}
-	function supplierDelete(cnpj: string) {
-		setSelectedSupplier((prevState) =>
-			prevState.filter((sup) => sup.cnpj != cnpj)
-		);
-	}
-
-	function clearInputs(){
-		setName('')
-		setDescription('')
-		_setItemAmount(0)
-		_setPrice(0)
-		setImage('')
-		setSelectedCategory([])
-		setSelectedSupplier([])
-	}
-	
 	async function fetchOptions() {
 		const categories = await fetchGraphQL<CategoryModel[]>(
 			GET_ALL_CATEGORIES,
@@ -118,34 +74,63 @@ export default function ItemCreate({}: ItemCreateProps) {
 		setAvailableSuppliers(suppliers);
 	}
 
+	function update(
+		formIndex: number,
+		key: ItemFormKeys,
+		data: string | CategoryModel[] | SupplierModel
+	) {
+		setForms((prevState) =>
+			prevState.map((form, index) => {
+				if (index === formIndex) {
+					if (Object.keys(form).includes(key)) {
+						const newData = { [key]: data };
+						const updatedForm = { ...form, ...newData };
+						return updatedForm;
+					}
+				}
+
+				return form;
+			})
+		);
+	}
+
+	function removeForm(index: number) {
+		setForms((prevState) => prevState.filter((f, i) => i != index));
+	}
+
 	async function handleSend() {
 		const user = await buildUser();
 
-		if (user) {
-			const newItem = await fetchGraphQL(CREATE_ITEM, {
-				key: "createItem",
-				variables: {
-					data: {
-						name,
-						image,
-						description,
+		if (!user) return;
+
+		const res = await fetchGraphQL<Boolean>(CREATE_ITEMS, {
+			key: "createItems",
+			variables: {
+				data: forms.map((form) => {
+					const data = {
+						name: form.name,
+						image: form.image,
+						description: form.description,
 						storage: {
 							userId: user.id,
 						},
-						categories: selectedCategory.map((cat) => cat.code),
+						categories: form.category.map((cat) => cat.code),
 						lot: {
-							price,
-							itemAmount,
-							supplier: selectedSupplier[0].cnpj,
+							supplier: form.supplier?.cnpj,
+							itemAmount: parseFloat(form.amount),
+							price: parseFloat(form.price),
 						},
-					},
-				},
-			});
+					};
 
-			clearInputs()
-			setCreateItemFlag(true)
-			setTimeout(() => setCreateItemFlag(false), 2 * 1000)
-		}
+					return data;
+				}),
+			},
+		});
+
+		console.log(res);
+		setForms([{ ...emptyFormData }])
+		setCreateItemFlag(res.valueOf())
+		setTimeout(() => setCreateItemFlag(false), 2 * 1000)
 	}
 
 	useEffect(() => {
@@ -153,12 +138,9 @@ export default function ItemCreate({}: ItemCreateProps) {
 	}, []);
 
 	useEffect(() => {
-		setCategoryOptions(availableCategories.map((el) => [el.code, el.name]));
-	}, [availableCategories]);
-
-	useEffect(() => {
-		setSupplierOptions(availableSuppliers.map((el) => [el.cnpj, el.name]));
-	}, [availableSuppliers]);
+		console.clear();
+		forms.forEach((f) => console.log(f));
+	}, [forms]);
 
 	return (
 		<>
@@ -168,72 +150,38 @@ export default function ItemCreate({}: ItemCreateProps) {
 				</h1>
 
 				<div className="flex flex-col gap-10">
-					<div className="flex gap-3">
-						<Input
-							inputChange={setName}
-							value={name}
-							label="Nome"
-							label-class="font-bold"
+					{forms.map((form, index) => (
+						<Content
+							key={index}
+							index={index}
+							amount={form.amount}
+							category={form.category}
+							description={form.description}
+							image={form.image}
+							name={form.name}
+							price={form.price}
+							supplier={form.supplier}
+							categoryOptions={availableCategories}
+							supplierOptions={availableSuppliers}
+							inputChange={update}
+							removeForm={removeForm}
 						/>
-						<Input
-							inputChange={setDescription}
-							value={description}
-							label="Descrição"
-							label-class="font-bold"
-						/>
-					</div>
-					<div className="flex gap-3">
-						<Input
-							inputChange={setItemAmount}
-							value={itemAmount}
-							label="Quantidade"
-							label-class="font-bold"
-						/>
-						<Input
-							inputChange={setPrice}
-							value={price}
-							label="Preço (unitário)"
-							label-class="font-bold"
-						/>
-					</div>
-					<div className="flex justify-between">
-						<CustomSelector
-							values={categoryOptions}
-							handleChange={handleChangeCategory}
-							deleteValue={categoryDelete}
-							selectedValue={selectedCategory.map((cat) => [
-								cat.code,
-								cat.name,
-							])}
-							label="Categorias"
-						/>
-						<CustomSelector
-							values={supplierOptions}
-							handleChange={handleChangeSupplier}
-							deleteValue={supplierDelete}
-							selectedValue={selectedSupplier.map((sup) => [
-								sup.cnpj,
-								sup.name,
-							])}
-							label="Fornecedores"
-						/>
-					</div>
+					))}
+				</div>
 
-					<div className="flex flex-col">
-						<p className="font-bold">
-							Foto{" "}
-							<span className="font-normal italic">
-								(opcional)
-							</span>
-						</p>
-						<FileInput
-							className=""
-							label-class="bg-slate-900 font-bold"
-							ref={fileInputRef}
-							inputChange={setImage}
-						/>
-					</div>
-
+				<div className="flex flex-col">
+					<button
+						className="btn"
+						onClick={() =>
+							setForms((prevState) => [
+								...prevState,
+								{ ...emptyFormData },
+							])
+						}
+					>
+						Mais
+						<FaPlus />
+					</button>
 					<button className="btn" onClick={handleSend}>
 						Criar
 					</button>
@@ -241,9 +189,155 @@ export default function ItemCreate({}: ItemCreateProps) {
 			</div>
 			{createItemFlag && (
 				<Toast className="alert-success">
-					<span className="text-xl font-bold">Item criado com sucesso</span>
+					<span className="text-xl font-bold mx-auto">Item criado com sucesso</span>
 				</Toast>
 			)}
 		</>
 	);
 }
+
+interface ContentProps extends ItemFormData {
+	categoryOptions: CategoryModel[];
+	supplierOptions: SupplierModel[];
+	index: number;
+	inputChange: (
+		formIndex: number,
+		key: ItemFormKeys,
+		data: string | CategoryModel[] | SupplierModel
+	) => void;
+	removeForm: (index: number) => void;
+}
+
+const Content = forwardRef<HTMLInputElement, ContentProps>(function (
+	{
+		name,
+		description,
+		amount,
+		price,
+		image,
+		index,
+		inputChange,
+		removeForm,
+		category,
+		supplier,
+		categoryOptions,
+		supplierOptions,
+	}: ContentProps,
+	ref
+) {
+	return (
+		<>
+			{index > 0 && (
+				<div className="flex">
+					<IoIosClose
+						className="min-w-[40px] min-h-[40px] hover:cursor-pointer text-red-500 border-2"
+						onClick={() => removeForm(index)}
+					/>
+				</div>
+			)}
+			<div className="flex flex-col gap-10">
+				<div className="flex gap-3">
+					<Input
+						value={name}
+						label="Nome"
+						label-class="font-bold"
+						inputChange={(name: string) => {
+							inputChange(index, "name", name);
+						}}
+					/>
+					<Input
+						value={description}
+						label="Descrição"
+						label-class="font-bold"
+						inputChange={(description: string) => {
+							inputChange(index, "description", description);
+						}}
+					/>
+				</div>
+
+				<div className="flex gap-3">
+					<Input
+						value={amount}
+						label="Quantidade"
+						label-class="font-bold"
+						inputChange={(amount: string) => {
+							inputChange(index, "amount", amount);
+						}}
+					/>
+					<Input
+						value={price}
+						label="Preço (unitário)"
+						label-class="font-bold"
+						inputChange={(price: string) => {
+							inputChange(index, "price", price);
+						}}
+					/>
+				</div>
+
+				<div className="flex justify-between">
+					<CustomSelector
+						values={categoryOptions.map((cat) => [
+							cat.code,
+							cat.name,
+						])}
+						handleChange={(
+							event: ChangeEvent<HTMLSelectElement>
+						) => {
+							const selectedValue: string = event.target.value;
+							const selectedCategory = categoryOptions.find(
+								(cat) => cat.code == selectedValue
+							);
+
+							inputChange(index, "category", [
+								...category,
+								selectedCategory!,
+							]);
+						}}
+						deleteValue={() => {}}
+						selectedValue={category.map((cat) => [
+							cat.code,
+							cat.name,
+						])}
+						label="Categorias"
+					/>
+					<CustomSelector
+						values={supplierOptions.map((sup) => [
+							sup.cnpj,
+							sup.name,
+						])}
+						handleChange={(
+							event: ChangeEvent<HTMLSelectElement>
+						) => {
+							const selectedValue: string = event.target.value;
+							const selectedSupplier = supplierOptions.find(
+								(sup) => sup.cnpj == selectedValue
+							);
+
+							inputChange(index, "supplier", selectedSupplier!);
+						}}
+						deleteValue={() => {}}
+						selectedValue={
+							supplier == null
+								? []
+								: [[supplier.cnpj, supplier.name]]
+						}
+						label="Fornecedores"
+					/>
+				</div>
+
+				<div className="flex flex-col">
+					<p className="font-bold">
+						Foto{" "}
+						<span className="font-normal italic">(opcional)</span>
+					</p>
+					<FileInput
+						className=""
+						label-class="bg-slate-900 font-bold"
+						ref={ref}
+						inputChange={() => {}}
+					/>
+				</div>
+			</div>
+		</>
+	);
+});
