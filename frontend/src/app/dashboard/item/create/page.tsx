@@ -105,15 +105,6 @@ export default function ItemCreate({}: ItemCreateProps) {
 		if (!user) return;
 
 		if (
-			// forms.some((form, i) => {
-			// 	if (!form.amount) return true;
-			// 	if (!form.category) return true;
-			// 	if (!form.name) return true;
-			// 	if (!form.price) return true;
-			// 	if (!form.supplier) return true;
-
-			// 	return false;
-			// })
 			forms.some((form, i) => {
 				let invalidField = ''
 				if (!form.amount) invalidField='amount';
@@ -156,7 +147,6 @@ export default function ItemCreate({}: ItemCreateProps) {
 			},
 		});
 
-		console.log(res);
 		setForms([{ ...emptyFormData }]);
 		setCreateItemFlag(res.valueOf());
 		setTimeout(() => setCreateItemFlag(false), 2 * 1000);
@@ -165,11 +155,6 @@ export default function ItemCreate({}: ItemCreateProps) {
 	useEffect(() => {
 		fetchOptions();
 	}, []);
-
-	useEffect(() => {
-		console.clear();
-		forms.forEach((f) => console.log(f));
-	}, [forms]);
 
 	useEffect(() => {
 		if(hasError.erro){
