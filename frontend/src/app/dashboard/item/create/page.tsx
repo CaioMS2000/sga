@@ -170,20 +170,22 @@ export default function ItemCreate({}: ItemCreateProps) {
 					))}
 				</div>
 
-				<div className="flex flex-col">
-					<button
-						className="btn"
-						onClick={() =>
-							setForms((prevState) => [
-								...prevState,
-								{ ...emptyFormData },
-							])
-						}
-					>
-						Mais
-						<FaPlus />
-					</button>
-					<button className="btn" onClick={handleSend}>
+					<div className="flex w-full pl-10 mt-5">
+						<button
+							className="btn"
+							onClick={() =>
+								setForms((prevState) => [
+									...prevState,
+									{ ...emptyFormData },
+								])
+							}
+						>
+							Mais
+							<FaPlus className="text-green-500"/>
+						</button>
+					</div>
+				<div className="flex">
+					<button className="btn text-2xl text-white bg-purple-900 hover:bg-purple-950" onClick={handleSend}>
 						Criar
 					</button>
 				</div>
