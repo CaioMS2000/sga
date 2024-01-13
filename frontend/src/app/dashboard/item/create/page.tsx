@@ -145,9 +145,10 @@ export default function ItemCreate({}: ItemCreateProps) {
 	return (
 		<>
 			<div className="bg-gray-800 flex flex-col rounded-lg p-3 items-center">
-				<h1 className="font-bold text-[2rem] w-full text-white rounded-lg mb-5">
+				<h1 className="font-bold text-[2rem] w-full text-white rounded-lg">
 					Criando um novo item
 				</h1>
+				<span className="italic mb-5">Todos os itens que eprtencem à mesma nota fiscal devem ser inseridos ao mesmo tempo</span>
 
 				<div className="flex flex-col gap-10">
 					{forms.map((form, index) => (

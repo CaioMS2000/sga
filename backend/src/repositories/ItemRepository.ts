@@ -11,6 +11,7 @@ import { ServerContextData } from "../server";
 
 export interface createItemProps {
 	item: CreateItemInput;
+    invoiceCode?: string
 }
 
 export class ItemRepository {
@@ -20,7 +21,8 @@ export class ItemRepository {
 		return res;
 	}
 
-	async createItem({ item }: createItemProps, context: ServerContextData) {
+	async createItem({ item, invoiceCode }: createItemProps, context: ServerContextData) {
+        console.log(`invoiceCode que chegou: ${invoiceCode}`)
 		const { prisma } = context;
 		const storage = await prisma.storage.create({
 			data: {
@@ -33,6 +35,10 @@ export class ItemRepository {
 			},
 		});
 
+        const invoiceDirectives = invoiceCode?{connect:{code: invoiceCode}}:{ create: {} }
+        console.log('invoiceDirectives')
+        console.log(invoiceDirectives)
+
 		const lot = await prisma.lot.create({
 			data: {
 				supplier: {
@@ -42,7 +48,7 @@ export class ItemRepository {
 				},
 				itemAmount: item.lot.itemAmount,
 				price: item.lot.price,
-				Invoice: { create: {} },
+				Invoice: invoiceDirectives,
 			},
 		});
 
@@ -72,6 +78,7 @@ export class ItemRepository {
 				lot: {
 					include: {
 						supplier: true,
+                        Invoice: true
 					},
 				},
 				categories: true,

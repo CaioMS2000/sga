@@ -14,10 +14,8 @@ export class ItemService {
         return this.ItemRepository.getAllItems(context)
     }
 
-    async createItem({item}: createItemProps, context: ServerContextData){
-        return this.ItemRepository.createItem({
-            item,
-        }, context)
+    async createItem(props: createItemProps, context: ServerContextData){
+        return this.ItemRepository.createItem(props, context)
     }
 
     async getItemById(id: number, context: ServerContextData){

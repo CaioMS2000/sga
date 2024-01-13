@@ -76,15 +76,26 @@ export class ItemResolver {
     @Mutation(() => Boolean)
     async createItems(@Arg("data", (type) => [CreateItemInput]) data: CreateItemInput[], @Ctx() context: ServerContextData) {
         try {
-            const items = await Promise.all(
-                data.map(async (itemData) => {
-                    const res = await this.ItemService.createItem({ item: itemData }, context);
-                    return res;
-                })
-            );
+            const firstItem = await this.ItemService.createItem({ item: data[0] }, context);
+            console.log('primeiro criado')
+            data.shift()
+
+            
+            if(data.length > 0){
+                if(!firstItem.lot.Invoice.code) throw Error('Faltando o código da nota fiscal');
+                console.log('criando os proximos baseado no código')
+                console.log(firstItem.lot.Invoice.code)
+                const items = await Promise.all(
+                    data.map(async (itemData) => {
+                        const res = await this.ItemService.createItem({ item: itemData, invoiceCode: firstItem.lot.Invoice.code }, context);
+                        return res;
+                    })
+                );
+            }
 
             return true;
         } catch (error) {
+            console.log(error)
             return false
         }
     }
