@@ -35,3 +35,13 @@ export interface Request {
   query: string;
   variables: Record<string, any>;
 }
+
+export const translation:Record<string, string> = {
+  'name':'nome',
+  'image':'imagem',
+  'description':'descrição',
+  'categories':'categorias',
+  'supplier':'fornecedor',
+  'itemAmount':'quantidade',
+  'price':'preço',
+}

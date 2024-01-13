@@ -4,6 +4,7 @@ import {
 	GraphQLRequestOptions,
 	Request,
 	Response,
+	translation,
 } from "./_index";
 import { getCookie } from "@/app/actions";
 import { UserCookieKey } from "./constants";
@@ -11,8 +12,6 @@ import { UserModel } from "@/models/userModel";
 import { Role, Status } from "@/models/enum";
 import { DepartmentModel } from "@/models/departmentModel";
 import { redirect } from "next/navigation";
-
-export type BasicObject<T = any> = Record<string, T>;
 
 export async function fetchGraphQL<T extends Record<string, any> = any>(
 	query: string,
@@ -141,4 +140,10 @@ export function formatUniqueDigit(number: string){
 	}
 	
 	return number;
+}
+
+export function translate(word: string){
+	const t: string|undefined = translation[word];
+
+	return t?t:word
 }

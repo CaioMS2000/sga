@@ -7,7 +7,7 @@ import { GET_ALL_CATEGORIES } from "@/lib/query/category";
 import { GET_ALL_SUPPLIERS } from "@/lib/query/supplier";
 import { CategoryModel } from "@/models/categoryModel";
 import { SupplierModel } from "@/models/supplierModel";
-import { buildUser, fetchGraphQL } from "@/utils";
+import { buildUser, fetchGraphQL, translate } from "@/utils";
 import {
 	ChangeEvent,
 	PropsWithChildren,
@@ -47,6 +47,7 @@ interface ItemCreateProps extends PropsWithChildren {}
 
 export default function ItemCreate({}: ItemCreateProps) {
 	const [createItemFlag, setCreateItemFlag] = useState(false);
+	const [hasError, setHasError] = useState({erro: false, message:''})
 	const [availableCategories, setAvailableCategories] = useState<
 		CategoryModel[]
 	>([]);
@@ -103,6 +104,34 @@ export default function ItemCreate({}: ItemCreateProps) {
 
 		if (!user) return;
 
+		if (
+			// forms.some((form, i) => {
+			// 	if (!form.amount) return true;
+			// 	if (!form.category) return true;
+			// 	if (!form.name) return true;
+			// 	if (!form.price) return true;
+			// 	if (!form.supplier) return true;
+
+			// 	return false;
+			// })
+			forms.some((form, i) => {
+				let invalidField = ''
+				if (!form.amount) invalidField='amount';
+				else if (!form.category) invalidField='category';
+				else if (!form.name) invalidField='name';
+				else if (!form.price) invalidField='price';
+				else if (!form.supplier) invalidField='supplier';
+
+				if(invalidField.length){
+					setHasError({erro: true, message: `No formulário ${i+1} está faltando o campo ${translate(invalidField)}`})
+					return true
+				}
+
+				return false;
+			})
+		)
+			return;
+
 		const res = await fetchGraphQL<Boolean>(CREATE_ITEMS, {
 			key: "createItems",
 			variables: {
@@ -128,9 +157,9 @@ export default function ItemCreate({}: ItemCreateProps) {
 		});
 
 		console.log(res);
-		setForms([{ ...emptyFormData }])
-		setCreateItemFlag(res.valueOf())
-		setTimeout(() => setCreateItemFlag(false), 2 * 1000)
+		setForms([{ ...emptyFormData }]);
+		setCreateItemFlag(res.valueOf());
+		setTimeout(() => setCreateItemFlag(false), 2 * 1000);
 	}
 
 	useEffect(() => {
@@ -142,57 +171,80 @@ export default function ItemCreate({}: ItemCreateProps) {
 		forms.forEach((f) => console.log(f));
 	}, [forms]);
 
+	useEffect(() => {
+		if(hasError.erro){
+			setTimeout(() => {setHasError({erro: false, message:''})}, 2 * 1000)
+		}
+	}, [hasError]);
+
 	return (
 		<>
 			<div className="bg-gray-800 flex flex-col rounded-lg p-3 items-center">
 				<h1 className="font-bold text-[2rem] w-full text-white rounded-lg">
 					Criando um novo item
 				</h1>
-				<span className="italic mb-5">Todos os itens que eprtencem à mesma nota fiscal devem ser inseridos ao mesmo tempo</span>
+				<span className="italic mb-5">
+					Todos os itens que pertencem à mesma nota fiscal devem ser
+					inseridos ao mesmo tempo
+				</span>
 
 				<div className="flex flex-col gap-10">
 					{forms.map((form, index) => (
-						<Content
-							key={index}
-							index={index}
-							amount={form.amount}
-							category={form.category}
-							description={form.description}
-							image={form.image}
-							name={form.name}
-							price={form.price}
-							supplier={form.supplier}
-							categoryOptions={availableCategories}
-							supplierOptions={availableSuppliers}
-							inputChange={update}
-							removeForm={removeForm}
-						/>
+						<>
+							<Content
+								key={index}
+								index={index}
+								amount={form.amount}
+								category={form.category}
+								description={form.description}
+								image={form.image}
+								name={form.name}
+								price={form.price}
+								supplier={form.supplier}
+								categoryOptions={availableCategories}
+								supplierOptions={availableSuppliers}
+								inputChange={update}
+								removeForm={removeForm}
+							/>
+						</>
 					))}
 				</div>
 
-					<div className="flex w-full pl-10 mt-5">
-						<button
-							className="btn"
-							onClick={() =>
-								setForms((prevState) => [
-									...prevState,
-									{ ...emptyFormData },
-								])
-							}
-						>
-							Mais
-							<FaPlus className="text-green-500"/>
-						</button>
-					</div>
+				<div className="flex w-full pl-10 mt-5">
+					<button
+						className="btn"
+						onClick={() =>
+							setForms((prevState) => [
+								...prevState,
+								{ ...emptyFormData },
+							])
+						}
+					>
+						Mais
+						<FaPlus className="text-green-500" />
+					</button>
+				</div>
 				<div className="flex">
-					<button className="btn text-2xl text-white bg-purple-900 hover:bg-purple-950" onClick={handleSend}>
+					<button
+						className="py-3 px-5 rounded-lg font-bold text-2xl text-white bg-purple-900 hover:bg-purple-950"
+						onClick={handleSend}
+					>
 						Criar
 					</button>
 				</div>
 			</div>
 			{createItemFlag && (
 				<Toast className="alert-success">
-					<span className="text-xl font-bold mx-auto">Item criado com sucesso</span>
+					<span className="text-xl font-bold mx-auto">
+						Item criado com sucesso
+					</span>
+				</Toast>
+			)}
+			{hasError.erro && (
+				<Toast className="alert-error">
+					<span className="text-xl font-bold mx-auto">
+						{hasError.message}
+					</span>
 				</Toast>
 			)}
 		</>
@@ -337,7 +389,9 @@ const Content = forwardRef<HTMLInputElement, ContentProps>(function (
 						className=""
 						label-class="bg-slate-900 font-bold"
 						ref={ref}
-						inputChange={() => {}}
+						inputChange={(image: string) => {
+							inputChange(index, "image", image);
+						}}
 					/>
 				</div>
 			</div>

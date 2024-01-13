@@ -12,6 +12,7 @@ import {
 } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { FaFile } from "react-icons/fa6";
+import { IoIosClose } from "react-icons/io";
 
 interface FileInputProps
 	extends PropsWithChildren,
@@ -19,7 +20,8 @@ interface FileInputProps
 	"label-class"?: string;
 	"label-text"?: string;
 	"bg-empty"?: string;
-	inputChange?: Dispatch<SetStateAction<string>>;
+	// inputChange?: Dispatch<SetStateAction<string>>;
+	inputChange?: (arg: string) => void;
 	inputValue?: string;
 }
 
@@ -41,13 +43,12 @@ export default forwardRef<HTMLInputElement, FileInputProps>(function FileInput(
 	const [randomId, setRandomId] = useState("");
 
 	function handleChange(event: ChangeEvent<HTMLInputElement>) {
-
 		if (event.target && event.target.files) {
 			if (event.target.files.length > 0) {
 				setHasFiles(true);
 
-				const file = event.target.files[0]
-				setSelectedFile(file)
+				const file = event.target.files[0];
+				setSelectedFile(file);
 			} else {
 				setHasFiles(false);
 			}
@@ -59,15 +60,20 @@ export default forwardRef<HTMLInputElement, FileInputProps>(function FileInput(
 	}, []);
 
 	useEffect(() => {
-		if(selectedFile && inputChange){
-			const reader = new FileReader()
+		if (inputChange) {
+			if (selectedFile) {
+				const reader = new FileReader();
 
-			reader.onloadend = () => {
-				const res = reader.result
-				inputChange(res as string)
+				reader.onloadend = () => {
+					const res = reader.result;
+					inputChange(res as string);
+				};
+
+				reader.readAsDataURL(selectedFile);
+			} else {
+				inputChange("");
+				setHasFiles(false);
 			}
-
-			reader.readAsDataURL(selectedFile)
 		}
 	}, [selectedFile]);
 
@@ -81,19 +87,36 @@ export default forwardRef<HTMLInputElement, FileInputProps>(function FileInput(
 			>
 				<div
 					className={
-						"rounded-l-lg p-3 border-r-[2px] border-gray-600 " +
+						"rounded-l-lg p-3 border-r-[2px] border-gray-600 flex items-center " +
 						labelClass
 					}
 					onClick={(e) => {
 						document.getElementById(`${randomId}`)?.click();
 					}}
 				>
-					{labelText}
+					<p>{labelText}</p>
 				</div>
-				<div
-					className={"p-3 rounded-r-lg flex items-center " + bgEmpty}
-				>
-					{hasFiles && <FaFile />}
+				<div className={"rounded-r-lg flex items-center " + (hasFiles?"":"p-2 ") + bgEmpty}>
+					{hasFiles && (
+						<>
+							<div className="flex flex-col p-3 pr-0">
+								<FaFile
+									className="min-w-[20px] min-h-[20px]"
+									onClick={() => {
+										document
+											.getElementById(`${randomId}`)
+											?.click();
+									}}
+								/>
+							</div>
+							<div className="flex flex-col pt-1 pr-1 h-full justify-start">
+								<IoIosClose
+									className="min-w-[20px] min-h-[20px] hover:cursor-pointer text-red-500 "
+									onClick={() => {console.log('clicou');setSelectedFile(null)}}
+								/>
+							</div>
+						</>
+					)}
 				</div>
 			</div>
 			{/* ===== input hidden ===== */}
